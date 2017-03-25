@@ -1,4 +1,4 @@
-#DeepFileFind
+# DeepFileFind
 The goal of this project is to create the most satisfying search program in the world. DeepFileFind...
 
 * Has features you need
