@@ -33,10 +33,43 @@ namespace DeepFileFind
 		public static readonly int COLUMNFLAG_IGNORE = -2;
 		public bool enable = true;
 		public bool finished = false;
+		public static bool newline_detected_as_space_enable=false;
 		public static readonly string datetime_sortable_format_string = "yyyy-MM-dd HH:mm";
 		#region cache
 		private string options_name_string_tolower = null;
 		#endregion cache
+		
+		public static bool get_file_contains(FileInfo this_info, string content_string) {
+			bool result=false;
+			
+			StreamReader ins = null;
+			string content_string_Substring=null;
+			if (!string.IsNullOrEmpty(content_string)) {
+				if (content_string.EndsWith(" ")) {
+					content_string_Substring=content_string.Substring(0,content_string.Length-1);
+				}
+				try {
+					ins = new StreamReader(this_info.FullName);
+					string line;
+					while ( (line=ins.ReadLine()) != null ) {
+						//check if line contains it OR endswith substring (allows counting a newline as a space)
+						if (  line.Contains(content_string)  ||  (newline_detected_as_space_enable&&(content_string_Substring!=null)&&line.Length>1&&line.Substring(0,line.Length-1).EndsWith(content_string_Substring))  ) {
+							result=true;
+							break;
+						}
+					}
+					ins.Close();
+				}
+				catch (Exception exn) {
+					Console.Error.WriteLine("Could not finish get_file_contains {filename:'"+this_info.FullName+"'}: "+exn.ToString());
+					try {
+						if (ins!=null) ins.Close();
+					}
+					catch {} //don't care
+				}
+			}
+			return result;
+		}
 		
 		public bool get_is_match(FileInfo this_info) {
 			bool result = false;
@@ -47,7 +80,9 @@ namespace DeepFileFind
 				Console.WriteLine();
 				if (   !options.modified_endbefore_date_enable   ||   (  this_info.LastWriteTime.ToUniversalTime() < options.modified_endbefore_datetime_utc.ToUniversalTime() )   ) {
 					if (   !options.modified_start_date_enable  ||   (  this_info.LastWriteTime.ToUniversalTime() >= options.modified_start_datetime_utc.ToUniversalTime() )   ) {
-						result = true;
+						if (  string.IsNullOrEmpty(options.content_string) || get_file_contains(this_info, options.content_string)  ) {
+							result = true;
+						}
 					}
 				}
 			}

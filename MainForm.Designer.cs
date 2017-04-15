@@ -210,17 +210,17 @@ namespace DeepFileFind
 			this.contentTextBox.Name = "contentTextBox";
 			this.contentTextBox.Size = new System.Drawing.Size(346, 27);
 			this.contentTextBox.TabIndex = 8;
+			this.contentTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ContentTextBoxKeyDown);
 			// 
 			// contentCheckBox
 			// 
 			this.contentCheckBox.AutoSize = true;
-			this.contentCheckBox.Enabled = false;
 			this.contentCheckBox.Location = new System.Drawing.Point(4, 190);
 			this.contentCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.contentCheckBox.Name = "contentCheckBox";
-			this.contentCheckBox.Size = new System.Drawing.Size(227, 23);
+			this.contentCheckBox.Size = new System.Drawing.Size(79, 23);
 			this.contentCheckBox.TabIndex = 9;
-			this.contentCheckBox.Text = "Content (not yet implemented)";
+			this.contentCheckBox.Text = "Content";
 			this.contentCheckBox.UseVisualStyleBackColor = true;
 			this.contentCheckBox.CheckedChanged += new System.EventHandler(this.ContentCheckBoxCheckedChanged);
 			// 
@@ -265,6 +265,7 @@ namespace DeepFileFind
 			this.nameTextBox.Name = "nameTextBox";
 			this.nameTextBox.Size = new System.Drawing.Size(213, 27);
 			this.nameTextBox.TabIndex = 0;
+			this.nameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameTextBoxKeyDown);
 			// 
 			// cancelButton
 			// 
@@ -455,6 +456,7 @@ namespace DeepFileFind
 			this.resultsListView.UseCompatibleStateImageBehavior = false;
 			this.resultsListView.View = System.Windows.Forms.View.Details;
 			this.resultsListView.DoubleClick += new System.EventHandler(this.ResultsListViewDoubleClick);
+			this.resultsListView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ResultsListViewKeyDown);
 			// 
 			// resultContextMenuStrip
 			// 

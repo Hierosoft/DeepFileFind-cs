@@ -58,7 +58,13 @@ namespace DeepFileFind
 			cancelButton.Enabled=!enable;
 			cancelButton.Visible=!enable;
 			nameTextBox.Enabled=enable;
+			foldersCheckBox.Enabled=enable;
+			recursiveCheckBox.Enabled=enable;
 			locationComboBox.Enabled=enable;
+			contentCheckBox.Enabled=enable;
+			contentTextBox.Enabled=enable;
+			modifiedStartDateCheckBox.Enabled=enable;
+			modifiedEndBeforeDateCheckBox.Enabled=enable;
 		}
 
 		
@@ -91,14 +97,6 @@ namespace DeepFileFind
 		void MainFormLoad(object sender, EventArgs e)
 		{
 			updateDatePickers();
-			if (locationComboBox.Text.Trim()=="") {
-				locationComboBox.Text=Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-			}
-			try {
-				string try_path="\\\\FCAFILES\\student";
-				if (Directory.Exists(try_path)) locationComboBox.Text=try_path;
-			}
-			catch {} //don't care
 			if (File.Exists(recent_folders_list_path)) {
 				StreamReader ins = new StreamReader(recent_folders_list_path);
 				string line;
@@ -110,6 +108,25 @@ namespace DeepFileFind
 				}
 				ins.Close();
 			}
+			string userprofile_path=Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			try {
+				DirectoryInfo personalDI = new DirectoryInfo(userprofile_path);
+				if (personalDI.Name.ToLower()=="documents") {
+					userprofile_path=personalDI.Parent.FullName;
+				}
+			}
+			catch {} //don't care
+			if (locationComboBox.Text.Trim()=="") {
+				if (locationComboBox.Items.Count>0) {
+					locationComboBox.Text=locationComboBox.Items[0].ToString();
+				}
+				else locationComboBox.Text=userprofile_path;
+			}
+			//try {
+				//string try_path="\\\\FCAFILES\\student";
+				//if (Directory.Exists(try_path)) locationComboBox.Text=try_path;
+			//}
+			//catch {} //don't care
 			
 			if (File.Exists(settings_path)) {
 				StreamReader ins = new StreamReader(settings_path);
@@ -151,6 +168,9 @@ namespace DeepFileFind
 			else recursiveCheckBox.Checked = true;
 			if (settings.ContainsKey("content_enable")) contentCheckBox.Checked = (settings["content_enable"]=="true"?true:false);
 			else contentCheckBox.Checked = false;
+			if (settings.ContainsKey("name")) nameTextBox.Text = settings["name"];
+			if (settings.ContainsKey("content_string")) contentTextBox.Text = settings["content_string"];
+			contentTextBox.Enabled = contentCheckBox.Checked;
 			contentTextBox.Enabled = contentCheckBox.Checked;
 						
 			resultsListView.Columns.Add("Path", "Path", (int)((double)this.Width*.35+.5));
@@ -280,7 +300,9 @@ namespace DeepFileFind
 					//NOTE: time is set to 0,0,0 during ExecuteSearch if time is not enabled
 					
 					if (!string.IsNullOrEmpty(nameTextBox.Text.Trim())) dff.options.name_string=nameTextBox.Text;
+					//else already null since new object, so do nothing
 					if (contentCheckBox.Checked && !string.IsNullOrEmpty(contentTextBox.Text.Trim())) dff.options.content_string=contentTextBox.Text;
+					//else already null since new object, so do nothing
 					dff.options.include_folders_as_results_enable=foldersCheckBox.Checked;
 					dff.options.recursive_enable=recursiveCheckBox.Checked;
 					dff.resultsListView = this.resultsListView;
@@ -300,7 +322,6 @@ namespace DeepFileFind
 						//findButton.Enabled=true;
 						//cancelButton.Visible=false;
 						//cancelButton.Enabled=false;
-						setSearchAvailability(true);
 					}
 					//while (this_thread.IsAlive) Thread.Sleep(1);
 					//foreach (FileInfo this_fi in results) {
@@ -321,6 +342,7 @@ namespace DeepFileFind
 			else {
 				MessageBox.Show("Search directory must be specified");
 			}
+			setSearchAvailability(true);
 		}
 		
 		void ContentCheckBoxCheckedChanged(object sender, EventArgs e)
@@ -333,8 +355,14 @@ namespace DeepFileFind
 			statusTextBox.Text="Saving settings...";
 			Application.DoEvents();
 			StreamWriter outs = new StreamWriter(recent_folders_list_path);
+			ArrayList uniqueAL = new ArrayList();
+			outs.WriteLine(locationComboBox.Text);
+			uniqueAL.Add(locationComboBox.Text);
 			foreach (string line in locationComboBox.Items) {
-				outs.WriteLine(line);
+				if (!uniqueAL.Contains(line)) {
+					outs.WriteLine(line);
+					uniqueAL.Add(line);
+				}
 			}
 			outs.Close();
 			
@@ -348,6 +376,8 @@ namespace DeepFileFind
 			settings["include_folders_as_results_enable"] = foldersCheckBox.Checked?"true":"false";
 			settings["content_enable"] = contentCheckBox.Checked?"true":"false";
 			settings["recursive_enable"] = recursiveCheckBox.Checked?"true":"false";
+			settings["content_string"] = contentTextBox.Text;
+			settings["name"] = nameTextBox.Text;
 			foreach(KeyValuePair<string, string> entry in settings) {
 				outs.WriteLine(entry.Key+":"+entry.Value);
 			}
@@ -396,6 +426,105 @@ namespace DeepFileFind
 			foreach (ListViewItem lvi in resultsListView.SelectedItems) {
 				System.Diagnostics.Process.Start(lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
 			}
+		}
+		
+		
+		void ResultsListViewItemDrag_BROKEN_KEEPS_CURSOR_X_FOREVER(object sender, ItemDragEventArgs e)
+		{
+			if (this.resultsListView.SelectedItems.Count>0) {
+				string[] files = new String[this.resultsListView.SelectedItems.Count];
+				int index=0;
+				foreach (ListViewItem thisLVI in this.resultsListView.SelectedItems) {
+					files[index] = thisLVI.SubItems[resultsListView.Columns.IndexOfKey("Path")].ToString();
+					index++;
+				}
+				DataObject dataObject = new DataObject(DataFormats.FileDrop, files);
+				DoDragDrop(dataObject, DragDropEffects.Copy);
+				Application.DoEvents();
+			}			
+		}
+		
+		void ResultsListViewDragDrop_BROKEN_FREEZES(object sender, DragEventArgs e)
+		{
+		    if (!e.Data.GetDataPresent(DataFormats.FileDrop)) 
+		    {
+		        return;
+		    }
+		
+		    string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+		    foreach (string file in files)
+		    {
+		        //string dest = homeFolder + "\\" + Path.GetFileName(file);
+		        bool isFolder = Directory.Exists(file);
+		        bool isFile = File.Exists(file);
+		        if (!isFolder && !isFile)
+		        // Ignore if it doesn't exist
+		            continue;
+		
+		        try
+		        {
+		            switch(e.Effect)
+		            {
+		                case DragDropEffects.Copy:
+		                    //if(isFile)
+		                    // TODO: Need to handle folders
+		                        //File.Copy(file, dest, false);
+		                    break;
+		                case DragDropEffects.Move:
+		                    //if (isFile)
+		                        //File.Move(file, dest);
+		                    break;
+		                case DragDropEffects.Link:
+		                // TODO: Need to handle links
+		                    break;
+		            }
+		        }
+		        catch(IOException ex)
+		        {
+		            MessageBox.Show(this, "Failed to perform the" + 
+		              " specified operation:\n\n" + ex.Message, 
+		              "File operation failed", MessageBoxButtons.OK, 
+		              MessageBoxIcon.Stop);
+		        }
+		    }
+		}
+		
+		
+		void ResultsListViewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.C && e.Control) {
+				if (resultsListView.SelectedItems.Count>0) {
+					//string[] files = new String[this.resultsListView.SelectedItems.Count];
+					//int index=0;
+					foreach (ListViewItem thisLVI in this.resultsListView.SelectedItems) {
+						string this_path = thisLVI.SubItems[resultsListView.Columns.IndexOfKey("Path")].Text;
+						Clipboard.SetText(this_path);
+						break;
+						//files[index] = this_path;
+						//index++;
+						
+					}
+				}
+				else Clipboard.SetText("");
+			}
+		}
+		
+		
+		
+		void NameTextBoxKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter) {
+				ExecuteSearch();
+			}
+			
+		}
+		
+		void ContentTextBoxKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter) {
+				ExecuteSearch();
+			}
+			
 		}
 	}
 }
