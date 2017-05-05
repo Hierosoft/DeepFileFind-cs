@@ -37,6 +37,10 @@ namespace DeepFileFind
 		public bool include_folders_as_results_enable = true;
 		public bool case_sensitive_enable = false;
 		public bool threading_enable = false;
+		public bool min_size_enable = false;
+		public bool max_size_enable = false;
+		public long min_size = 0;
+		public long max_size = long.MaxValue;
 		public System.Windows.Forms.TextBox statusTextBox = null;
 		
 		public DFFSearchOptions()
@@ -62,6 +66,10 @@ namespace DeepFileFind
 			results.Add("recursive_enable = "+(recursive_enable?"true":"false"));
 			results.Add("include_folders_as_results_enable = "+(include_folders_as_results_enable?"true":"false"));
 			results.Add("case_sensitive_enable = "+(case_sensitive_enable?"true":"false"));
+			results.Add("min_size_enable = "+(min_size_enable?"true":"false"));
+			results.Add("max_size_enable = "+(max_size_enable?"true":"false"));
+			results.Add("min_size = "+min_size.ToString());
+			results.Add("max_size = "+max_size.ToString());
 			string line = "start_directoryinfos = ";
 			foreach (DirectoryInfo di in start_directoryinfos) {
 				line += di.FullName+";";

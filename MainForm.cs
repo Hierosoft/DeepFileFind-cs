@@ -65,6 +65,10 @@ namespace DeepFileFind
 			contentTextBox.Enabled=enable;
 			modifiedStartDateCheckBox.Enabled=enable;
 			modifiedEndBeforeDateCheckBox.Enabled=enable;
+			minSizeCheckBox.Enabled=enable;
+			maxSizeCheckBox.Enabled=enable;
+			minSizeTextBox.Enabled=enable;
+			maxSizeTextBox.Enabled=enable;
 		}
 
 		
@@ -170,6 +174,12 @@ namespace DeepFileFind
 			else contentCheckBox.Checked = false;
 			if (settings.ContainsKey("name")) nameTextBox.Text = settings["name"];
 			if (settings.ContainsKey("content_string")) contentTextBox.Text = settings["content_string"];
+			if (settings.ContainsKey("min_size_enable")) minSizeCheckBox.Checked = (settings["min_size_enable"]=="true"?true:false);
+			if (settings.ContainsKey("max_size_enable")) maxSizeCheckBox.Checked = (settings["max_size_enable"]=="true"?true:false);
+			if (settings.ContainsKey("min_size")) minSizeTextBox.Text = settings["min_size"];
+			if (settings.ContainsKey("max_size")) maxSizeTextBox.Text = settings["max_size"];
+			
+			
 			contentTextBox.Enabled = contentCheckBox.Checked;
 			contentTextBox.Enabled = contentCheckBox.Checked;
 						
@@ -252,6 +262,44 @@ namespace DeepFileFind
 			}
 			return result;
 		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="size_string">either a number of bytes, or a number ending with G, GB, M, MB, K, or KB (capitalization does not matter).</param>
+		/// <returns>A plain number (if could be parsed) otherwize returns the value of the original parameter</returns>
+		public static string get_byte_count_string(string size_string) {
+			long i;
+			if (!string.IsNullOrEmpty(size_string)) {
+				if (size_string.ToLower().EndsWith("gb") || size_string.ToLower().EndsWith("g")) {
+					int cut_len = 2;
+					if (size_string.ToLower().EndsWith("g")) cut_len=1;
+					decimal d;
+					if (decimal.TryParse(size_string.Substring(0,size_string.Length-cut_len).Trim(), out d)) {
+						i = (long)decimal.Ceiling(d*1024.0M*1024.0M*1024.0M);
+						size_string = i.ToString();
+					}
+				}
+				else if (size_string.ToLower().EndsWith("mb") || size_string.ToLower().EndsWith("m")) {
+					int cut_len = 2;
+					if (size_string.ToLower().EndsWith("m")) cut_len=1;
+					decimal d;
+					if (decimal.TryParse(size_string.Substring(0,size_string.Length-cut_len).Trim(), out d)) {
+						i = (long)decimal.Ceiling(d*1024.0M*1024.0M);
+						size_string = i.ToString();
+					}
+				}
+				else if (size_string.ToLower().EndsWith("kb") || size_string.ToLower().EndsWith("k")) {
+					int cut_len = 2;
+					if (size_string.ToLower().EndsWith("k")) cut_len=1;
+					decimal d;
+					if (decimal.TryParse(size_string.Substring(0,size_string.Length-cut_len).Trim(), out d)) {
+						i = (long)decimal.Ceiling(d*1024.0M);
+						size_string = i.ToString();
+					}
+				}
+			}
+			return size_string;
+		}
 		public void ExecuteSearch() {
 			if (!hasLocation(locationComboBox.Text)) locationComboBox.Items.Add(locationComboBox.Text);
 			//findButton.Enabled=false;
@@ -289,6 +337,15 @@ namespace DeepFileFind
 				if (folders_all_ok_enable) {
 					dff.options.modified_start_date_enable=modifiedStartDateCheckBox.Checked;
 					dff.options.modified_start_time_enable=modifiedStartTimeCheckBox.Checked;
+					dff.options.min_size_enable=minSizeCheckBox.Checked;
+					dff.options.max_size_enable=maxSizeCheckBox.Checked;
+					long i;
+					string min_size_byte_count_string = get_byte_count_string(minSizeTextBox.Text.Trim());
+					minSizeLabel.Text="bytes: "+min_size_byte_count_string;
+					string max_size_byte_count_string = get_byte_count_string(maxSizeTextBox.Text.Trim());
+					maxSizeLabel.Text="bytes: "+max_size_byte_count_string;
+					if (long.TryParse(min_size_byte_count_string, out i)) dff.options.min_size=i;
+					if (long.TryParse(max_size_byte_count_string, out i)) dff.options.max_size=i;
 					if (modifiedStartDateCheckBox.Checked) {
 						dff.options.modified_start_datetime_utc=modifiedStartDTPicker.Value; //DateTime.FromFileTimeUtc(modifiedStartDTPicker.Value.ToFileTimeUtc());
 					}
@@ -307,21 +364,29 @@ namespace DeepFileFind
 					dff.options.recursive_enable=recursiveCheckBox.Checked;
 					dff.resultsListView = this.resultsListView;
 					dff.options.statusTextBox = this.statusTextBox;
-					if (dff.options.threading_enable) {
-						this_thread = new Thread(dff.ExecuteSearch);
-						this_thread.Start();
-						statusTextBox.Text="Searching (1 thread)...";
-						Application.DoEvents();
-						timer1.Enabled=true;
-						timer1.Start();
+					if (dff.options.min_size_enable && dff.options.max_size_enable && dff.options.max_size<dff.options.min_size) {
+						statusTextBox.Text="WARNING: max is less than min (nothing to find)";
+					}
+					else if (dff.options.modified_endbefore_date_enable && dff.options.modified_start_date_enable && dff.options.modified_endbefore_datetime_utc <= dff.options.modified_start_datetime_utc) {
+						statusTextBox.Text="WARNING: \"endbefore\" is less than or equal to start date (nothing to find)";
 					}
 					else {
-						statusTextBox.Text="Searching...";
-						dff.ExecuteSearch();
-						//findButton.Visible=true;
-						//findButton.Enabled=true;
-						//cancelButton.Visible=false;
-						//cancelButton.Enabled=false;
+						if (dff.options.threading_enable) {
+							this_thread = new Thread(dff.ExecuteSearch);
+							this_thread.Start();
+							statusTextBox.Text="Searching (1 thread)...";
+							Application.DoEvents();
+							timer1.Enabled=true;
+							timer1.Start();
+						}
+						else {
+							statusTextBox.Text="Searching...";
+							dff.ExecuteSearch();
+							//findButton.Visible=true;
+							//findButton.Enabled=true;
+							//cancelButton.Visible=false;
+							//cancelButton.Enabled=false;
+						}
 					}
 					//while (this_thread.IsAlive) Thread.Sleep(1);
 					//foreach (FileInfo this_fi in results) {
@@ -378,6 +443,10 @@ namespace DeepFileFind
 			settings["recursive_enable"] = recursiveCheckBox.Checked?"true":"false";
 			settings["content_string"] = contentTextBox.Text;
 			settings["name"] = nameTextBox.Text;
+			settings["min_size_enable"] = minSizeCheckBox.Checked?"true":"false";
+			settings["max_size_enable"] = maxSizeCheckBox.Checked?"true":"false";
+			settings["min_size"] = minSizeTextBox.Text;
+			settings["max_size"] = maxSizeTextBox.Text;
 			foreach(KeyValuePair<string, string> entry in settings) {
 				outs.WriteLine(entry.Key+":"+entry.Value);
 			}

@@ -40,6 +40,12 @@ namespace DeepFileFind
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+			this.minSizeTextBox = new System.Windows.Forms.TextBox();
+			this.minSizeCheckBox = new System.Windows.Forms.CheckBox();
+			this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+			this.maxSizeTextBox = new System.Windows.Forms.TextBox();
+			this.maxSizeCheckBox = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
 			this.modifiedEndBeforeDateCheckBox = new System.Windows.Forms.CheckBox();
 			this.modifiedEndBeforeTimeCheckBox = new System.Windows.Forms.CheckBox();
@@ -70,10 +76,14 @@ namespace DeepFileFind
 			this.openContainingFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusTextBox = new System.Windows.Forms.TextBox();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
+			this.minSizeLabel = new System.Windows.Forms.Label();
+			this.maxSizeLabel = new System.Windows.Forms.Label();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
+			this.tableLayoutPanel8.SuspendLayout();
+			this.tableLayoutPanel7.SuspendLayout();
 			this.tableLayoutPanel5.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
@@ -107,6 +117,7 @@ namespace DeepFileFind
 			// 
 			this.tableLayoutPanel1.ColumnCount = 1;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel8, 0, 12);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 10);
 			this.tableLayoutPanel1.Controls.Add(this.modifiedEndBeforeDTPicker, 0, 11);
 			this.tableLayoutPanel1.Controls.Add(this.label2, 0, 0);
@@ -119,10 +130,17 @@ namespace DeepFileFind
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 5);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 8);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel6, 0, 2);
+			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel7, 0, 14);
+			this.tableLayoutPanel1.Controls.Add(this.minSizeLabel, 0, 13);
+			this.tableLayoutPanel1.Controls.Add(this.maxSizeLabel, 0, 15);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 13;
+			this.tableLayoutPanel1.RowCount = 17;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -138,6 +156,79 @@ namespace DeepFileFind
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(354, 638);
 			this.tableLayoutPanel1.TabIndex = 15;
+			// 
+			// tableLayoutPanel8
+			// 
+			this.tableLayoutPanel8.AutoSize = true;
+			this.tableLayoutPanel8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.tableLayoutPanel8.ColumnCount = 2;
+			this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+			this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+			this.tableLayoutPanel8.Controls.Add(this.minSizeTextBox, 0, 0);
+			this.tableLayoutPanel8.Controls.Add(this.minSizeCheckBox, 0, 0);
+			this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel8.Location = new System.Drawing.Point(3, 399);
+			this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+			this.tableLayoutPanel8.RowCount = 1;
+			this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel8.Size = new System.Drawing.Size(348, 35);
+			this.tableLayoutPanel8.TabIndex = 18;
+			// 
+			// minSizeTextBox
+			// 
+			this.minSizeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.minSizeTextBox.Location = new System.Drawing.Point(143, 4);
+			this.minSizeTextBox.Margin = new System.Windows.Forms.Padding(4);
+			this.minSizeTextBox.Name = "minSizeTextBox";
+			this.minSizeTextBox.Size = new System.Drawing.Size(201, 27);
+			this.minSizeTextBox.TabIndex = 9;
+			// 
+			// minSizeCheckBox
+			// 
+			this.minSizeCheckBox.AutoSize = true;
+			this.minSizeCheckBox.Location = new System.Drawing.Point(4, 4);
+			this.minSizeCheckBox.Margin = new System.Windows.Forms.Padding(4);
+			this.minSizeCheckBox.Name = "minSizeCheckBox";
+			this.minSizeCheckBox.Size = new System.Drawing.Size(118, 23);
+			this.minSizeCheckBox.TabIndex = 4;
+			this.minSizeCheckBox.Text = "Minimum Size";
+			this.minSizeCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// tableLayoutPanel7
+			// 
+			this.tableLayoutPanel7.AutoSize = true;
+			this.tableLayoutPanel7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.tableLayoutPanel7.ColumnCount = 2;
+			this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+			this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+			this.tableLayoutPanel7.Controls.Add(this.maxSizeTextBox, 0, 0);
+			this.tableLayoutPanel7.Controls.Add(this.maxSizeCheckBox, 0, 0);
+			this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 459);
+			this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+			this.tableLayoutPanel7.RowCount = 1;
+			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel7.Size = new System.Drawing.Size(348, 35);
+			this.tableLayoutPanel7.TabIndex = 17;
+			// 
+			// maxSizeTextBox
+			// 
+			this.maxSizeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.maxSizeTextBox.Location = new System.Drawing.Point(143, 4);
+			this.maxSizeTextBox.Margin = new System.Windows.Forms.Padding(4);
+			this.maxSizeTextBox.Name = "maxSizeTextBox";
+			this.maxSizeTextBox.Size = new System.Drawing.Size(201, 27);
+			this.maxSizeTextBox.TabIndex = 9;
+			// 
+			// maxSizeCheckBox
+			// 
+			this.maxSizeCheckBox.AutoSize = true;
+			this.maxSizeCheckBox.Location = new System.Drawing.Point(4, 4);
+			this.maxSizeCheckBox.Margin = new System.Windows.Forms.Padding(4);
+			this.maxSizeCheckBox.Name = "maxSizeCheckBox";
+			this.maxSizeCheckBox.Size = new System.Drawing.Size(121, 23);
+			this.maxSizeCheckBox.TabIndex = 4;
+			this.maxSizeCheckBox.Text = "Maximum Size";
+			this.maxSizeCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// tableLayoutPanel5
 			// 
@@ -494,6 +585,24 @@ namespace DeepFileFind
 			// 
 			this.timer1.Tick += new System.EventHandler(this.Timer1Tick);
 			// 
+			// minSizeLabel
+			// 
+			this.minSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.minSizeLabel.AutoSize = true;
+			this.minSizeLabel.Location = new System.Drawing.Point(351, 437);
+			this.minSizeLabel.Name = "minSizeLabel";
+			this.minSizeLabel.Size = new System.Drawing.Size(0, 19);
+			this.minSizeLabel.TabIndex = 19;
+			// 
+			// maxSizeLabel
+			// 
+			this.maxSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.maxSizeLabel.AutoSize = true;
+			this.maxSizeLabel.Location = new System.Drawing.Point(351, 497);
+			this.maxSizeLabel.Name = "maxSizeLabel";
+			this.maxSizeLabel.Size = new System.Drawing.Size(0, 19);
+			this.maxSizeLabel.TabIndex = 20;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -515,6 +624,10 @@ namespace DeepFileFind
 			this.splitContainer1.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
+			this.tableLayoutPanel8.ResumeLayout(false);
+			this.tableLayoutPanel8.PerformLayout();
+			this.tableLayoutPanel7.ResumeLayout(false);
+			this.tableLayoutPanel7.PerformLayout();
 			this.tableLayoutPanel5.ResumeLayout(false);
 			this.tableLayoutPanel5.PerformLayout();
 			this.tableLayoutPanel2.ResumeLayout(false);
@@ -531,6 +644,14 @@ namespace DeepFileFind
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Label maxSizeLabel;
+		private System.Windows.Forms.Label minSizeLabel;
+		private System.Windows.Forms.CheckBox maxSizeCheckBox;
+		private System.Windows.Forms.TextBox maxSizeTextBox;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+		private System.Windows.Forms.CheckBox minSizeCheckBox;
+		private System.Windows.Forms.TextBox minSizeTextBox;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
 		private System.Windows.Forms.CheckBox recursiveCheckBox;
 		private System.Windows.Forms.ContextMenuStrip resultContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem openContainingFolderToolStripMenuItem;

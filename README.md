@@ -20,6 +20,7 @@ The goal of this project is to create the most satisfying search program in the 
 * Skipping or modifying any of these directives will make it like any other search tool and therefore irrelevant.
 
 ## Changes
+* (2017-05-05) Added min/max sizes feature, and nonsense input checking for that and for modification dates
 * (2017-04-15) Press enter to search (if name or content box has focus)
 * (2017-04-15) Ctrl+C can copy path of selected result
 * (2017-04-15) Re-enable buttons correctly after nonexistent folder was used

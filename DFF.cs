@@ -80,8 +80,12 @@ namespace DeepFileFind
 				Console.WriteLine();
 				if (   !options.modified_endbefore_date_enable   ||   (  this_info.LastWriteTime.ToUniversalTime() < options.modified_endbefore_datetime_utc.ToUniversalTime() )   ) {
 					if (   !options.modified_start_date_enable  ||   (  this_info.LastWriteTime.ToUniversalTime() >= options.modified_start_datetime_utc.ToUniversalTime() )   ) {
-						if (  string.IsNullOrEmpty(options.content_string) || get_file_contains(this_info, options.content_string)  ) {
-							result = true;
+						if (   !options.min_size_enable  ||   (  this_info.Length >= options.min_size )   ) {
+							if (   !options.max_size_enable  ||   (  this_info.Length <= options.max_size )   ) {
+								if (  string.IsNullOrEmpty(options.content_string) || get_file_contains(this_info, options.content_string)  ) {
+									result = true;
+								}
+							}
 						}
 					}
 				}
@@ -103,6 +107,7 @@ namespace DeepFileFind
 
 		/// <summary>
 		/// Uses keys in columns of listview (always case sensitively): Path, Modified, Created, Name, Extension; otherwise you must set the static COLUMN_ indices manually (set each COLUMN_ index to COLUMNFLAG_IGNORE to avoid searching through column keys for columns you don't want to use).
+		/// The calling program is responsible for warning the user of nonsensical values, such as max_size less than min_size or dates that are unusable for same reason.
 		/// </summary>
 		/// <param name="results">If not null, is filled with result paths (usually null if resultsListView is present)</param>
 		/// <param name="options"></param>
