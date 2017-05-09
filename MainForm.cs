@@ -31,6 +31,7 @@ namespace DeepFileFind
 		private static string recent_folders_list_name = "recent_folders.txt";
 		public static string recent_folders_list_path = null;
 		private static string settings_name = "settings.yml";
+		public static string startup_path = null;
 		public static string settings_path = null;
 		public int RESULT_NAME_COLUMN_INDEX = -1;
 		public int RESULT_MODIFIED_COLUMN_INDEX = -1;
@@ -193,7 +194,12 @@ namespace DeepFileFind
 			RESULT_CREATED_COLUMN_INDEX = resultsListView.Columns.Count-1;
 			resultsListView.Columns.Add("Name", "Name", (int)((double)this.Width*.1+.5));
 			RESULT_NAME_COLUMN_INDEX = resultsListView.Columns.Count-1;
-			
+			if (startup_path!=null) {
+				if (startup_path.Length>=2 && startup_path.StartsWith("\"") && startup_path.EndsWith("\"")) {
+					startup_path = startup_path.Substring(1, startup_path.Length-2);
+				}
+				locationComboBox.Text = startup_path;
+			}
 			if (!hasLocation(locationComboBox.Text)) locationComboBox.Items.Add(locationComboBox.Text);
 		}//end MainFormLoad
 		void StartDateCheckBoxCheckedChanged(object sender, EventArgs e)

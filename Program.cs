@@ -8,6 +8,8 @@
  */
 using System;
 using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
 
 namespace DeepFileFind
 {
@@ -24,6 +26,17 @@ namespace DeepFileFind
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+			var process = Process.GetCurrentProcess(); // Or whatever method you are using
+			string fullPath = process.MainModule.FileName;
+			foreach (string s in args) {
+				try {
+					if (!fullPath.ToLower().EndsWith(s) && !fullPath.ToLower().EndsWith(s+".exe")) {  // add .exe in case was run with Windows
+						MainForm.startup_path = s;
+						break;
+					}
+				}
+				catch {}
+			}
 			Application.Run(new MainForm());
 		}
 		
