@@ -38,6 +38,7 @@ namespace DeepFileFind
 		public int RESULT_CREATED_COLUMN_INDEX = -1;
 		public int RESULT_PATH_COLUMN_INDEX = -1;
 		public int RESULT_EXTENSION_COLUMN_INDEX = -1;
+		public static readonly char[] wildcards = new Char[] {'*','?'};
 		public Dictionary<string, string> settings = new Dictionary<string, string>();
 		public MainForm()
 		{
@@ -306,114 +307,134 @@ namespace DeepFileFind
 			}
 			return size_string;
 		}
-		public void ExecuteSearch() {
-			if (!hasLocation(locationComboBox.Text)) locationComboBox.Items.Add(locationComboBox.Text);
-			//findButton.Enabled=false;
-			//findButton.Visible=false;
-			//cancelButton.Visible=true;
-			//cancelButton.Enabled=true;
-			setSearchAvailability(false);
-			if (this_thread!=null) {
-				dff.enable = false;
-				statusTextBox.Text="waiting for previous operation to stop...";
-				Application.DoEvents();
-				while (this_thread.IsAlive) Thread.Sleep(1);
-				statusTextBox.Text="";
-				Application.DoEvents();
-			}
-			dff = new DFF();
-			dff.options = new DFFSearchOptions();
-			locationComboBox.Text = locationComboBox.Text.Trim();
-			if (locationComboBox.Text.Length>0) {
-				string[] location_strings = locationComboBox.Text.Split(Path.PathSeparator);
-				
-				bool folders_all_ok_enable = true;
-				ArrayList bad_paths = new ArrayList();
-				foreach (string location_string in location_strings) {
-					DirectoryInfo this_di = new DirectoryInfo(location_string);
-					if (this_di.Exists) {
-						dff.options.start_directoryinfos.Add(this_di);
-					}
-					else {
-						folders_all_ok_enable=false;
-						bad_paths.Add(location_string);
+		public static bool ContainsAny(string Haystack, char[] Needles) {
+			bool result=false;
+			//char[] HaystackChars=Haystack.ToCharArray();
+			for (int i=0; i<Needles.Length; i++) {
+				for (int j=0; j<Haystack.Length; j++) {
+					if (Haystack[j]==Needles[i]) {
+						result=true;
+						break;
 					}
 				}
-				
-				if (folders_all_ok_enable) {
-					dff.options.modified_start_date_enable=modifiedStartDateCheckBox.Checked;
-					dff.options.modified_start_time_enable=modifiedStartTimeCheckBox.Checked;
-					dff.options.min_size_enable=minSizeCheckBox.Checked;
-					dff.options.max_size_enable=maxSizeCheckBox.Checked;
-					long i;
-					string min_size_byte_count_string = get_byte_count_string(minSizeTextBox.Text.Trim());
-					minSizeLabel.Text="bytes: "+min_size_byte_count_string;
-					string max_size_byte_count_string = get_byte_count_string(maxSizeTextBox.Text.Trim());
-					maxSizeLabel.Text="bytes: "+max_size_byte_count_string;
-					if (long.TryParse(min_size_byte_count_string, out i)) dff.options.min_size=i;
-					if (long.TryParse(max_size_byte_count_string, out i)) dff.options.max_size=i;
-					if (modifiedStartDateCheckBox.Checked) {
-						dff.options.modified_start_datetime_utc=modifiedStartDTPicker.Value; //DateTime.FromFileTimeUtc(modifiedStartDTPicker.Value.ToFileTimeUtc());
-					}
-					dff.options.modified_endbefore_date_enable=modifiedEndBeforeDateCheckBox.Checked;
-					dff.options.modified_endbefore_time_enable=modifiedEndBeforeTimeCheckBox.Checked;
-					if (modifiedEndBeforeDateCheckBox.Checked) {
-						dff.options.modified_endbefore_datetime_utc=modifiedEndBeforeDTPicker.Value; //DateTime.FromFileTimeUtc(modifiedEndBeforeDTPicker.Value.ToFileTimeUtc());
-					}
-					//NOTE: time is set to 0,0,0 during ExecuteSearch if time is not enabled
+				if (result) break;
+			}
+			return result;
+		}
+		public void ExecuteSearch() {
+			//MessageBox.Show(new String (System.IO.Path.InvalidPathChars));
+			if ( nameTextBox.Text.IndexOfAny(System.IO.Path.InvalidPathChars) < 0 && nameTextBox.Text.IndexOfAny(wildcards) < 0) {//if (!nameTextBox.Text.Contains("*") && !nameTextBox.Text.Contains("?") && )
+				if (!hasLocation(locationComboBox.Text)) locationComboBox.Items.Add(locationComboBox.Text);
+				//findButton.Enabled=false;
+				//findButton.Visible=false;
+				//cancelButton.Visible=true;
+				//cancelButton.Enabled=true;
+				setSearchAvailability(false);
+				if (this_thread!=null) {
+					dff.enable = false;
+					statusTextBox.Text="waiting for previous operation to stop...";
+					Application.DoEvents();
+					while (this_thread.IsAlive) Thread.Sleep(1);
+					statusTextBox.Text="";
+					Application.DoEvents();
+				}
+				dff = new DFF();
+				dff.options = new DFFSearchOptions();
+				locationComboBox.Text = locationComboBox.Text.Trim();
+				if (locationComboBox.Text.Length>0) {
+					string[] location_strings = locationComboBox.Text.Split(Path.PathSeparator);
 					
-					if (!string.IsNullOrEmpty(nameTextBox.Text.Trim())) dff.options.name_string=nameTextBox.Text;
-					//else already null since new object, so do nothing
-					if (contentCheckBox.Checked && !string.IsNullOrEmpty(contentTextBox.Text.Trim())) dff.options.content_string=contentTextBox.Text;
-					//else already null since new object, so do nothing
-					dff.options.include_folders_as_results_enable=foldersCheckBox.Checked;
-					dff.options.recursive_enable=recursiveCheckBox.Checked;
-					dff.resultsListView = this.resultsListView;
-					dff.options.statusTextBox = this.statusTextBox;
-					if (dff.options.min_size_enable && dff.options.max_size_enable && dff.options.max_size<dff.options.min_size) {
-						statusTextBox.Text="WARNING: max is less than min (nothing to find)";
-					}
-					else if (dff.options.modified_endbefore_date_enable && dff.options.modified_start_date_enable && dff.options.modified_endbefore_datetime_utc <= dff.options.modified_start_datetime_utc) {
-						statusTextBox.Text="WARNING: \"endbefore\" is less than or equal to start date (nothing to find)";
-					}
-					else {
-						if (dff.options.threading_enable) {
-							this_thread = new Thread(dff.ExecuteSearch);
-							this_thread.Start();
-							statusTextBox.Text="Searching (1 thread)...";
-							Application.DoEvents();
-							timer1.Enabled=true;
-							timer1.Start();
+					bool folders_all_ok_enable = true;
+					ArrayList bad_paths = new ArrayList();
+					foreach (string location_string in location_strings) {
+						DirectoryInfo this_di = new DirectoryInfo(location_string);
+						if (this_di.Exists) {
+							dff.options.start_directoryinfos.Add(this_di);
 						}
 						else {
-							statusTextBox.Text="Searching...";
-							dff.ExecuteSearch();
-							//findButton.Visible=true;
-							//findButton.Enabled=true;
-							//cancelButton.Visible=false;
-							//cancelButton.Enabled=false;
+							folders_all_ok_enable=false;
+							bad_paths.Add(location_string);
 						}
 					}
-					//while (this_thread.IsAlive) Thread.Sleep(1);
-					//foreach (FileInfo this_fi in results) {
-					//	string[] fields = new String[resultsListView.Columns.Count];
-					//	for (int i=0; i<this_item.Length; i++) fields[i]="";
-					//	fields[RESULT_CREATED_COLUMN_INDEX] = 
-					//	resultsListView.Items.Add(new ListViewItem(fields));
-					//}
+					
+					if (folders_all_ok_enable) {
+						dff.options.modified_start_date_enable=modifiedStartDateCheckBox.Checked;
+						dff.options.modified_start_time_enable=modifiedStartTimeCheckBox.Checked;
+						dff.options.min_size_enable=minSizeCheckBox.Checked;
+						dff.options.max_size_enable=maxSizeCheckBox.Checked;
+						long i;
+						string min_size_byte_count_string = get_byte_count_string(minSizeTextBox.Text.Trim());
+						minSizeLabel.Text="bytes: "+min_size_byte_count_string;
+						string max_size_byte_count_string = get_byte_count_string(maxSizeTextBox.Text.Trim());
+						maxSizeLabel.Text="bytes: "+max_size_byte_count_string;
+						if (long.TryParse(min_size_byte_count_string, out i)) dff.options.min_size=i;
+						if (long.TryParse(max_size_byte_count_string, out i)) dff.options.max_size=i;
+						if (modifiedStartDateCheckBox.Checked) {
+							dff.options.modified_start_datetime_utc=modifiedStartDTPicker.Value; //DateTime.FromFileTimeUtc(modifiedStartDTPicker.Value.ToFileTimeUtc());
+						}
+						dff.options.modified_endbefore_date_enable=modifiedEndBeforeDateCheckBox.Checked;
+						dff.options.modified_endbefore_time_enable=modifiedEndBeforeTimeCheckBox.Checked;
+						if (modifiedEndBeforeDateCheckBox.Checked) {
+							dff.options.modified_endbefore_datetime_utc=modifiedEndBeforeDTPicker.Value; //DateTime.FromFileTimeUtc(modifiedEndBeforeDTPicker.Value.ToFileTimeUtc());
+						}
+						//NOTE: time is set to 0,0,0 during ExecuteSearch if time is not enabled
+						
+						if (!string.IsNullOrEmpty(nameTextBox.Text.Trim())) dff.options.name_string=nameTextBox.Text;
+						//else already null since new object, so do nothing
+						if (contentCheckBox.Checked && !string.IsNullOrEmpty(contentTextBox.Text.Trim())) dff.options.content_string=contentTextBox.Text;
+						//else already null since new object, so do nothing
+						dff.options.include_folders_as_results_enable=foldersCheckBox.Checked;
+						dff.options.recursive_enable=recursiveCheckBox.Checked;
+						dff.resultsListView = this.resultsListView;
+						dff.options.statusTextBox = this.statusTextBox;
+						if (dff.options.min_size_enable && dff.options.max_size_enable && dff.options.max_size<dff.options.min_size) {
+							statusTextBox.Text="WARNING: max is less than min (nothing to find)";
+						}
+						else if (dff.options.modified_endbefore_date_enable && dff.options.modified_start_date_enable && dff.options.modified_endbefore_datetime_utc <= dff.options.modified_start_datetime_utc) {
+							statusTextBox.Text="WARNING: \"endbefore\" is less than or equal to start date (nothing to find)";
+						}
+						else {
+							if (dff.options.threading_enable) {
+								this_thread = new Thread(dff.ExecuteSearch);
+								this_thread.Start();
+								statusTextBox.Text="Searching (1 thread)...";
+								Application.DoEvents();
+								timer1.Enabled=true;
+								timer1.Start();
+							}
+							else {
+								statusTextBox.Text="Searching...";
+								dff.ExecuteSearch();
+								//findButton.Visible=true;
+								//findButton.Enabled=true;
+								//cancelButton.Visible=false;
+								//cancelButton.Enabled=false;
+							}
+						}
+						//while (this_thread.IsAlive) Thread.Sleep(1);
+						//foreach (FileInfo this_fi in results) {
+						//	string[] fields = new String[resultsListView.Columns.Count];
+						//	for (int i=0; i<this_item.Length; i++) fields[i]="";
+						//	fields[RESULT_CREATED_COLUMN_INDEX] = 
+						//	resultsListView.Items.Add(new ListViewItem(fields));
+						//}
+					}
+					else {
+						string bad_paths_string = "";
+						foreach (string bad_path in bad_paths) {
+							bad_paths_string += ((bad_paths_string=="")?"":"; ") + bad_path;
+						}
+						MessageBox.Show("Cannot search due to nonexistant directory(ies): "+bad_paths_string);
+					}
 				}
 				else {
-					string bad_paths_string = "";
-					foreach (string bad_path in bad_paths) {
-						bad_paths_string += ((bad_paths_string=="")?"":"; ") + bad_path;
-					}
-					MessageBox.Show("Cannot search due to nonexistant directory(ies): "+bad_paths_string);
+					MessageBox.Show("Search directory must be specified");
 				}
+				setSearchAvailability(true);
 			}
 			else {
-				MessageBox.Show("Search directory must be specified");
+				MessageBox.Show("Usage of these characters is not implemented. Please enter all or part of a valid filename.");
 			}
-			setSearchAvailability(true);
 		}
 		
 		void ContentCheckBoxCheckedChanged(object sender, EventArgs e)
