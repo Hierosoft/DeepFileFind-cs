@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="DFF.cs" />
     <Compile Include="DFFSearchOptions.cs" />
+    <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="MainForm.cs" />
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>

@@ -43,9 +43,6 @@ namespace DeepFileFind
 			this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
 			this.minSizeTextBox = new System.Windows.Forms.TextBox();
 			this.minSizeCheckBox = new System.Windows.Forms.CheckBox();
-			this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-			this.maxSizeTextBox = new System.Windows.Forms.TextBox();
-			this.maxSizeCheckBox = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
 			this.modifiedEndBeforeDateCheckBox = new System.Windows.Forms.CheckBox();
 			this.modifiedEndBeforeTimeCheckBox = new System.Windows.Forms.CheckBox();
@@ -67,6 +64,11 @@ namespace DeepFileFind
 			this.modifiedStartDateCheckBox = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
 			this.foldersCheckBox = new System.Windows.Forms.CheckBox();
+			this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+			this.maxSizeTextBox = new System.Windows.Forms.TextBox();
+			this.maxSizeCheckBox = new System.Windows.Forms.CheckBox();
+			this.minSizeLabel = new System.Windows.Forms.Label();
+			this.maxSizeLabel = new System.Windows.Forms.Label();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,19 +78,17 @@ namespace DeepFileFind
 			this.openContainingFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusTextBox = new System.Windows.Forms.TextBox();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
-			this.minSizeLabel = new System.Windows.Forms.Label();
-			this.maxSizeLabel = new System.Windows.Forms.Label();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel8.SuspendLayout();
-			this.tableLayoutPanel7.SuspendLayout();
 			this.tableLayoutPanel5.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
 			this.tableLayoutPanel4.SuspendLayout();
 			this.tableLayoutPanel6.SuspendLayout();
+			this.tableLayoutPanel7.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.resultContextMenuStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -155,7 +155,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Size = new System.Drawing.Size(354, 638);
-			this.tableLayoutPanel1.TabIndex = 15;
+			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// tableLayoutPanel8
 			// 
@@ -181,7 +181,7 @@ namespace DeepFileFind
 			this.minSizeTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.minSizeTextBox.Name = "minSizeTextBox";
 			this.minSizeTextBox.Size = new System.Drawing.Size(201, 27);
-			this.minSizeTextBox.TabIndex = 9;
+			this.minSizeTextBox.TabIndex = 1;
 			// 
 			// minSizeCheckBox
 			// 
@@ -190,45 +190,9 @@ namespace DeepFileFind
 			this.minSizeCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.minSizeCheckBox.Name = "minSizeCheckBox";
 			this.minSizeCheckBox.Size = new System.Drawing.Size(118, 23);
-			this.minSizeCheckBox.TabIndex = 4;
+			this.minSizeCheckBox.TabIndex = 0;
 			this.minSizeCheckBox.Text = "Minimum Size";
 			this.minSizeCheckBox.UseVisualStyleBackColor = true;
-			// 
-			// tableLayoutPanel7
-			// 
-			this.tableLayoutPanel7.AutoSize = true;
-			this.tableLayoutPanel7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.tableLayoutPanel7.ColumnCount = 2;
-			this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-			this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-			this.tableLayoutPanel7.Controls.Add(this.maxSizeTextBox, 0, 0);
-			this.tableLayoutPanel7.Controls.Add(this.maxSizeCheckBox, 0, 0);
-			this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 459);
-			this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-			this.tableLayoutPanel7.RowCount = 1;
-			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel7.Size = new System.Drawing.Size(348, 35);
-			this.tableLayoutPanel7.TabIndex = 17;
-			// 
-			// maxSizeTextBox
-			// 
-			this.maxSizeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.maxSizeTextBox.Location = new System.Drawing.Point(143, 4);
-			this.maxSizeTextBox.Margin = new System.Windows.Forms.Padding(4);
-			this.maxSizeTextBox.Name = "maxSizeTextBox";
-			this.maxSizeTextBox.Size = new System.Drawing.Size(201, 27);
-			this.maxSizeTextBox.TabIndex = 9;
-			// 
-			// maxSizeCheckBox
-			// 
-			this.maxSizeCheckBox.AutoSize = true;
-			this.maxSizeCheckBox.Location = new System.Drawing.Point(4, 4);
-			this.maxSizeCheckBox.Margin = new System.Windows.Forms.Padding(4);
-			this.maxSizeCheckBox.Name = "maxSizeCheckBox";
-			this.maxSizeCheckBox.Size = new System.Drawing.Size(121, 23);
-			this.maxSizeCheckBox.TabIndex = 4;
-			this.maxSizeCheckBox.Text = "Maximum Size";
-			this.maxSizeCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// tableLayoutPanel5
 			// 
@@ -254,7 +218,7 @@ namespace DeepFileFind
 			this.modifiedEndBeforeDateCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedEndBeforeDateCheckBox.Name = "modifiedEndBeforeDateCheckBox";
 			this.modifiedEndBeforeDateCheckBox.Size = new System.Drawing.Size(132, 23);
-			this.modifiedEndBeforeDateCheckBox.TabIndex = 4;
+			this.modifiedEndBeforeDateCheckBox.TabIndex = 0;
 			this.modifiedEndBeforeDateCheckBox.Text = "Modified Before";
 			this.modifiedEndBeforeDateCheckBox.UseVisualStyleBackColor = true;
 			this.modifiedEndBeforeDateCheckBox.CheckedChanged += new System.EventHandler(this.EndbeforeDateCheckBoxCheckedChanged);
@@ -267,7 +231,7 @@ namespace DeepFileFind
 			this.modifiedEndBeforeTimeCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedEndBeforeTimeCheckBox.Name = "modifiedEndBeforeTimeCheckBox";
 			this.modifiedEndBeforeTimeCheckBox.Size = new System.Drawing.Size(113, 23);
-			this.modifiedEndBeforeTimeCheckBox.TabIndex = 7;
+			this.modifiedEndBeforeTimeCheckBox.TabIndex = 1;
 			this.modifiedEndBeforeTimeCheckBox.Text = "Specific Time";
 			this.modifiedEndBeforeTimeCheckBox.UseVisualStyleBackColor = true;
 			this.modifiedEndBeforeTimeCheckBox.CheckedChanged += new System.EventHandler(this.EndbeforeTimeCheckBoxCheckedChanged);
@@ -301,7 +265,7 @@ namespace DeepFileFind
 			this.contentTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.contentTextBox.Name = "contentTextBox";
 			this.contentTextBox.Size = new System.Drawing.Size(346, 27);
-			this.contentTextBox.TabIndex = 8;
+			this.contentTextBox.TabIndex = 1;
 			this.contentTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ContentTextBoxKeyDown);
 			// 
 			// contentCheckBox
@@ -356,7 +320,7 @@ namespace DeepFileFind
 			this.nameTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.nameTextBox.Name = "nameTextBox";
 			this.nameTextBox.Size = new System.Drawing.Size(213, 27);
-			this.nameTextBox.TabIndex = 0;
+			this.nameTextBox.TabIndex = 2;
 			this.nameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameTextBoxKeyDown);
 			// 
 			// cancelButton
@@ -369,7 +333,7 @@ namespace DeepFileFind
 			this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(63, 29);
-			this.cancelButton.TabIndex = 13;
+			this.cancelButton.TabIndex = 0;
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.UseVisualStyleBackColor = true;
 			this.cancelButton.Visible = false;
@@ -396,7 +360,7 @@ namespace DeepFileFind
 			this.locationComboBox.Margin = new System.Windows.Forms.Padding(4);
 			this.locationComboBox.Name = "locationComboBox";
 			this.locationComboBox.Size = new System.Drawing.Size(346, 27);
-			this.locationComboBox.TabIndex = 12;
+			this.locationComboBox.TabIndex = 0;
 			// 
 			// label1
 			// 
@@ -462,7 +426,7 @@ namespace DeepFileFind
 			this.modifiedStartTimeCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedStartTimeCheckBox.Name = "modifiedStartTimeCheckBox";
 			this.modifiedStartTimeCheckBox.Size = new System.Drawing.Size(113, 23);
-			this.modifiedStartTimeCheckBox.TabIndex = 6;
+			this.modifiedStartTimeCheckBox.TabIndex = 1;
 			this.modifiedStartTimeCheckBox.Text = "Specific Time";
 			this.modifiedStartTimeCheckBox.UseVisualStyleBackColor = true;
 			this.modifiedStartTimeCheckBox.CheckedChanged += new System.EventHandler(this.StartTimeCheckBoxCheckedChanged);
@@ -474,7 +438,7 @@ namespace DeepFileFind
 			this.modifiedStartDateCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedStartDateCheckBox.Name = "modifiedStartDateCheckBox";
 			this.modifiedStartDateCheckBox.Size = new System.Drawing.Size(138, 23);
-			this.modifiedStartDateCheckBox.TabIndex = 5;
+			this.modifiedStartDateCheckBox.TabIndex = 0;
 			this.modifiedStartDateCheckBox.Text = "Earliest Modified";
 			this.modifiedStartDateCheckBox.UseVisualStyleBackColor = true;
 			this.modifiedStartDateCheckBox.CheckedChanged += new System.EventHandler(this.StartDateCheckBoxCheckedChanged);
@@ -503,9 +467,63 @@ namespace DeepFileFind
 			this.foldersCheckBox.Location = new System.Drawing.Point(72, 3);
 			this.foldersCheckBox.Name = "foldersCheckBox";
 			this.foldersCheckBox.Size = new System.Drawing.Size(191, 23);
-			this.foldersCheckBox.TabIndex = 14;
+			this.foldersCheckBox.TabIndex = 0;
 			this.foldersCheckBox.Text = "Include folders as results";
 			this.foldersCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// tableLayoutPanel7
+			// 
+			this.tableLayoutPanel7.AutoSize = true;
+			this.tableLayoutPanel7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.tableLayoutPanel7.ColumnCount = 2;
+			this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+			this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+			this.tableLayoutPanel7.Controls.Add(this.maxSizeTextBox, 0, 0);
+			this.tableLayoutPanel7.Controls.Add(this.maxSizeCheckBox, 0, 0);
+			this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 459);
+			this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+			this.tableLayoutPanel7.RowCount = 1;
+			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel7.Size = new System.Drawing.Size(348, 35);
+			this.tableLayoutPanel7.TabIndex = 17;
+			// 
+			// maxSizeTextBox
+			// 
+			this.maxSizeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.maxSizeTextBox.Location = new System.Drawing.Point(143, 4);
+			this.maxSizeTextBox.Margin = new System.Windows.Forms.Padding(4);
+			this.maxSizeTextBox.Name = "maxSizeTextBox";
+			this.maxSizeTextBox.Size = new System.Drawing.Size(201, 27);
+			this.maxSizeTextBox.TabIndex = 1;
+			// 
+			// maxSizeCheckBox
+			// 
+			this.maxSizeCheckBox.AutoSize = true;
+			this.maxSizeCheckBox.Location = new System.Drawing.Point(4, 4);
+			this.maxSizeCheckBox.Margin = new System.Windows.Forms.Padding(4);
+			this.maxSizeCheckBox.Name = "maxSizeCheckBox";
+			this.maxSizeCheckBox.Size = new System.Drawing.Size(121, 23);
+			this.maxSizeCheckBox.TabIndex = 0;
+			this.maxSizeCheckBox.Text = "Maximum Size";
+			this.maxSizeCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// minSizeLabel
+			// 
+			this.minSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.minSizeLabel.AutoSize = true;
+			this.minSizeLabel.Location = new System.Drawing.Point(351, 437);
+			this.minSizeLabel.Name = "minSizeLabel";
+			this.minSizeLabel.Size = new System.Drawing.Size(0, 19);
+			this.minSizeLabel.TabIndex = 19;
+			// 
+			// maxSizeLabel
+			// 
+			this.maxSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.maxSizeLabel.AutoSize = true;
+			this.maxSizeLabel.Location = new System.Drawing.Point(351, 497);
+			this.maxSizeLabel.Name = "maxSizeLabel";
+			this.maxSizeLabel.Size = new System.Drawing.Size(0, 19);
+			this.maxSizeLabel.TabIndex = 20;
 			// 
 			// menuStrip1
 			// 
@@ -515,7 +533,7 @@ namespace DeepFileFind
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 3, 0, 3);
 			this.menuStrip1.Size = new System.Drawing.Size(354, 25);
-			this.menuStrip1.TabIndex = 1;
+			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
 			// editToolStripMenuItem
@@ -548,6 +566,7 @@ namespace DeepFileFind
 			this.resultsListView.UseCompatibleStateImageBehavior = false;
 			this.resultsListView.View = System.Windows.Forms.View.Details;
 			this.resultsListView.DoubleClick += new System.EventHandler(this.ResultsListViewDoubleClick);
+			this.resultsListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ResultsListViewColumnClick);
 			this.resultsListView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ResultsListViewKeyDown);
 			// 
 			// resultContextMenuStrip
@@ -585,24 +604,6 @@ namespace DeepFileFind
 			// 
 			this.timer1.Tick += new System.EventHandler(this.Timer1Tick);
 			// 
-			// minSizeLabel
-			// 
-			this.minSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.minSizeLabel.AutoSize = true;
-			this.minSizeLabel.Location = new System.Drawing.Point(351, 437);
-			this.minSizeLabel.Name = "minSizeLabel";
-			this.minSizeLabel.Size = new System.Drawing.Size(0, 19);
-			this.minSizeLabel.TabIndex = 19;
-			// 
-			// maxSizeLabel
-			// 
-			this.maxSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.maxSizeLabel.AutoSize = true;
-			this.maxSizeLabel.Location = new System.Drawing.Point(351, 497);
-			this.maxSizeLabel.Name = "maxSizeLabel";
-			this.maxSizeLabel.Size = new System.Drawing.Size(0, 19);
-			this.maxSizeLabel.TabIndex = 20;
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -626,8 +627,6 @@ namespace DeepFileFind
 			this.tableLayoutPanel1.PerformLayout();
 			this.tableLayoutPanel8.ResumeLayout(false);
 			this.tableLayoutPanel8.PerformLayout();
-			this.tableLayoutPanel7.ResumeLayout(false);
-			this.tableLayoutPanel7.PerformLayout();
 			this.tableLayoutPanel5.ResumeLayout(false);
 			this.tableLayoutPanel5.PerformLayout();
 			this.tableLayoutPanel2.ResumeLayout(false);
@@ -638,6 +637,8 @@ namespace DeepFileFind
 			this.tableLayoutPanel4.PerformLayout();
 			this.tableLayoutPanel6.ResumeLayout(false);
 			this.tableLayoutPanel6.PerformLayout();
+			this.tableLayoutPanel7.ResumeLayout(false);
+			this.tableLayoutPanel7.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.resultContextMenuStrip.ResumeLayout(false);

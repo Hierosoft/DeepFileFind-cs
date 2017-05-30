@@ -40,6 +40,8 @@ namespace DeepFileFind
 		public int RESULT_EXTENSION_COLUMN_INDEX = -1;
 		public static readonly char[] wildcards = new Char[] {'*','?'};
 		public Dictionary<string, string> settings = new Dictionary<string, string>();
+		public ListViewColumnSorter lvwColumnSorter;
+		
 		public MainForm()
 		{
 			//
@@ -52,6 +54,8 @@ namespace DeepFileFind
 			recent_folders_list_path = Path.Combine(appdata_thisprogram_path, recent_folders_list_name);
 			settings_path = Path.Combine(appdata_thisprogram_path, settings_name);
 			//loaded on MainFormLoad
+			this.lvwColumnSorter = new ListViewColumnSorter();
+			this.resultsListView.ListViewItemSorter = this.lvwColumnSorter;
 		}
 		
 		public void setSearchAvailability(bool enable) {
@@ -621,6 +625,32 @@ namespace DeepFileFind
 				ExecuteSearch();
 			}
 			
+		}
+		
+		void ResultsListViewColumnClick(object sender, ColumnClickEventArgs e)
+		{
+			// Determine if clicked column is already the column that is being sorted.
+			if ( e.Column == lvwColumnSorter.SortColumn )
+			{
+			// Reverse the current sort direction for this column.
+				if (lvwColumnSorter.Order == SortOrder.Ascending)
+				{
+					lvwColumnSorter.Order = SortOrder.Descending;
+				}
+				else
+				{
+					lvwColumnSorter.Order = SortOrder.Ascending;
+				}
+			}
+			else
+			{
+				// Set the column number that is to be sorted; default to ascending.
+				lvwColumnSorter.SortColumn = e.Column;
+				lvwColumnSorter.Order = SortOrder.Ascending;
+			}
+			
+			// Perform the sort with these new sort options.
+			this.resultsListView.Sort();
 		}
 	}
 }
