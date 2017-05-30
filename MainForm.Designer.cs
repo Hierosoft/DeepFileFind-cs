@@ -172,7 +172,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel8.RowCount = 1;
 			this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel8.Size = new System.Drawing.Size(348, 35);
-			this.tableLayoutPanel8.TabIndex = 18;
+			this.tableLayoutPanel8.TabIndex = 110;
 			// 
 			// minSizeTextBox
 			// 
@@ -181,7 +181,7 @@ namespace DeepFileFind
 			this.minSizeTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.minSizeTextBox.Name = "minSizeTextBox";
 			this.minSizeTextBox.Size = new System.Drawing.Size(201, 27);
-			this.minSizeTextBox.TabIndex = 1;
+			this.minSizeTextBox.TabIndex = 15;
 			// 
 			// minSizeCheckBox
 			// 
@@ -190,7 +190,7 @@ namespace DeepFileFind
 			this.minSizeCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.minSizeCheckBox.Name = "minSizeCheckBox";
 			this.minSizeCheckBox.Size = new System.Drawing.Size(118, 23);
-			this.minSizeCheckBox.TabIndex = 0;
+			this.minSizeCheckBox.TabIndex = 14;
 			this.minSizeCheckBox.Text = "Minimum Size";
 			this.minSizeCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -209,7 +209,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel5.RowCount = 1;
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel5.Size = new System.Drawing.Size(348, 31);
-			this.tableLayoutPanel5.TabIndex = 15;
+			this.tableLayoutPanel5.TabIndex = 90;
 			// 
 			// modifiedEndBeforeDateCheckBox
 			// 
@@ -218,7 +218,7 @@ namespace DeepFileFind
 			this.modifiedEndBeforeDateCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedEndBeforeDateCheckBox.Name = "modifiedEndBeforeDateCheckBox";
 			this.modifiedEndBeforeDateCheckBox.Size = new System.Drawing.Size(132, 23);
-			this.modifiedEndBeforeDateCheckBox.TabIndex = 0;
+			this.modifiedEndBeforeDateCheckBox.TabIndex = 11;
 			this.modifiedEndBeforeDateCheckBox.Text = "Modified Before";
 			this.modifiedEndBeforeDateCheckBox.UseVisualStyleBackColor = true;
 			this.modifiedEndBeforeDateCheckBox.CheckedChanged += new System.EventHandler(this.EndbeforeDateCheckBoxCheckedChanged);
@@ -231,7 +231,7 @@ namespace DeepFileFind
 			this.modifiedEndBeforeTimeCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedEndBeforeTimeCheckBox.Name = "modifiedEndBeforeTimeCheckBox";
 			this.modifiedEndBeforeTimeCheckBox.Size = new System.Drawing.Size(113, 23);
-			this.modifiedEndBeforeTimeCheckBox.TabIndex = 1;
+			this.modifiedEndBeforeTimeCheckBox.TabIndex = 12;
 			this.modifiedEndBeforeTimeCheckBox.Text = "Specific Time";
 			this.modifiedEndBeforeTimeCheckBox.UseVisualStyleBackColor = true;
 			this.modifiedEndBeforeTimeCheckBox.CheckedChanged += new System.EventHandler(this.EndbeforeTimeCheckBoxCheckedChanged);
@@ -246,7 +246,7 @@ namespace DeepFileFind
 			this.modifiedEndBeforeDTPicker.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedEndBeforeDTPicker.Name = "modifiedEndBeforeDTPicker";
 			this.modifiedEndBeforeDTPicker.Size = new System.Drawing.Size(346, 27);
-			this.modifiedEndBeforeDTPicker.TabIndex = 3;
+			this.modifiedEndBeforeDTPicker.TabIndex = 100;
 			this.modifiedEndBeforeDTPicker.Value = new System.DateTime(2017, 3, 23, 0, 0, 0, 0);
 			// 
 			// label2
@@ -265,7 +265,7 @@ namespace DeepFileFind
 			this.contentTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.contentTextBox.Name = "contentTextBox";
 			this.contentTextBox.Size = new System.Drawing.Size(346, 27);
-			this.contentTextBox.TabIndex = 1;
+			this.contentTextBox.TabIndex = 60;
 			this.contentTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ContentTextBoxKeyDown);
 			// 
 			// contentCheckBox
@@ -275,7 +275,7 @@ namespace DeepFileFind
 			this.contentCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.contentCheckBox.Name = "contentCheckBox";
 			this.contentCheckBox.Size = new System.Drawing.Size(79, 23);
-			this.contentCheckBox.TabIndex = 9;
+			this.contentCheckBox.TabIndex = 50;
 			this.contentCheckBox.Text = "Content";
 			this.contentCheckBox.UseVisualStyleBackColor = true;
 			this.contentCheckBox.CheckedChanged += new System.EventHandler(this.ContentCheckBoxCheckedChanged);
@@ -297,7 +297,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(348, 37);
-			this.tableLayoutPanel2.TabIndex = 1;
+			this.tableLayoutPanel2.TabIndex = 10;
 			// 
 			// findButton
 			// 
@@ -308,7 +308,7 @@ namespace DeepFileFind
 			this.findButton.Margin = new System.Windows.Forms.Padding(4);
 			this.findButton.Name = "findButton";
 			this.findButton.Size = new System.Drawing.Size(48, 29);
-			this.findButton.TabIndex = 13;
+			this.findButton.TabIndex = 1;
 			this.findButton.Text = "Find";
 			this.findButton.UseVisualStyleBackColor = true;
 			this.findButton.Click += new System.EventHandler(this.FindButtonClick);
@@ -320,7 +320,7 @@ namespace DeepFileFind
 			this.nameTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.nameTextBox.Name = "nameTextBox";
 			this.nameTextBox.Size = new System.Drawing.Size(213, 27);
-			this.nameTextBox.TabIndex = 2;
+			this.nameTextBox.TabIndex = 0;
 			this.nameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameTextBoxKeyDown);
 			// 
 			// cancelButton
@@ -333,7 +333,7 @@ namespace DeepFileFind
 			this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(63, 29);
-			this.cancelButton.TabIndex = 0;
+			this.cancelButton.TabIndex = 2;
 			this.cancelButton.Text = "Cancel";
 			this.cancelButton.UseVisualStyleBackColor = true;
 			this.cancelButton.Visible = false;
@@ -349,7 +349,7 @@ namespace DeepFileFind
 			this.modifiedStartDTPicker.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedStartDTPicker.Name = "modifiedStartDTPicker";
 			this.modifiedStartDTPicker.Size = new System.Drawing.Size(346, 27);
-			this.modifiedStartDTPicker.TabIndex = 2;
+			this.modifiedStartDTPicker.TabIndex = 80;
 			this.modifiedStartDTPicker.Value = new System.DateTime(2017, 3, 23, 0, 0, 0, 0);
 			// 
 			// locationComboBox
@@ -360,7 +360,7 @@ namespace DeepFileFind
 			this.locationComboBox.Margin = new System.Windows.Forms.Padding(4);
 			this.locationComboBox.Name = "locationComboBox";
 			this.locationComboBox.Size = new System.Drawing.Size(346, 27);
-			this.locationComboBox.TabIndex = 0;
+			this.locationComboBox.TabIndex = 30;
 			// 
 			// label1
 			// 
@@ -370,7 +370,7 @@ namespace DeepFileFind
 			this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(243, 19);
-			this.label1.TabIndex = 11;
+			this.label1.TabIndex = 410;
 			this.label1.Text = "Location(s) separated by semicolon:";
 			// 
 			// tableLayoutPanel3
@@ -387,7 +387,8 @@ namespace DeepFileFind
 			this.tableLayoutPanel3.RowCount = 1;
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel3.Size = new System.Drawing.Size(348, 29);
-			this.tableLayoutPanel3.TabIndex = 13;
+			this.tableLayoutPanel3.TabIndex = 40;
+			this.tableLayoutPanel3.TabStop = true;
 			// 
 			// recursiveCheckBox
 			// 
@@ -397,7 +398,7 @@ namespace DeepFileFind
 			this.recursiveCheckBox.Location = new System.Drawing.Point(72, 3);
 			this.recursiveCheckBox.Name = "recursiveCheckBox";
 			this.recursiveCheckBox.Size = new System.Drawing.Size(149, 23);
-			this.recursiveCheckBox.TabIndex = 14;
+			this.recursiveCheckBox.TabIndex = 5;
 			this.recursiveCheckBox.Text = "Search Recursively";
 			this.recursiveCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -416,7 +417,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel4.RowCount = 1;
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel4.Size = new System.Drawing.Size(348, 31);
-			this.tableLayoutPanel4.TabIndex = 14;
+			this.tableLayoutPanel4.TabIndex = 70;
 			// 
 			// modifiedStartTimeCheckBox
 			// 
@@ -426,7 +427,7 @@ namespace DeepFileFind
 			this.modifiedStartTimeCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedStartTimeCheckBox.Name = "modifiedStartTimeCheckBox";
 			this.modifiedStartTimeCheckBox.Size = new System.Drawing.Size(113, 23);
-			this.modifiedStartTimeCheckBox.TabIndex = 1;
+			this.modifiedStartTimeCheckBox.TabIndex = 9;
 			this.modifiedStartTimeCheckBox.Text = "Specific Time";
 			this.modifiedStartTimeCheckBox.UseVisualStyleBackColor = true;
 			this.modifiedStartTimeCheckBox.CheckedChanged += new System.EventHandler(this.StartTimeCheckBoxCheckedChanged);
@@ -438,7 +439,7 @@ namespace DeepFileFind
 			this.modifiedStartDateCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedStartDateCheckBox.Name = "modifiedStartDateCheckBox";
 			this.modifiedStartDateCheckBox.Size = new System.Drawing.Size(138, 23);
-			this.modifiedStartDateCheckBox.TabIndex = 0;
+			this.modifiedStartDateCheckBox.TabIndex = 8;
 			this.modifiedStartDateCheckBox.Text = "Earliest Modified";
 			this.modifiedStartDateCheckBox.UseVisualStyleBackColor = true;
 			this.modifiedStartDateCheckBox.CheckedChanged += new System.EventHandler(this.StartDateCheckBoxCheckedChanged);
@@ -457,7 +458,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel6.RowCount = 1;
 			this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel6.Size = new System.Drawing.Size(348, 29);
-			this.tableLayoutPanel6.TabIndex = 16;
+			this.tableLayoutPanel6.TabIndex = 20;
 			// 
 			// foldersCheckBox
 			// 
@@ -467,7 +468,7 @@ namespace DeepFileFind
 			this.foldersCheckBox.Location = new System.Drawing.Point(72, 3);
 			this.foldersCheckBox.Name = "foldersCheckBox";
 			this.foldersCheckBox.Size = new System.Drawing.Size(191, 23);
-			this.foldersCheckBox.TabIndex = 0;
+			this.foldersCheckBox.TabIndex = 3;
 			this.foldersCheckBox.Text = "Include folders as results";
 			this.foldersCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -485,7 +486,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel7.RowCount = 1;
 			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel7.Size = new System.Drawing.Size(348, 35);
-			this.tableLayoutPanel7.TabIndex = 17;
+			this.tableLayoutPanel7.TabIndex = 120;
 			// 
 			// maxSizeTextBox
 			// 
@@ -494,7 +495,7 @@ namespace DeepFileFind
 			this.maxSizeTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.maxSizeTextBox.Name = "maxSizeTextBox";
 			this.maxSizeTextBox.Size = new System.Drawing.Size(201, 27);
-			this.maxSizeTextBox.TabIndex = 1;
+			this.maxSizeTextBox.TabIndex = 17;
 			// 
 			// maxSizeCheckBox
 			// 
@@ -503,7 +504,7 @@ namespace DeepFileFind
 			this.maxSizeCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.maxSizeCheckBox.Name = "maxSizeCheckBox";
 			this.maxSizeCheckBox.Size = new System.Drawing.Size(121, 23);
-			this.maxSizeCheckBox.TabIndex = 0;
+			this.maxSizeCheckBox.TabIndex = 16;
 			this.maxSizeCheckBox.Text = "Maximum Size";
 			this.maxSizeCheckBox.UseVisualStyleBackColor = true;
 			// 
@@ -533,7 +534,7 @@ namespace DeepFileFind
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 3, 0, 3);
 			this.menuStrip1.Size = new System.Drawing.Size(354, 25);
-			this.menuStrip1.TabIndex = 0;
+			this.menuStrip1.TabIndex = 101;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
 			// editToolStripMenuItem
@@ -548,7 +549,7 @@ namespace DeepFileFind
 			// 
 			this.findToolStripMenuItem.Name = "findToolStripMenuItem";
 			this.findToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-			this.findToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+			this.findToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.findToolStripMenuItem.Text = "Find";
 			this.findToolStripMenuItem.Click += new System.EventHandler(this.FindToolStripMenuItemClick);
 			// 
@@ -562,7 +563,7 @@ namespace DeepFileFind
 			this.resultsListView.MultiSelect = false;
 			this.resultsListView.Name = "resultsListView";
 			this.resultsListView.Size = new System.Drawing.Size(620, 663);
-			this.resultsListView.TabIndex = 0;
+			this.resultsListView.TabIndex = 100;
 			this.resultsListView.UseCompatibleStateImageBehavior = false;
 			this.resultsListView.View = System.Windows.Forms.View.Details;
 			this.resultsListView.DoubleClick += new System.EventHandler(this.ResultsListViewDoubleClick);
@@ -598,7 +599,8 @@ namespace DeepFileFind
 			this.statusTextBox.Name = "statusTextBox";
 			this.statusTextBox.ReadOnly = true;
 			this.statusTextBox.Size = new System.Drawing.Size(979, 27);
-			this.statusTextBox.TabIndex = 1;
+			this.statusTextBox.TabIndex = 200;
+			this.statusTextBox.TabStop = false;
 			// 
 			// timer1
 			// 

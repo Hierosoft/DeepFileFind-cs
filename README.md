@@ -20,7 +20,11 @@ The goal of this project is to create the most satisfying search program in the 
 * Skipping or modifying any of these directives will make it like any other search tool and therefore irrelevant.
 
 ## Changes
+* (2017-05-30) Corrected tab order, taking into consideration tab order is hierarchical (sorted containers and non-contained widgets consecutively)
+* (2017-05-30) Add sorting by any column
 * (2017-05-16) Shows error on using wildcards (any invalid characters actually) since not implemented yet
+* Implement content search
+* Add created date range
 * (2017-05-05) Added min/max sizes feature, and nonsense input checking for that and for modification dates
 * (2017-04-15) Press enter to search (if name or content box has focus)
 * (2017-04-15) Ctrl+C can copy path of selected result
@@ -29,11 +33,9 @@ The goal of this project is to create the most satisfying search program in the 
 * (2017-04-15) Save content string and name to settings
 
 ## Known Issues
+* Sort again at end of search
 * Add wildcard notation
 * Fix flicker on list when each file is found
-* Implement content search
-* Add sorting by any column (sort again at end of search)
 * Warn&confirm if results would be every file in folder
-* Add created date range
 * Search within zip files optionally
 * Search content of zipped XML files (*.*x office files, and iWork(R) files)
