@@ -22,6 +22,7 @@ namespace DeepFileFind
 		public DFF()
 		{
 		}
+		public static readonly char[] wildcards = new Char[] {'*','?'};
 		public int COLUMN_PATH = -1;
 		public int COLUMN_NAME = -1;
 		public int COLUMN_MODIFIED = -1;
@@ -38,6 +39,20 @@ namespace DeepFileFind
 		#region cache
 		private string options_name_string_tolower = null;
 		#endregion cache
+		public static bool ContainsAny(string Haystack, char[] Needles) {
+			bool result=false;
+			//char[] HaystackChars=Haystack.ToCharArray();
+			for (int i=0; i<Needles.Length; i++) {
+				for (int j=0; j<Haystack.Length; j++) {
+					if (Haystack[j]==Needles[i]) {
+						result=true;
+						break;
+					}
+				}
+				if (result) break;
+			}
+			return result;
+		}
 		
 		public static bool get_file_contains(FileInfo this_info, string content_string) {
 			bool result=false;
@@ -71,9 +86,9 @@ namespace DeepFileFind
 			return result;
 		}
 		
-		public bool get_is_match(FileInfo this_info) {
+		public bool get_is_match(FileInfo this_info, bool filenames_prefiltered_enable) {
 			bool result = false;
-			if (   string.IsNullOrEmpty(options.name_string)   ||   ( options.case_sensitive_enable ? this_info.Name.Contains(options.name_string) : this_info.Name.ToLower().Contains(options_name_string_tolower) )   ) {
+			if (   filenames_prefiltered_enable   ||   string.IsNullOrEmpty(options.name_string)   ||   ( options.case_sensitive_enable ? this_info.Name.Contains(options.name_string) : this_info.Name.ToLower().Contains(options_name_string_tolower) )   ) {
 				//below is ok since time was manipulated if !options.endbefore_time_enable
 				Console.WriteLine("file: "+this_info.LastWriteTime.ToUniversalTime().ToString(DFF.datetime_sortable_format_string));
 				Console.WriteLine("endbefore: "+options.modified_endbefore_datetime_utc.ToUniversalTime().ToString(DFF.datetime_sortable_format_string));
@@ -175,11 +190,16 @@ namespace DeepFileFind
 			}
 		
 			try {
-				
-				foreach (FileInfo this_fi in major_di.GetFiles()) {
+				bool filenames_prefiltered_enable = ContainsAny(this.options.name_string, wildcards);
+				FileInfo[] major_di_files = filenames_prefiltered_enable ? major_di.GetFiles(this.options.name_string) : major_di.GetFiles();
+				//if (major_di_files!=null) {
+				//	if (major_di_files.Length<=1) Console.Error.WriteLine(major_di_files.Length.ToString()+" file(s) in "+major_di.FullName);
+				//}
+				//else Console.Error.WriteLine("Could not list files in "+major_di.FullName);
+				foreach (FileInfo this_fi in major_di_files) {
 					if (!enable) break;
 					try {
-						if (get_is_match(this_fi)) {
+						if (get_is_match(this_fi, filenames_prefiltered_enable)) {
 							if (resultsListView!=null) {
 								string[] fields = new String[resultsListView.Columns.Count];
 								if (COLUMN_PATH>=0) fields[COLUMN_PATH]=this_fi.FullName;
@@ -192,6 +212,7 @@ namespace DeepFileFind
 							}
 							if (results!=null) results.Add(this_fi.FullName);
 						}
+						//else Console.Error.WriteLine(this_fi.FullName+" does not match");
 					}
 					catch (Exception exn) {
 						Console.Error.WriteLine("Could not finish accessing file '"+this_fi.FullName+"': "+exn.ToString());

@@ -38,7 +38,6 @@ namespace DeepFileFind
 		public int RESULT_CREATED_COLUMN_INDEX = -1;
 		public int RESULT_PATH_COLUMN_INDEX = -1;
 		public int RESULT_EXTENSION_COLUMN_INDEX = -1;
-		public static readonly char[] wildcards = new Char[] {'*','?'};
 		public Dictionary<string, string> settings = new Dictionary<string, string>();
 		public ListViewColumnSorter lvwColumnSorter;
 		
@@ -311,23 +310,9 @@ namespace DeepFileFind
 			}
 			return size_string;
 		}
-		public static bool ContainsAny(string Haystack, char[] Needles) {
-			bool result=false;
-			//char[] HaystackChars=Haystack.ToCharArray();
-			for (int i=0; i<Needles.Length; i++) {
-				for (int j=0; j<Haystack.Length; j++) {
-					if (Haystack[j]==Needles[i]) {
-						result=true;
-						break;
-					}
-				}
-				if (result) break;
-			}
-			return result;
-		}
 		public void ExecuteSearch() {
 			//MessageBox.Show(new String (System.IO.Path.InvalidPathChars));
-			if ( nameTextBox.Text.IndexOfAny(System.IO.Path.InvalidPathChars) < 0 && nameTextBox.Text.IndexOfAny(wildcards) < 0) {//if (!nameTextBox.Text.Contains("*") && !nameTextBox.Text.Contains("?") && )
+			if ( nameTextBox.Text.IndexOfAny(System.IO.Path.GetInvalidPathChars()) < 0) { //Path.InvalidPathChars is obsoleted by Microsoft //if (!nameTextBox.Text.Contains("*") && !nameTextBox.Text.Contains("?") && )
 				if (!hasLocation(locationComboBox.Text)) locationComboBox.Items.Add(locationComboBox.Text);
 				//findButton.Enabled=false;
 				//findButton.Visible=false;
