@@ -22,12 +22,13 @@ namespace DeepFileFind
 	/// </summary>
 	public partial class MainForm : Form
 	{
+		private static string thisprogram_name_and_version = "DeepFileFind 1.0.0";
+		private static string folders_thisprogram_name = "DeepFileFind";
 		private DFF dff = null;
 		private Thread this_thread = null;
 		public static string date_format_string = "yyyy-MM-dd";
 		public static string datetime_format_string = "yyyy-MM-dd hh:mm tt";
 		//see also DFF.datetime_sortable_format_string
-		private static string folders_thisprogram_name = "DeepFileFind";
 		public static string appdata_thisprogram_path = null;
 		private static string recent_folders_list_name = "recent_folders.txt";
 		public static string recent_folders_list_path = null;
@@ -681,6 +682,11 @@ namespace DeepFileFind
 			
 			// Perform the sort with these new sort options.
 			this.resultsListView.Sort();
+		}
+		
+		void AboutToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			MessageBox.Show("This program is released under the terms of the GNU General Public Licence version 3.0. \n\nsource code available at: http://www.github.com/expertmm/DeepFileFind",thisprogram_name_and_version);
 		}
 	}
 }
