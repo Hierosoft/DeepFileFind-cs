@@ -75,7 +75,8 @@ namespace DeepFileFind
 			this.resultsListView = new System.Windows.Forms.ListView();
 			this.resultContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.openContainingFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openContainingFolderTSMI = new System.Windows.Forms.ToolStripMenuItem();
+			this.copyFilePathTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusTextBox = new System.Windows.Forms.TextBox();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -247,7 +248,7 @@ namespace DeepFileFind
 			this.modifiedEndBeforeDTPicker.Name = "modifiedEndBeforeDTPicker";
 			this.modifiedEndBeforeDTPicker.Size = new System.Drawing.Size(346, 27);
 			this.modifiedEndBeforeDTPicker.TabIndex = 100;
-			this.modifiedEndBeforeDTPicker.Value = new System.DateTime(2017, 3, 23, 0, 0, 0, 0);
+			this.modifiedEndBeforeDTPicker.Value = new System.DateTime(2017, 6, 10, 0, 0, 0, 0);
 			// 
 			// label2
 			// 
@@ -350,7 +351,7 @@ namespace DeepFileFind
 			this.modifiedStartDTPicker.Name = "modifiedStartDTPicker";
 			this.modifiedStartDTPicker.Size = new System.Drawing.Size(346, 27);
 			this.modifiedStartDTPicker.TabIndex = 80;
-			this.modifiedStartDTPicker.Value = new System.DateTime(2017, 3, 23, 0, 0, 0, 0);
+			this.modifiedStartDTPicker.Value = new System.DateTime(2017, 4, 10, 0, 0, 0, 0);
 			// 
 			// locationComboBox
 			// 
@@ -549,7 +550,7 @@ namespace DeepFileFind
 			// 
 			this.findToolStripMenuItem.Name = "findToolStripMenuItem";
 			this.findToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-			this.findToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.findToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.findToolStripMenuItem.Text = "Find";
 			this.findToolStripMenuItem.Click += new System.EventHandler(this.FindToolStripMenuItemClick);
 			// 
@@ -574,23 +575,32 @@ namespace DeepFileFind
 			// 
 			this.resultContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.openToolStripMenuItem,
-									this.openContainingFolderToolStripMenuItem});
+									this.openContainingFolderTSMI,
+									this.copyFilePathTSMI});
 			this.resultContextMenuStrip.Name = "contextMenuStrip1";
-			this.resultContextMenuStrip.Size = new System.Drawing.Size(202, 48);
+			this.resultContextMenuStrip.Size = new System.Drawing.Size(202, 70);
+			this.resultContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ResultContextMenuStripOpening);
 			// 
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
 			this.openToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
 			this.openToolStripMenuItem.Text = "Open";
-			this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItemClick);
+			this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenTSMIClick);
 			// 
-			// openContainingFolderToolStripMenuItem
+			// openContainingFolderTSMI
 			// 
-			this.openContainingFolderToolStripMenuItem.Name = "openContainingFolderToolStripMenuItem";
-			this.openContainingFolderToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-			this.openContainingFolderToolStripMenuItem.Text = "Open Containing Folder";
-			this.openContainingFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenContainingFolderToolStripMenuItemClick);
+			this.openContainingFolderTSMI.Name = "openContainingFolderTSMI";
+			this.openContainingFolderTSMI.Size = new System.Drawing.Size(201, 22);
+			this.openContainingFolderTSMI.Text = "Open Containing Folder";
+			this.openContainingFolderTSMI.Click += new System.EventHandler(this.OpenContainingFolderTSMIClick);
+			// 
+			// copyFilePathTSMI
+			// 
+			this.copyFilePathTSMI.Name = "copyFilePathTSMI";
+			this.copyFilePathTSMI.Size = new System.Drawing.Size(201, 22);
+			this.copyFilePathTSMI.Text = "Copy Path";
+			this.copyFilePathTSMI.Click += new System.EventHandler(this.CopyFilePathTSMIClick);
 			// 
 			// statusTextBox
 			// 
@@ -647,6 +657,8 @@ namespace DeepFileFind
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem copyFilePathTSMI;
+		private System.Windows.Forms.ToolStripMenuItem openContainingFolderTSMI;
 		private System.Windows.Forms.Label maxSizeLabel;
 		private System.Windows.Forms.Label minSizeLabel;
 		private System.Windows.Forms.CheckBox maxSizeCheckBox;
@@ -657,7 +669,6 @@ namespace DeepFileFind
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
 		private System.Windows.Forms.CheckBox recursiveCheckBox;
 		private System.Windows.Forms.ContextMenuStrip resultContextMenuStrip;
-		private System.Windows.Forms.ToolStripMenuItem openContainingFolderToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
 		private System.Windows.Forms.Timer timer1;
 		private System.Windows.Forms.Button cancelButton;
@@ -687,5 +698,10 @@ namespace DeepFileFind
 		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.SplitContainer splitContainer1;
+		
+		void ResultContextMenuStripOpening(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			
+		}
 	}
 }

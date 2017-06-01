@@ -20,6 +20,8 @@ The goal of this project is to create the most satisfying search program in the 
 * Skipping or modifying any of these directives will make it like any other search tool and therefore irrelevant.
 
 ## Changes
+* (2017-06-01) Date should be saved and loaded (variable name in yml was mismatched for both start and end modification dates). Corrected loading by using ToLocalTime() method.
+* (2017-06-01) Add wildcard notation
 * (2017-05-30) Corrected tab order, taking into consideration tab order is hierarchical (sorted containers and non-contained widgets consecutively)
 * (2017-05-30) Add sorting by any column
 * (2017-05-16) Shows error on using wildcards (any invalid characters actually) since not implemented yet
@@ -33,8 +35,8 @@ The goal of this project is to create the most satisfying search program in the 
 * (2017-04-15) Save content string and name to settings
 
 ## Known Issues
+* Make all savable variables always use dictionary, otherwise MainFormFormClosing and MainFormLoad must have the same list of variables, otherwise the mismatched settings aren't saved & loaded correctly
 * Sort again at end of search
-* Add wildcard notation
 * Fix flicker on list when each file is found
 * Warn&confirm if results would be every file in folder
 * Search within zip files optionally

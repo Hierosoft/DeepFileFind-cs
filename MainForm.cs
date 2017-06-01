@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Collections;
 using System.Threading;
+using System.Globalization;
 
 namespace DeepFileFind
 {
@@ -160,7 +161,25 @@ namespace DeepFileFind
 			if (settings.ContainsKey("modified_start_date_enable")) modifiedStartDateCheckBox.Checked = (settings["modified_start_date_enable"]=="true"?true:false);
 			else modifiedStartDateCheckBox.Checked = false;
 			modifiedStartDTPicker.CustomFormat = modifiedStartTimeCheckBox.Checked ? datetime_format_string : date_format_string;
-			if (settings.ContainsKey("modified_start_datetime")) modifiedStartDTPicker.Value = DateTime.Parse( DateTime.Parse(settings["modified_start_datetime"]).ToString(modifiedStartDTPicker.CustomFormat) );
+			if (settings.ContainsKey("modified_start_datetime_utc")) {
+				try {
+					DateTime tmp_datetime = DateTime.ParseExact(settings["modified_start_datetime_utc"], datetime_format_string+" UTC", CultureInfo.InvariantCulture);
+					tmp_datetime = tmp_datetime.ToLocalTime();//TimeZoneInfo.ConvertTimeToUtc(tmp_datetime, TimeZoneInfo.Utc); //NOTE: DateTimeKind does NOT work
+					if (settings.ContainsKey("modified_start_datetime_utc")) modifiedStartDTPicker.Value = DateTime.Parse( tmp_datetime.ToString(modifiedStartDTPicker.CustomFormat) );
+				}
+				catch {
+					try {
+						DateTime tmp_datetime = DateTime.Parse(settings["modified_start_datetime_utc"]);
+						tmp_datetime = tmp_datetime.ToLocalTime();
+						//if (settings.ContainsKey("modified_start_datetime_utc")) modifiedStartDTPicker.Value = DateTime.Parse( DateTime.ParseExact(settings["modified_start_datetime_utc"],date_format_string,CultureInfo.InvariantCulture).ToString(modifiedStartDTPicker.CustomFormat) );
+						modifiedStartDTPicker.Value = DateTime.Parse( tmp_datetime.ToString(modifiedStartDTPicker.CustomFormat) );
+					}
+					catch (Exception exn) {
+						statusTextBox.Text = "Could not finish interpreting date " + settings["modified_start_datetime_utc"];
+						Console.Error.WriteLine(exn.ToString());
+					}
+				}
+			}
 			modifiedStartDTPicker.Enabled = modifiedStartDateCheckBox.Checked;
 
 			if (settings.ContainsKey("modified_endbefore_time_enable")) modifiedEndBeforeTimeCheckBox.Checked = (settings["modified_endbefore_time_enable"]=="true"?true:false);
@@ -168,7 +187,26 @@ namespace DeepFileFind
 			if (settings.ContainsKey("modified_endbefore_date_enable")) modifiedEndBeforeDateCheckBox.Checked = (settings["modified_endbefore_date_enable"]=="true"?true:false);
 			else modifiedEndBeforeDateCheckBox.Checked = false;
 			modifiedEndBeforeDTPicker.CustomFormat = modifiedEndBeforeTimeCheckBox.Checked ? datetime_format_string : date_format_string;
-			if (settings.ContainsKey("modified_endbefore_datetime")) modifiedEndBeforeDTPicker.Value = DateTime.Parse( DateTime.Parse(settings["modified_endbefore_datetime"]).ToString(modifiedEndBeforeDTPicker.CustomFormat) );
+			if (settings.ContainsKey("modified_endbefore_datetime_utc")) {
+				try {
+					DateTime tmp_datetime = DateTime.ParseExact(settings["modified_endbefore_datetime_utc"], datetime_format_string+" UTC", CultureInfo.InvariantCulture);
+					//if (tmp_datetime.Kind != DateTimeKind.Utc) MessageBox.Show("Date Did not load as UTC");
+					tmp_datetime = tmp_datetime.ToLocalTime();//TimeZoneInfo.ConvertTimeToUtc(utc_datetime, TimeZoneInfo.Utc);
+					modifiedEndBeforeDTPicker.Value = DateTime.Parse( tmp_datetime.ToString(modifiedEndBeforeDTPicker.CustomFormat) );
+				}
+				catch {
+					//if (settings.ContainsKey("modified_endbefore_datetime_utc")) modifiedEndBeforeDTPicker.Value = DateTime.Parse( DateTime.ParseExact(settings["modified_endbefore_datetime_utc"],date_format_string,CultureInfo.InvariantCulture).ToString(modifiedEndBeforeDTPicker.CustomFormat) );
+					try {
+						DateTime tmp_datetime = DateTime.Parse(settings["modified_endbefore_datetime_utc"]);
+						tmp_datetime = tmp_datetime.ToLocalTime();
+						if (settings.ContainsKey("modified_endbefore_datetime_utc")) modifiedEndBeforeDTPicker.Value = DateTime.Parse( tmp_datetime.ToString(modifiedEndBeforeDTPicker.CustomFormat) );
+					}
+					catch (Exception exn) {
+						statusTextBox.Text = "Could not finish interpreting date " + settings["modified_endbefore_datetime_utc"];
+						Console.Error.WriteLine(exn.ToString());
+					}
+				}
+			}
 			modifiedEndBeforeDTPicker.Enabled = modifiedEndBeforeDateCheckBox.Checked;
 			
 			if (settings.ContainsKey("include_folders_as_results_enable")) foldersCheckBox.Checked = (settings["include_folders_as_results_enable"]=="true"?true:false);
@@ -450,10 +488,10 @@ namespace DeepFileFind
 			outs = new StreamWriter(settings_path);
 			settings["modified_start_date_enable"] = modifiedStartDateCheckBox.Checked?"true":"false";
 			settings["modified_start_time_enable"] = modifiedStartTimeCheckBox.Checked?"true":"false";
-			settings["modified_start_datetime_utc"] = modifiedStartDTPicker.Value.ToUniversalTime().ToString(modifiedStartDTPicker.CustomFormat);
+			settings["modified_start_datetime_utc"] = modifiedStartDTPicker.Value.ToUniversalTime().ToString(datetime_format_string+" UTC");
 			settings["modified_endbefore_date_enable"] = modifiedEndBeforeDateCheckBox.Checked?"true":"false";
 			settings["modified_endbefore_time_enable"] = modifiedEndBeforeTimeCheckBox.Checked?"true":"false";
-			settings["modified_endbefore_datetime_utc"] = modifiedEndBeforeDTPicker.Value.ToUniversalTime().ToString(modifiedEndBeforeDTPicker.CustomFormat);
+			settings["modified_endbefore_datetime_utc"] = modifiedEndBeforeDTPicker.Value.ToUniversalTime().ToString(datetime_format_string+" UTC");
 			settings["include_folders_as_results_enable"] = foldersCheckBox.Checked?"true":"false";
 			settings["content_enable"] = contentCheckBox.Checked?"true":"false";
 			settings["recursive_enable"] = recursiveCheckBox.Checked?"true":"false";
@@ -498,7 +536,7 @@ namespace DeepFileFind
 			}
 		}
 		
-		void OpenContainingFolderToolStripMenuItemClick(object sender, EventArgs e)
+		void OpenContainingFolderTSMIClick(object sender, EventArgs e)
 		{
 			foreach (ListViewItem lvi in resultsListView.SelectedItems) {
 				FileInfo this_fi = new FileInfo(lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
@@ -506,13 +544,20 @@ namespace DeepFileFind
 			}
 		}
 		
-		void OpenToolStripMenuItemClick(object sender, EventArgs e)
+		void OpenTSMIClick(object sender, EventArgs e)
 		{
 			foreach (ListViewItem lvi in resultsListView.SelectedItems) {
 				System.Diagnostics.Process.Start(lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
 			}
 		}
-		
+		void CopyFilePathTSMIClick(object sender, EventArgs e)
+		{
+			foreach (ListViewItem lvi in resultsListView.SelectedItems) {
+				//FileInfo this_fi = new FileInfo(lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
+				Clipboard.SetText(lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
+				break;
+			}
+		}
 		
 		void ResultsListViewItemDrag_BROKEN_KEEPS_CURSOR_X_FOREVER(object sender, ItemDragEventArgs e)
 		{

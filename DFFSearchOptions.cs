@@ -57,6 +57,7 @@ namespace DeepFileFind
 		}
 		public ArrayList Dump() {
 			ArrayList results = new ArrayList();
+			//NOTE: these MUST match the values from MainFormLoad in order for all settings to save and load
 			results.Add("start_date_enable = "+(modified_start_date_enable?"true":"false"));
 			results.Add("start_time_enable = "+(modified_start_time_enable?"true":"false"));
 			results.Add("start_datetime_utc = "+modified_start_datetime_utc.ToUniversalTime().ToString(DFF.datetime_sortable_format_string));
