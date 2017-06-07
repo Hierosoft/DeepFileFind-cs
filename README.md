@@ -18,8 +18,10 @@ The goal of this project is to create the most satisfying search program in the 
 * For average users (has justifiable and readily usable defaults; no regex (except perhaps an invisible option via settings file in the future)--it is unnecessary, and showing an option to use "regex" or "regular expressions" only serves to confuse most people)
 * Isn't annoying (no search index; will never have panels other than search and results; no tabs)
 * Skipping or modifying any of these directives will make it like any other search tool and therefore irrelevant.
+* Cross-platform
 
 ## Changes
+* (2017-06-06) Made MonoDevelop project (had to add assembly references that were in the old project file; had error loading icon resource; had to change Build Action of MainForm.resx to EmbeddedResource [error persisted after that]; had to set Text File profile to Visual Studio in order for XML resx file to load properly; compiles and runs now)
 * (2017-06-01) Date should be saved and loaded (variable name in yml was mismatched for both start and end modification dates). Corrected loading by using ToLocalTime() method.
 * (2017-06-01) Add wildcard notation
 * (2017-05-30) Corrected tab order, taking into consideration tab order is hierarchical (sorted containers and non-contained widgets consecutively)
