@@ -21,7 +21,11 @@ namespace DeepFileFind
 	{
 		public DFF()
 		{
+            if (Path.DirectorySeparatorChar=='/') 
+                non_directory_paths = new string [] { "/dev", "/proc", "/sys", "/boot"};
+            
 		}
+        public string[] non_directory_paths = null;
 		public static readonly char[] wildcards = new Char[] {'*','?'};
 		public int COLUMN_PATH = -1;
 		public int COLUMN_NAME = -1;
@@ -34,6 +38,7 @@ namespace DeepFileFind
 		public static readonly int COLUMNFLAG_IGNORE = -2;
 		public bool enable = true;
 		public bool finished = false;
+        public bool follow_folder_symlinks_enable = false;
 		public static bool newline_detected_as_space_enable=false;
 		public static readonly string datetime_sortable_format_string = "yyyy-MM-dd HH:mm";
 		#region cache
@@ -237,7 +242,11 @@ namespace DeepFileFind
 									if (results!=null) results.Add(this_di.FullName);
 								}
 							}
-							if (options.recursive_enable) ExecuteSearchRecursively(this_di);
+                            if (this.non_directory_paths==null || Array.IndexOf(this.non_directory_paths,this_di.FullName)<=-1 ) {
+								FileAttributes attributes = FileAttributes.Normal;
+								if (!follow_folder_symlinks_enable) attributes = File.GetAttributes (this_di.FullName);
+                                if (options.recursive_enable && (follow_folder_symlinks_enable || !attributes.HasFlag (FileAttributes.ReparsePoint))) ExecuteSearchRecursively (this_di);
+                            }
 						}
 						catch (Exception exn) {
 							Console.Error.WriteLine("Could not finish accessing subdirectory '"+this_di.FullName+"': "+exn.ToString());

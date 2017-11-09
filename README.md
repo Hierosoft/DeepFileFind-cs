@@ -21,6 +21,13 @@ The goal of this project is to create the most satisfying search program in the 
 * Cross-platform
 
 ## Changes
+* (2017-10-09) IF Path.DirectorySeparatorChar=='/', now a DFF object never recurses non-data paths (unless user puts /dev in Location TextBox, which would be silly, but why prevent people from being silly as long as they meant it) as per DFF's constructor, such as:
+  ```
+  if (Path.DirectorySeparatorChar=='/') non_data_paths = new string [] { "/dev", "/proc", "/sys", "/boot"};
+  ```
+* (2017-10-09) MonoDevelop project Release configuration now outputs directly to <project path>/bin (instead of <project path>/bin/Release)
+* (2017-10-09) Do not follow symlinks (all files with ReparsePoint; works on any OS according to brad on https://stackoverflow.com/questions/5775739/prevent-io-getdirectories-from-following-symlinks answered Apr 25 '11 at 14:10)
+	* new variable follow_folder_symlinks_enable is hardcoded as false
 * (2017-06-06) Made MonoDevelop project (had to add assembly references that were in the old project file; had error loading icon resource; had to change Build Action of MainForm.resx to EmbeddedResource [error persisted after that]; had to set Text File profile to Visual Studio in order for XML resx file to load properly; compiles and runs now)
 * (2017-06-01) Date should be saved and loaded (variable name in yml was mismatched for both start and end modification dates). Corrected loading by using ToLocalTime() method.
 * (2017-06-01) Add wildcard notation
@@ -37,6 +44,7 @@ The goal of this project is to create the most satisfying search program in the 
 * (2017-04-15) Save content string and name to settings
 
 ## Known Issues
+* Finds no folders if "Include folders..." is checked but criteria is "*" or "*.*" (or empty).
 * Make all savable variables always use dictionary, otherwise MainFormFormClosing and MainFormLoad must have the same list of variables, otherwise the mismatched settings aren't saved & loaded correctly
 * Sort again at end of search
 * Fix flicker on list when each file is found
