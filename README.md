@@ -22,6 +22,7 @@ The goal of this project is to create the most satisfying search program in the 
 
 ## Changes
 (! = important)
+* (2017-10-09) (!) removed use of HasAttrib for FileAttributes objects in order to compile on .NET 3.5 for Windows
 * (2017-10-09) (!) Changes made today allow non-priveleged user to do content search of all files on '/' without crash (except special files and folders code now manually skips to work around issues; tested only with: Antergos, file size maximum set at 2048000 bytes)
 * (2017-10-09) (!) skips "non-file-like" names to avoid native call crashes:
 	* "*:"
