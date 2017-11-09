@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Created by SharpDevelop.
  * User: jgustafson
  * Date: 3/23/2017
@@ -59,16 +59,16 @@ namespace DeepFileFind
             try {
                 //for another way (ioctl from libc, see also etc/FileProvider.cs
                 FileAttributes attributes = File.GetAttributes(path);
-                if (attributes.HasFlag (FileAttributes.Archive)) result = false;
-                else if (attributes.HasFlag (FileAttributes.Compressed)) result = false;
-				else if (attributes.HasFlag (FileAttributes.Device)) result = false;
-				else if (attributes.HasFlag (FileAttributes.Directory)) result = false;
-				//else if (attributes.HasFlag (FileAttributes.Encrypted)) result = false; //ok since I can probably try
-				//else if (attributes.HasFlag (FileAttributes.IntegrityStream)) result = false;
-				else if (attributes.HasFlag (FileAttributes.System)) result = false;
-                else if (attributes.HasFlag (FileAttributes.Temporary)) result = false;
-				else if (attributes.HasFlag (FileAttributes.Offline)) result = false;
-				if (!search_inside_hidden_files_enable && attributes.HasFlag (FileAttributes.Hidden)) result = false;
+                if ((attributes & FileAttributes.Archive)==FileAttributes.Archive) result = false;
+                else if ((attributes & FileAttributes.Compressed) == FileAttributes.Compressed) result = false;
+				else if ((attributes & FileAttributes.Device) == FileAttributes.Device) result = false;
+				else if ((attributes & FileAttributes.Directory) == FileAttributes.Directory) result = false;
+				//else if ((attributes & FileAttributes.Encrypted) == FileAttributes.Encrypted) result = false; //ok since I can probably try
+				//else if ((attributes & FileAttributes.IntegrityStream) == FileAttributes.IntegrityStream) result = false;
+				else if ((attributes & FileAttributes.System) == FileAttributes.System) result = false;
+                else if ((attributes & FileAttributes.Temporary) == FileAttributes.Temporary) result = false;
+				else if ((attributes & FileAttributes.Offline) == FileAttributes.Offline) result = false;
+				if (!search_inside_hidden_files_enable && ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden)) result = false;
 			} catch { 
                 result = false;
             }
@@ -194,13 +194,13 @@ namespace DeepFileFind
                         //						   ) 
                         attributes = File.GetAttributes (this_di.FullName);
                         if (options.recursive_enable
-                            && (follow_folder_symlinks_enable || !attributes.HasFlag (FileAttributes.ReparsePoint))
-                            && (follow_system_folders_enable || !attributes.HasFlag (FileAttributes.System))
-                            && (follow_hidden_folders_enable || !attributes.HasFlag (FileAttributes.Hidden))
-                            && (follow_temporary_folders_enable || !attributes.HasFlag (FileAttributes.Temporary))
+                            && (follow_folder_symlinks_enable || !((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint))
+                            && (follow_system_folders_enable || !((attributes & FileAttributes.System) == FileAttributes.System))
+                            && (follow_hidden_folders_enable || !((attributes & FileAttributes.Hidden) == FileAttributes.Hidden))
+                            && (follow_temporary_folders_enable || !((attributes & FileAttributes.Temporary) == FileAttributes.Temporary))
                             && (follow_dot_folders_enable || !this_di.Name.StartsWith ("."))
-                            && !attributes.HasFlag (FileAttributes.Offline)
-                            && !attributes.HasFlag (FileAttributes.Device)
+                            && !((attributes & FileAttributes.Offline) == FileAttributes.Offline)
+                            && !((attributes & FileAttributes.Device) == FileAttributes.Device)
                            ) {
 
                             result = true;
