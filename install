@@ -1,1 +1,91 @@
 #!/bin/sh
+project_name=DeepFileFind
+project_unix_name=deepfilefind
+install_description="install $project_name"
+install_method_tip="sudo ./install"
+lib_root=/usr/local/lib
+bin_root=/usr/local/bin
+assembly_name=DeepFileFind.exe
+cd $(dirname "$0")
+src_assembly_dir=./bin
+src_assembly_path=$src_assembly_dir/$assembly_name
+src_bin_path=etc/$project_unix_name
+dest_bin_path=$bin_root/$project_unix_name
+echo
+echo
+mono_path=$(command -v mono)
+if [ ! -f "$mono_path" ]; then
+  echo "ERROR: Nothing done for $install_description since mono must be installed for this program to run."
+  exit 1
+fi
+
+if [ ! -d etc ]; then
+  cd ..
+fi
+if [ ! -d etc ]; then
+  echo "ERROR: Nothing done for $install_description since couldn't find repo dir (this script must be in repo dir where etc exists or etc folder in repo dir)"
+  exit 2
+fi
+if [ ! -f "$src_bin_path" ]; then
+  echo "ERROR: Nothing done for $install_description since couldn't find $src_bin_path in etc"
+  exit 3
+fi
+
+if [ ! -f "$src_assembly_path" ]; then
+  echo "ERROR: Nothing done for $install_description since couldn't find $src_assembly_path"
+  echo "Build the program to that assembly first, such as using the sln file via MonoDevelop"
+  exit 4
+fi
+
+dest_lib_dir=$lib_root/$project_unix_name
+this_lib_path=$dest_lib_dir/$assembly_name
+
+if [ ! -d "$dest_lib_dir" ]; then
+  mkdir "$dest_lib_dir"
+fi
+
+if [ ! -d "$dest_lib_dir" ]; then
+  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not create $dest_lib_dir)"
+  exit 5
+fi
+
+if [ -f "$this_lib_path" ]; then
+  echo "removing old $this_lib_path..."
+  rm "$this_lib_path"
+fi
+
+if [ -f "$this_lib_path" ]; then
+  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not remove $this_lib_path)"
+  exit 6
+fi
+
+cp "$src_assembly_path" "$dest_lib_dir/"
+
+if [ ! -f "$this_lib_path" ]; then
+  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not create $this_lib_path)"
+  exit 7
+fi
+
+if [ -f "$dest_bin_path" ]; then
+  echo "removing old $dest_bin_path"
+  rm "$dest_bin_path"
+fi
+
+if [ -f "$dest_bin_path" ]; then
+  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not remove $dest_bin_path)"
+  exit 8
+fi
+
+cp "$src_bin_path" "$bin_root/"
+
+if [ ! -f "$dest_bin_path" ]; then
+  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not create $dest_bin_path)"
+  exit 9
+else
+  chmod +x "$dest_bin_path"
+  echo "$install_description finished successfully."
+  echo "Run using command below (or make shortcut in your window manager to):"
+  echo "  $project_unix_name"
+fi
+echo
+echo

@@ -1,0 +1,12 @@
+#!/bin/sh
+project_unix_name=deepfilefind
+assembly_name=DeepFileFind.exe
+lib_root=/usr/local/lib
+dest_lib_dir=$lib_root/$project_unix_name
+this_lib_path=$dest_lib_dir/$assembly_name
+#cd "$this_lib_dir"
+if [ -f "$this_lib_path" ]; then
+  mono "$this_lib_path"
+else
+  xmessage "$(printf "could not find $this_lib_path")"
+fi
