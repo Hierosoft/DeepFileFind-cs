@@ -1,4 +1,6 @@
 #!/bin/sh
+
+
 project_name=DeepFileFind
 project_unix_name=deepfilefind
 install_description="install $project_name"
@@ -6,6 +8,23 @@ install_method_tip="sudo ./install"
 lib_root=/usr/local/lib
 bin_root=/usr/local/bin
 assembly_name=DeepFileFind.exe
+icons_root=/usr/share/pixmaps
+subicons_dest_dir=$icons_root/$project_unix_name
+icon_name=deepfilefind.png
+applications_root=/usr/share/applications
+
+icon_dest_path=$icons_root/$icon_name
+# see https://martin.hoppenheit.info/blog/2016/where-to-put-application-icons-on-linux/ :
+#* A 32x32 px XPM file in /usr/share/pixmaps/.
+#* A 48x48 px PNG file in /usr/share/icons/hicolor/48x48/apps/.
+#* Optionally, an SVG file in /usr/share/icons/hicolor/scalable/apps/.
+#Of course you also need a desktop file in /usr/share/applications/ for your program.
+#And just in case, you can easily create XPM and PNG files from a source SVG file:
+#inkscape -e icon.png -C -w 48 -h 48 icon.svg
+#inkscape -e tmp.png -C -w 32 -h 32 icon.svg
+#convert tmp.png icon.xpm
+#rm tmp.png
+
 cd $(dirname "$0")
 src_assembly_dir=./bin
 src_assembly_path=$src_assembly_dir/$assembly_name
@@ -66,6 +85,44 @@ if [ ! -f "$this_lib_path" ]; then
   exit 7
 fi
 
+if [ ! -z "$subicons_dest_dir" ]; then
+  #if [ ! -d "$subicons_dest_dir" ]; then
+  #  mkdir "$subicons_dest_dir"
+  #fi
+  
+  #remove incorrectly placed main application icon:
+  if [ -d "$subicons_dest_dir" ]; then
+    if [ -f "$subicons_dest_dir/$icon_name" ]; then
+      echo "removing old icon in nonstandard location..."
+      rm "$subicons_dest_dir/$icon_name"
+	fi
+    rmdir "$subicons_dest_dir"
+  fi
+
+  #if [ ! -d "$subicons_dest_dir" ]; then
+  #  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not create $dest_lib_dir)"
+  #  exit 8
+  #fi
+fi
+
+if [ -f "$icon_dest_path" ]; then
+  echo "Removing old $icon_dest_path..."
+  rm "$icon_dest_path"
+fi
+
+if [ -f "$icon_dest_path" ]; then
+  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not remove old $icon_dest_path)"
+  exit 9
+fi
+
+#cp "$icon_name" "$icon_dest_path"
+cp "./PACKAGE/$icon_dest_path" "$icon_dest_path"
+
+if [ ! -f "$icon_dest_path" ]; then
+  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not copy icon to new file $icon_dest_path)"
+  exit 10
+fi
+
 if [ -f "$dest_bin_path" ]; then
   echo "removing old $dest_bin_path"
   rm "$dest_bin_path"
@@ -73,19 +130,40 @@ fi
 
 if [ -f "$dest_bin_path" ]; then
   echo "ERROR: this script must be run as root or with '$install_method_tip' (could not remove $dest_bin_path)"
-  exit 8
+  exit 11
 fi
 
 cp "$src_bin_path" "$bin_root/"
 
 if [ ! -f "$dest_bin_path" ]; then
   echo "ERROR: this script must be run as root or with '$install_method_tip' (could not create $dest_bin_path)"
-  exit 9
-else
-  chmod +x "$dest_bin_path"
-  echo "$install_description finished successfully."
-  echo "Run using command below (or make shortcut in your window manager to):"
-  echo "  $project_unix_name"
+  exit 12
 fi
+
+
+if [ -f "$applications_root/$project_unix_name.desktop" ]; then
+  echo "removing old $applications_root/$project_unix_name.desktop..."
+  rm -f "$applications_root/$project_unix_name.desktop"
+fi
+
+if [ -f "$applications_root/$project_unix_name.desktop" ]; then
+  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not remove old $applications_root/$project_unix_name.desktop)"
+  exit 13
+fi
+
+cp "./PACKAGE/$applications_root/$project_unix_name.desktop" "$applications_root/$project_unix_name.desktop"
+
+if [ ! -f "$applications_root/$project_unix_name.desktop" ]; then
+  echo "ERROR: this script must be run as root or with '$install_method_tip' (could not create $applications_root/$project_unix_name.desktop)"
+  exit 13
+fi
+
+
+#else
+chmod +x "$dest_bin_path"
+echo "$install_description finished successfully."
+echo "Run using command below (or make shortcut in your window manager to):"
+echo "  $project_unix_name"
+#fi
 echo
 echo

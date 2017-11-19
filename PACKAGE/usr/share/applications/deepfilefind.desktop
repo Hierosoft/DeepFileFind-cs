@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=DeepFileFind
+GenericName=File search
+X-GNOME-FullName=DeepFileFind file search
+Comment=Find files by name or content in any folder, and find folders by name
+Version=1.0
+Exec=deepfilefind
+Icon=deepfilefind
+Type=Application
+Categores=GNOME;Accessories;Utility;
+Keywords=file;directory;search;find;content;
+Path=
+Terminal=false
+StartupNotify=false
