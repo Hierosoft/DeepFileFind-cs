@@ -288,6 +288,7 @@ namespace DeepFileFind
                 }
 
                 try {
+                    if (string.IsNullOrEmpty(this.options.name_string)) this.options.name_string = "*"; //prevents ContainsAny crash on next line
                     bool filenames_prefiltered_enable = ContainsAny (this.options.name_string, wildcards);
                     FileInfo [] major_di_files = filenames_prefiltered_enable ? major_di.GetFiles (this.options.name_string) : major_di.GetFiles ();
                     //if (major_di_files!=null) {

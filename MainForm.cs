@@ -22,7 +22,7 @@ namespace DeepFileFind
 	/// </summary>
 	public partial class MainForm : Form
 	{
-		private static string thisprogram_name_and_version = "DeepFileFind 1.0.0";
+		private static string thisprogram_name_and_version = "DeepFileFind";
 		private static string folders_thisprogram_name = "DeepFileFind";
 		private DFF dff = null;
 		private Thread this_thread = null;
