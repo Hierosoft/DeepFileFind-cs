@@ -1,0 +1,18 @@
+# 2.0.0 for fault-tolerant cross-platform search
+
+Downloads:
+Windows: get DeepFileFind.exe (should not require anything on Windows 7 or above, since in that case you would have .NET 3.5 automatically)
+
+The program is a single file and saves to user's %APPDATA%/ but in $HOME/.config/] in Linux. DFF will now skip files without warning if can't be read. It should have no trouble searching your user profile, but the root of drives is not working well due to the fault-tolerance. IF you dont' mind that, and you want the new features, just use this version and right-click then Run As Administrator to avoid that problem when you want to search your whole computer.
+
+Stay informed about changes planned and implemented in source ("git") version via its README.md at [https://www.github.com/expertmm/DeepFileFind](https://www.github.com/expertmm/DeepFileFind).
+
+Compiling git version: 
+* download DeepFileFind-master.zip from link above
+* see release 1.0.0 instructions 
+
+## Changes since last release
+(! = important)
+* (2017-10-09) (!) removed use of HasAttrib for FileAttributes objects in order to compile on .NET 3.5 for Windows.
+* (2017-10-09) (!) Changes made today allow non-priveleged user on Mono for GNU/Linux systems to do content search of all files on '/' without crash (skips anything not allowed by your user and not a "real" file or folder in order to work safely--tested on Antergos)
+* (2017-06-06) Made a MonoDevelop project for compiling on GNU/Linux systems

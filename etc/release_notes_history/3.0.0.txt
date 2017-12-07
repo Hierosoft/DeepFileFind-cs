@@ -1,0 +1,12 @@
+# More Control of Options, Better Recursion Accuracy
+3.0.0
+
+### New Features
+* Save entire list (from File menu)!
+* Delete actual files from entire list (from File menu)!
+* Added checkboxes for options that were previously hidden
+
+### Important Fixes
+* fixed drive searching bug (still intentionally doesn't recurse into mounted drives, but does search them if specified even if OS marks them as system)
+* content search stability
+* check correct attributes resulting in all possible results and skipping the correctly identified unusable files & directories (see README.md included in archive below)
