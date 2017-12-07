@@ -68,13 +68,13 @@ namespace DeepFileFind
 			this.maxSizeTextBox = new System.Windows.Forms.TextBox();
 			this.maxSizeCheckBox = new System.Windows.Forms.CheckBox();
 			this.minSizeLabel = new System.Windows.Forms.Label();
-			this.maxSizeLabel = new System.Windows.Forms.Label();
 			this.follow_folder_symlinks_enableCB = new System.Windows.Forms.CheckBox();
-			this.search_inside_hidden_files_enableCB = new System.Windows.Forms.CheckBox();
-			this.follow_dot_folders_enableCB = new System.Windows.Forms.CheckBox();
-			this.follow_hidden_folders_enableCB = new System.Windows.Forms.CheckBox();
 			this.follow_temporary_folders_enableCB = new System.Windows.Forms.CheckBox();
 			this.follow_system_folders_enableCB = new System.Windows.Forms.CheckBox();
+			this.search_inside_hidden_files_enableCB = new System.Windows.Forms.CheckBox();
+			this.follow_hidden_folders_enableCB = new System.Windows.Forms.CheckBox();
+			this.maxSizeLabel = new System.Windows.Forms.Label();
+			this.follow_dot_folders_enableCB = new System.Windows.Forms.CheckBox();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.deleteResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -122,8 +122,8 @@ namespace DeepFileFind
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.resultsListView);
-			this.splitContainer1.Size = new System.Drawing.Size(979, 732);
-			this.splitContainer1.SplitterDistance = 354;
+			this.splitContainer1.Size = new System.Drawing.Size(979, 733);
+			this.splitContainer1.SplitterDistance = 390;
 			this.splitContainer1.SplitterWidth = 5;
 			this.splitContainer1.TabIndex = 0;
 			// 
@@ -146,17 +146,18 @@ namespace DeepFileFind
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel6, 0, 2);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel7, 0, 14);
 			this.tableLayoutPanel1.Controls.Add(this.minSizeLabel, 0, 13);
-			this.tableLayoutPanel1.Controls.Add(this.follow_folder_symlinks_enableCB, 0, 15);
-			this.tableLayoutPanel1.Controls.Add(this.follow_temporary_folders_enableCB, 0, 20);
-			this.tableLayoutPanel1.Controls.Add(this.follow_system_folders_enableCB, 0, 19);
-			this.tableLayoutPanel1.Controls.Add(this.search_inside_hidden_files_enableCB, 0, 17);
-			this.tableLayoutPanel1.Controls.Add(this.follow_hidden_folders_enableCB, 0, 16);
-			this.tableLayoutPanel1.Controls.Add(this.maxSizeLabel, 0, 21);
-			this.tableLayoutPanel1.Controls.Add(this.follow_dot_folders_enableCB, 0, 18);
+			this.tableLayoutPanel1.Controls.Add(this.follow_temporary_folders_enableCB, 0, 21);
+			this.tableLayoutPanel1.Controls.Add(this.follow_system_folders_enableCB, 0, 20);
+			this.tableLayoutPanel1.Controls.Add(this.follow_dot_folders_enableCB, 0, 19);
+			this.tableLayoutPanel1.Controls.Add(this.search_inside_hidden_files_enableCB, 0, 18);
+			this.tableLayoutPanel1.Controls.Add(this.follow_hidden_folders_enableCB, 0, 17);
+			this.tableLayoutPanel1.Controls.Add(this.follow_folder_symlinks_enableCB, 0, 16);
+			this.tableLayoutPanel1.Controls.Add(this.maxSizeLabel, 0, 15);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 22;
+			this.tableLayoutPanel1.RowCount = 23;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -179,7 +180,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(354, 707);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(390, 708);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// tableLayoutPanel8
@@ -196,16 +197,16 @@ namespace DeepFileFind
 			this.tableLayoutPanel8.Name = "tableLayoutPanel8";
 			this.tableLayoutPanel8.RowCount = 1;
 			this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel8.Size = new System.Drawing.Size(348, 35);
+			this.tableLayoutPanel8.Size = new System.Drawing.Size(384, 35);
 			this.tableLayoutPanel8.TabIndex = 110;
 			// 
 			// minSizeTextBox
 			// 
 			this.minSizeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.minSizeTextBox.Location = new System.Drawing.Point(143, 4);
+			this.minSizeTextBox.Location = new System.Drawing.Point(157, 4);
 			this.minSizeTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.minSizeTextBox.Name = "minSizeTextBox";
-			this.minSizeTextBox.Size = new System.Drawing.Size(201, 27);
+			this.minSizeTextBox.Size = new System.Drawing.Size(223, 27);
 			this.minSizeTextBox.TabIndex = 15;
 			// 
 			// minSizeCheckBox
@@ -233,7 +234,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel5.Name = "tableLayoutPanel5";
 			this.tableLayoutPanel5.RowCount = 1;
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel5.Size = new System.Drawing.Size(348, 31);
+			this.tableLayoutPanel5.Size = new System.Drawing.Size(384, 31);
 			this.tableLayoutPanel5.TabIndex = 90;
 			// 
 			// modifiedEndBeforeDateCheckBox
@@ -252,7 +253,7 @@ namespace DeepFileFind
 			// 
 			this.modifiedEndBeforeTimeCheckBox.AutoSize = true;
 			this.modifiedEndBeforeTimeCheckBox.Enabled = false;
-			this.modifiedEndBeforeTimeCheckBox.Location = new System.Drawing.Point(178, 4);
+			this.modifiedEndBeforeTimeCheckBox.Location = new System.Drawing.Point(196, 4);
 			this.modifiedEndBeforeTimeCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedEndBeforeTimeCheckBox.Name = "modifiedEndBeforeTimeCheckBox";
 			this.modifiedEndBeforeTimeCheckBox.Size = new System.Drawing.Size(113, 23);
@@ -270,7 +271,7 @@ namespace DeepFileFind
 			this.modifiedEndBeforeDTPicker.Location = new System.Drawing.Point(4, 365);
 			this.modifiedEndBeforeDTPicker.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedEndBeforeDTPicker.Name = "modifiedEndBeforeDTPicker";
-			this.modifiedEndBeforeDTPicker.Size = new System.Drawing.Size(346, 27);
+			this.modifiedEndBeforeDTPicker.Size = new System.Drawing.Size(382, 27);
 			this.modifiedEndBeforeDTPicker.TabIndex = 100;
 			this.modifiedEndBeforeDTPicker.Value = new System.DateTime(2017, 6, 10, 0, 0, 0, 0);
 			// 
@@ -289,7 +290,7 @@ namespace DeepFileFind
 			this.contentTextBox.Location = new System.Drawing.Point(4, 221);
 			this.contentTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.contentTextBox.Name = "contentTextBox";
-			this.contentTextBox.Size = new System.Drawing.Size(346, 27);
+			this.contentTextBox.Size = new System.Drawing.Size(382, 27);
 			this.contentTextBox.TabIndex = 60;
 			this.contentTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ContentTextBoxKeyDown);
 			// 
@@ -321,7 +322,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
 			this.tableLayoutPanel2.RowCount = 1;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(348, 37);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(384, 37);
 			this.tableLayoutPanel2.TabIndex = 10;
 			// 
 			// findButton
@@ -329,7 +330,7 @@ namespace DeepFileFind
 			this.findButton.AutoSize = true;
 			this.findButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.findButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.findButton.Location = new System.Drawing.Point(225, 4);
+			this.findButton.Location = new System.Drawing.Point(261, 4);
 			this.findButton.Margin = new System.Windows.Forms.Padding(4);
 			this.findButton.Name = "findButton";
 			this.findButton.Size = new System.Drawing.Size(48, 29);
@@ -344,7 +345,7 @@ namespace DeepFileFind
 			this.nameTextBox.Location = new System.Drawing.Point(4, 5);
 			this.nameTextBox.Margin = new System.Windows.Forms.Padding(4);
 			this.nameTextBox.Name = "nameTextBox";
-			this.nameTextBox.Size = new System.Drawing.Size(213, 27);
+			this.nameTextBox.Size = new System.Drawing.Size(249, 27);
 			this.nameTextBox.TabIndex = 0;
 			this.nameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameTextBoxKeyDown);
 			// 
@@ -354,7 +355,7 @@ namespace DeepFileFind
 			this.cancelButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.cancelButton.Enabled = false;
 			this.cancelButton.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.cancelButton.Location = new System.Drawing.Point(281, 4);
+			this.cancelButton.Location = new System.Drawing.Point(317, 4);
 			this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(63, 29);
@@ -373,7 +374,7 @@ namespace DeepFileFind
 			this.modifiedStartDTPicker.Location = new System.Drawing.Point(4, 293);
 			this.modifiedStartDTPicker.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedStartDTPicker.Name = "modifiedStartDTPicker";
-			this.modifiedStartDTPicker.Size = new System.Drawing.Size(346, 27);
+			this.modifiedStartDTPicker.Size = new System.Drawing.Size(382, 27);
 			this.modifiedStartDTPicker.TabIndex = 80;
 			this.modifiedStartDTPicker.Value = new System.DateTime(2017, 4, 10, 0, 0, 0, 0);
 			// 
@@ -384,7 +385,7 @@ namespace DeepFileFind
 			this.locationComboBox.Location = new System.Drawing.Point(4, 120);
 			this.locationComboBox.Margin = new System.Windows.Forms.Padding(4);
 			this.locationComboBox.Name = "locationComboBox";
-			this.locationComboBox.Size = new System.Drawing.Size(346, 27);
+			this.locationComboBox.Size = new System.Drawing.Size(382, 27);
 			this.locationComboBox.TabIndex = 30;
 			// 
 			// label1
@@ -411,7 +412,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
 			this.tableLayoutPanel3.RowCount = 1;
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel3.Size = new System.Drawing.Size(348, 29);
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(384, 29);
 			this.tableLayoutPanel3.TabIndex = 40;
 			this.tableLayoutPanel3.TabStop = true;
 			// 
@@ -420,7 +421,7 @@ namespace DeepFileFind
 			this.recursiveCheckBox.AutoSize = true;
 			this.recursiveCheckBox.Checked = true;
 			this.recursiveCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.recursiveCheckBox.Location = new System.Drawing.Point(72, 3);
+			this.recursiveCheckBox.Location = new System.Drawing.Point(79, 3);
 			this.recursiveCheckBox.Name = "recursiveCheckBox";
 			this.recursiveCheckBox.Size = new System.Drawing.Size(149, 23);
 			this.recursiveCheckBox.TabIndex = 5;
@@ -441,14 +442,14 @@ namespace DeepFileFind
 			this.tableLayoutPanel4.Name = "tableLayoutPanel4";
 			this.tableLayoutPanel4.RowCount = 1;
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tableLayoutPanel4.Size = new System.Drawing.Size(348, 31);
+			this.tableLayoutPanel4.Size = new System.Drawing.Size(384, 31);
 			this.tableLayoutPanel4.TabIndex = 70;
 			// 
 			// modifiedStartTimeCheckBox
 			// 
 			this.modifiedStartTimeCheckBox.AutoSize = true;
 			this.modifiedStartTimeCheckBox.Enabled = false;
-			this.modifiedStartTimeCheckBox.Location = new System.Drawing.Point(178, 4);
+			this.modifiedStartTimeCheckBox.Location = new System.Drawing.Point(196, 4);
 			this.modifiedStartTimeCheckBox.Margin = new System.Windows.Forms.Padding(4);
 			this.modifiedStartTimeCheckBox.Name = "modifiedStartTimeCheckBox";
 			this.modifiedStartTimeCheckBox.Size = new System.Drawing.Size(113, 23);
@@ -482,7 +483,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel6.Name = "tableLayoutPanel6";
 			this.tableLayoutPanel6.RowCount = 1;
 			this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel6.Size = new System.Drawing.Size(348, 29);
+			this.tableLayoutPanel6.Size = new System.Drawing.Size(384, 29);
 			this.tableLayoutPanel6.TabIndex = 20;
 			// 
 			// foldersCheckBox
@@ -490,7 +491,7 @@ namespace DeepFileFind
 			this.foldersCheckBox.AutoSize = true;
 			this.foldersCheckBox.Checked = true;
 			this.foldersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.foldersCheckBox.Location = new System.Drawing.Point(72, 3);
+			this.foldersCheckBox.Location = new System.Drawing.Point(79, 3);
 			this.foldersCheckBox.Name = "foldersCheckBox";
 			this.foldersCheckBox.Size = new System.Drawing.Size(191, 23);
 			this.foldersCheckBox.TabIndex = 3;
@@ -537,24 +538,16 @@ namespace DeepFileFind
 			// 
 			this.minSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.minSizeLabel.AutoSize = true;
-			this.minSizeLabel.Location = new System.Drawing.Point(351, 437);
+			this.minSizeLabel.Location = new System.Drawing.Point(176, 437);
 			this.minSizeLabel.Name = "minSizeLabel";
-			this.minSizeLabel.Size = new System.Drawing.Size(0, 19);
+			this.minSizeLabel.Size = new System.Drawing.Size(211, 19);
 			this.minSizeLabel.TabIndex = 19;
-			// 
-			// maxSizeLabel
-			// 
-			this.maxSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.maxSizeLabel.AutoSize = true;
-			this.maxSizeLabel.Location = new System.Drawing.Point(351, 683);
-			this.maxSizeLabel.Name = "maxSizeLabel";
-			this.maxSizeLabel.Size = new System.Drawing.Size(0, 19);
-			this.maxSizeLabel.TabIndex = 20;
+			this.minSizeLabel.Text = "(bytes, else end in KB, MB, GB)";
 			// 
 			// follow_folder_symlinks_enableCB
 			// 
 			this.follow_folder_symlinks_enableCB.AutoSize = true;
-			this.follow_folder_symlinks_enableCB.Location = new System.Drawing.Point(4, 501);
+			this.follow_folder_symlinks_enableCB.Location = new System.Drawing.Point(4, 520);
 			this.follow_folder_symlinks_enableCB.Margin = new System.Windows.Forms.Padding(4);
 			this.follow_folder_symlinks_enableCB.Name = "follow_folder_symlinks_enableCB";
 			this.follow_folder_symlinks_enableCB.Size = new System.Drawing.Size(303, 23);
@@ -562,43 +555,10 @@ namespace DeepFileFind
 			this.follow_folder_symlinks_enableCB.Text = "Follow folder symlinks (not recommended)";
 			this.follow_folder_symlinks_enableCB.UseVisualStyleBackColor = true;
 			// 
-			// search_inside_hidden_files_enableCB
-			// 
-			this.search_inside_hidden_files_enableCB.AutoSize = true;
-			this.search_inside_hidden_files_enableCB.Location = new System.Drawing.Point(4, 563);
-			this.search_inside_hidden_files_enableCB.Margin = new System.Windows.Forms.Padding(4);
-			this.search_inside_hidden_files_enableCB.Name = "search_inside_hidden_files_enableCB";
-			this.search_inside_hidden_files_enableCB.Size = new System.Drawing.Size(150, 23);
-			this.search_inside_hidden_files_enableCB.TabIndex = 411;
-			this.search_inside_hidden_files_enableCB.Text = "Search hidden files";
-			this.search_inside_hidden_files_enableCB.UseVisualStyleBackColor = true;
-			// 
-			// follow_dot_folders_enableCB
-			// 
-			this.follow_dot_folders_enableCB.AutoSize = true;
-			this.follow_dot_folders_enableCB.Location = new System.Drawing.Point(4, 594);
-			this.follow_dot_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
-			this.follow_dot_folders_enableCB.Name = "follow_dot_folders_enableCB";
-			this.follow_dot_folders_enableCB.Size = new System.Drawing.Size(304, 23);
-			this.follow_dot_folders_enableCB.TabIndex = 411;
-			this.follow_dot_folders_enableCB.Text = "Search \".*\" folders (cross-platform hidden)";
-			this.follow_dot_folders_enableCB.UseVisualStyleBackColor = true;
-			// 
-			// follow_hidden_folders_enableCB
-			// 
-			this.follow_hidden_folders_enableCB.AutoSize = true;
-			this.follow_hidden_folders_enableCB.Location = new System.Drawing.Point(4, 532);
-			this.follow_hidden_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
-			this.follow_hidden_folders_enableCB.Name = "follow_hidden_folders_enableCB";
-			this.follow_hidden_folders_enableCB.Size = new System.Drawing.Size(168, 23);
-			this.follow_hidden_folders_enableCB.TabIndex = 411;
-			this.follow_hidden_folders_enableCB.Text = "Search hidden folders";
-			this.follow_hidden_folders_enableCB.UseVisualStyleBackColor = true;
-			// 
 			// follow_temporary_folders_enableCB
 			// 
 			this.follow_temporary_folders_enableCB.AutoSize = true;
-			this.follow_temporary_folders_enableCB.Location = new System.Drawing.Point(4, 656);
+			this.follow_temporary_folders_enableCB.Location = new System.Drawing.Point(4, 675);
 			this.follow_temporary_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
 			this.follow_temporary_folders_enableCB.Name = "follow_temporary_folders_enableCB";
 			this.follow_temporary_folders_enableCB.Size = new System.Drawing.Size(190, 23);
@@ -609,13 +569,56 @@ namespace DeepFileFind
 			// follow_system_folders_enableCB
 			// 
 			this.follow_system_folders_enableCB.AutoSize = true;
-			this.follow_system_folders_enableCB.Location = new System.Drawing.Point(4, 625);
+			this.follow_system_folders_enableCB.Location = new System.Drawing.Point(4, 644);
 			this.follow_system_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
 			this.follow_system_folders_enableCB.Name = "follow_system_folders_enableCB";
 			this.follow_system_folders_enableCB.Size = new System.Drawing.Size(170, 23);
 			this.follow_system_folders_enableCB.TabIndex = 411;
 			this.follow_system_folders_enableCB.Text = "Search system folders";
 			this.follow_system_folders_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// search_inside_hidden_files_enableCB
+			// 
+			this.search_inside_hidden_files_enableCB.AutoSize = true;
+			this.search_inside_hidden_files_enableCB.Location = new System.Drawing.Point(4, 582);
+			this.search_inside_hidden_files_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.search_inside_hidden_files_enableCB.Name = "search_inside_hidden_files_enableCB";
+			this.search_inside_hidden_files_enableCB.Size = new System.Drawing.Size(150, 23);
+			this.search_inside_hidden_files_enableCB.TabIndex = 411;
+			this.search_inside_hidden_files_enableCB.Text = "Search hidden files";
+			this.search_inside_hidden_files_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// follow_hidden_folders_enableCB
+			// 
+			this.follow_hidden_folders_enableCB.AutoSize = true;
+			this.follow_hidden_folders_enableCB.Location = new System.Drawing.Point(4, 551);
+			this.follow_hidden_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_hidden_folders_enableCB.Name = "follow_hidden_folders_enableCB";
+			this.follow_hidden_folders_enableCB.Size = new System.Drawing.Size(168, 23);
+			this.follow_hidden_folders_enableCB.TabIndex = 411;
+			this.follow_hidden_folders_enableCB.Text = "Search hidden folders";
+			this.follow_hidden_folders_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// maxSizeLabel
+			// 
+			this.maxSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.maxSizeLabel.AutoSize = true;
+			this.maxSizeLabel.Location = new System.Drawing.Point(176, 497);
+			this.maxSizeLabel.Name = "maxSizeLabel";
+			this.maxSizeLabel.Size = new System.Drawing.Size(211, 19);
+			this.maxSizeLabel.TabIndex = 20;
+			this.maxSizeLabel.Text = "(bytes, else end in KB, MB, GB)";
+			// 
+			// follow_dot_folders_enableCB
+			// 
+			this.follow_dot_folders_enableCB.AutoSize = true;
+			this.follow_dot_folders_enableCB.Location = new System.Drawing.Point(4, 613);
+			this.follow_dot_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_dot_folders_enableCB.Name = "follow_dot_folders_enableCB";
+			this.follow_dot_folders_enableCB.Size = new System.Drawing.Size(304, 23);
+			this.follow_dot_folders_enableCB.TabIndex = 411;
+			this.follow_dot_folders_enableCB.Text = "Search \".*\" folders (cross-platform hidden)";
+			this.follow_dot_folders_enableCB.UseVisualStyleBackColor = true;
 			// 
 			// menuStrip1
 			// 
@@ -626,7 +629,7 @@ namespace DeepFileFind
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 3, 0, 3);
-			this.menuStrip1.Size = new System.Drawing.Size(354, 25);
+			this.menuStrip1.Size = new System.Drawing.Size(390, 25);
 			this.menuStrip1.TabIndex = 101;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
@@ -704,7 +707,7 @@ namespace DeepFileFind
 			this.resultsListView.Margin = new System.Windows.Forms.Padding(4);
 			this.resultsListView.MultiSelect = false;
 			this.resultsListView.Name = "resultsListView";
-			this.resultsListView.Size = new System.Drawing.Size(620, 732);
+			this.resultsListView.Size = new System.Drawing.Size(584, 733);
 			this.resultsListView.TabIndex = 100;
 			this.resultsListView.UseCompatibleStateImageBehavior = false;
 			this.resultsListView.View = System.Windows.Forms.View.Details;
@@ -746,7 +749,7 @@ namespace DeepFileFind
 			// statusTextBox
 			// 
 			this.statusTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.statusTextBox.Location = new System.Drawing.Point(0, 732);
+			this.statusTextBox.Location = new System.Drawing.Point(0, 733);
 			this.statusTextBox.Name = "statusTextBox";
 			this.statusTextBox.ReadOnly = true;
 			this.statusTextBox.Size = new System.Drawing.Size(979, 27);
@@ -767,7 +770,7 @@ namespace DeepFileFind
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(979, 759);
+			this.ClientSize = new System.Drawing.Size(979, 760);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.statusTextBox);
 			this.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

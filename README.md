@@ -22,6 +22,9 @@ The goal of this project is to create the most satisfying search program in the 
 
 ## Changes
 (! = important)
+* (2017-12-07) Released 3.0.1
+* (2017-12-07) moved bottom size label to correct place, and made both size labels show usage tip before search
+* (2017-12-07) Released 3.0.0
 * (2017-12-07) (!) show error(s) if can't search (only for directly-specified folders)
 * (2017-12-07) (move settings to DFFSearchOptions and) add interface to change the following settings (as of 2017-10-09 no longer searches for content in them, by design)
 	* dff.search_inside_hidden_files_enable
@@ -84,6 +87,7 @@ used by your application.
 * (2017-04-15) Save content string and name to settings
 
 ## Known Issues	
+* Can't see "bytes" labels in form editor
 * UI is nonresponsive during search except between files
 * Make all savable variables always use dictionary, otherwise MainFormFormClosing and MainFormLoad must have the same list of variables, otherwise the mismatched settings aren't saved & loaded correctly
 * Sort again at end of search
