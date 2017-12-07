@@ -69,6 +69,12 @@ namespace DeepFileFind
 			this.maxSizeCheckBox = new System.Windows.Forms.CheckBox();
 			this.minSizeLabel = new System.Windows.Forms.Label();
 			this.maxSizeLabel = new System.Windows.Forms.Label();
+			this.follow_folder_symlinks_enableCB = new System.Windows.Forms.CheckBox();
+			this.search_inside_hidden_files_enableCB = new System.Windows.Forms.CheckBox();
+			this.follow_dot_folders_enableCB = new System.Windows.Forms.CheckBox();
+			this.follow_hidden_folders_enableCB = new System.Windows.Forms.CheckBox();
+			this.follow_temporary_folders_enableCB = new System.Windows.Forms.CheckBox();
+			this.follow_system_folders_enableCB = new System.Windows.Forms.CheckBox();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.deleteResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,12 +92,6 @@ namespace DeepFileFind
 			this.statusTextBox = new System.Windows.Forms.TextBox();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-			this.follow_folder_symlinks_enableCB = new System.Windows.Forms.CheckBox();
-			this.search_inside_hidden_files_enableCB = new System.Windows.Forms.CheckBox();
-			this.follow_dot_folders_enableCB = new System.Windows.Forms.CheckBox();
-			this.follow_hidden_folders_enableCB = new System.Windows.Forms.CheckBox();
-			this.follow_temporary_folders_enableCB = new System.Windows.Forms.CheckBox();
-			this.follow_system_folders_enableCB = new System.Windows.Forms.CheckBox();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -551,6 +551,72 @@ namespace DeepFileFind
 			this.maxSizeLabel.Size = new System.Drawing.Size(0, 19);
 			this.maxSizeLabel.TabIndex = 20;
 			// 
+			// follow_folder_symlinks_enableCB
+			// 
+			this.follow_folder_symlinks_enableCB.AutoSize = true;
+			this.follow_folder_symlinks_enableCB.Location = new System.Drawing.Point(4, 501);
+			this.follow_folder_symlinks_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_folder_symlinks_enableCB.Name = "follow_folder_symlinks_enableCB";
+			this.follow_folder_symlinks_enableCB.Size = new System.Drawing.Size(303, 23);
+			this.follow_folder_symlinks_enableCB.TabIndex = 411;
+			this.follow_folder_symlinks_enableCB.Text = "Follow folder symlinks (not recommended)";
+			this.follow_folder_symlinks_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// search_inside_hidden_files_enableCB
+			// 
+			this.search_inside_hidden_files_enableCB.AutoSize = true;
+			this.search_inside_hidden_files_enableCB.Location = new System.Drawing.Point(4, 532);
+			this.search_inside_hidden_files_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.search_inside_hidden_files_enableCB.Name = "search_inside_hidden_files_enableCB";
+			this.search_inside_hidden_files_enableCB.Size = new System.Drawing.Size(238, 23);
+			this.search_inside_hidden_files_enableCB.TabIndex = 411;
+			this.search_inside_hidden_files_enableCB.Text = "Search hidden directories && files";
+			this.search_inside_hidden_files_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// follow_dot_folders_enableCB
+			// 
+			this.follow_dot_folders_enableCB.AutoSize = true;
+			this.follow_dot_folders_enableCB.Location = new System.Drawing.Point(4, 563);
+			this.follow_dot_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_dot_folders_enableCB.Name = "follow_dot_folders_enableCB";
+			this.follow_dot_folders_enableCB.Size = new System.Drawing.Size(288, 23);
+			this.follow_dot_folders_enableCB.TabIndex = 411;
+			this.follow_dot_folders_enableCB.Text = "Search \".*\" folders (cross-platform hide)";
+			this.follow_dot_folders_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// follow_hidden_folders_enableCB
+			// 
+			this.follow_hidden_folders_enableCB.AutoSize = true;
+			this.follow_hidden_folders_enableCB.Location = new System.Drawing.Point(4, 594);
+			this.follow_hidden_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_hidden_folders_enableCB.Name = "follow_hidden_folders_enableCB";
+			this.follow_hidden_folders_enableCB.Size = new System.Drawing.Size(168, 23);
+			this.follow_hidden_folders_enableCB.TabIndex = 411;
+			this.follow_hidden_folders_enableCB.Text = "Search hidden folders";
+			this.follow_hidden_folders_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// follow_temporary_folders_enableCB
+			// 
+			this.follow_temporary_folders_enableCB.AutoSize = true;
+			this.follow_temporary_folders_enableCB.Location = new System.Drawing.Point(4, 656);
+			this.follow_temporary_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_temporary_folders_enableCB.Name = "follow_temporary_folders_enableCB";
+			this.follow_temporary_folders_enableCB.Size = new System.Drawing.Size(190, 23);
+			this.follow_temporary_folders_enableCB.TabIndex = 411;
+			this.follow_temporary_folders_enableCB.Text = "Search temporary folders";
+			this.follow_temporary_folders_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// follow_system_folders_enableCB
+			// 
+			this.follow_system_folders_enableCB.AutoSize = true;
+			this.follow_system_folders_enableCB.Location = new System.Drawing.Point(4, 625);
+			this.follow_system_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_system_folders_enableCB.Name = "follow_system_folders_enableCB";
+			this.follow_system_folders_enableCB.Size = new System.Drawing.Size(170, 23);
+			this.follow_system_folders_enableCB.TabIndex = 411;
+			this.follow_system_folders_enableCB.Text = "Search system folders";
+			this.follow_system_folders_enableCB.UseVisualStyleBackColor = true;
+			// 
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -576,24 +642,25 @@ namespace DeepFileFind
 			// 
 			// deleteResultsToolStripMenuItem
 			// 
+			this.deleteResultsToolStripMenuItem.ForeColor = System.Drawing.Color.DarkRed;
 			this.deleteResultsToolStripMenuItem.Name = "deleteResultsToolStripMenuItem";
 			this.deleteResultsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
-			this.deleteResultsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-			this.deleteResultsToolStripMenuItem.Text = "Delete Results";
+			this.deleteResultsToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+			this.deleteResultsToolStripMenuItem.Text = "Delete All Files Listed";
 			this.deleteResultsToolStripMenuItem.Click += new System.EventHandler(this.DeleteResultsToolStripMenuItemClick);
 			// 
 			// saveResultsToolStripMenuItem
 			// 
 			this.saveResultsToolStripMenuItem.Name = "saveResultsToolStripMenuItem";
 			this.saveResultsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.saveResultsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-			this.saveResultsToolStripMenuItem.Text = "&Save Results";
+			this.saveResultsToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+			this.saveResultsToolStripMenuItem.Text = "&Save List";
 			this.saveResultsToolStripMenuItem.Click += new System.EventHandler(this.SaveResultsToolStripMenuItemClick);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
 			this.exitToolStripMenuItem.Text = "E&xit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItemClick);
 			// 
@@ -692,73 +759,9 @@ namespace DeepFileFind
 			// 
 			// saveFileDialog
 			// 
+			this.saveFileDialog.DefaultExt = "txt";
+			this.saveFileDialog.Filter = "Text File (*.txt)|*.txt|All Files (*.*)|*.*";
 			this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveFileDialogFileOk);
-			// 
-			// follow_folder_symlinks_enableCB
-			// 
-			this.follow_folder_symlinks_enableCB.AutoSize = true;
-			this.follow_folder_symlinks_enableCB.Location = new System.Drawing.Point(4, 501);
-			this.follow_folder_symlinks_enableCB.Margin = new System.Windows.Forms.Padding(4);
-			this.follow_folder_symlinks_enableCB.Name = "follow_folder_symlinks_enableCB";
-			this.follow_folder_symlinks_enableCB.Size = new System.Drawing.Size(230, 23);
-			this.follow_folder_symlinks_enableCB.TabIndex = 411;
-			this.follow_folder_symlinks_enableCB.Text = "follow_folder_symlinks_enable";
-			this.follow_folder_symlinks_enableCB.UseVisualStyleBackColor = true;
-			// 
-			// search_inside_hidden_files_enableCB
-			// 
-			this.search_inside_hidden_files_enableCB.AutoSize = true;
-			this.search_inside_hidden_files_enableCB.Location = new System.Drawing.Point(4, 532);
-			this.search_inside_hidden_files_enableCB.Margin = new System.Windows.Forms.Padding(4);
-			this.search_inside_hidden_files_enableCB.Name = "search_inside_hidden_files_enableCB";
-			this.search_inside_hidden_files_enableCB.Size = new System.Drawing.Size(257, 23);
-			this.search_inside_hidden_files_enableCB.TabIndex = 411;
-			this.search_inside_hidden_files_enableCB.Text = "search_inside_hidden_files_enable";
-			this.search_inside_hidden_files_enableCB.UseVisualStyleBackColor = true;
-			// 
-			// follow_dot_folders_enableCB
-			// 
-			this.follow_dot_folders_enableCB.AutoSize = true;
-			this.follow_dot_folders_enableCB.Location = new System.Drawing.Point(4, 563);
-			this.follow_dot_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
-			this.follow_dot_folders_enableCB.Name = "follow_dot_folders_enableCB";
-			this.follow_dot_folders_enableCB.Size = new System.Drawing.Size(202, 23);
-			this.follow_dot_folders_enableCB.TabIndex = 411;
-			this.follow_dot_folders_enableCB.Text = "follow_dot_folders_enable";
-			this.follow_dot_folders_enableCB.UseVisualStyleBackColor = true;
-			// 
-			// follow_hidden_folders_enableCB
-			// 
-			this.follow_hidden_folders_enableCB.AutoSize = true;
-			this.follow_hidden_folders_enableCB.Location = new System.Drawing.Point(4, 594);
-			this.follow_hidden_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
-			this.follow_hidden_folders_enableCB.Name = "follow_hidden_folders_enableCB";
-			this.follow_hidden_folders_enableCB.Size = new System.Drawing.Size(225, 23);
-			this.follow_hidden_folders_enableCB.TabIndex = 411;
-			this.follow_hidden_folders_enableCB.Text = "follow_hidden_folders_enable";
-			this.follow_hidden_folders_enableCB.UseVisualStyleBackColor = true;
-			// 
-			// follow_temporary_folders_enableCB
-			// 
-			this.follow_temporary_folders_enableCB.AutoSize = true;
-			this.follow_temporary_folders_enableCB.Location = new System.Drawing.Point(4, 656);
-			this.follow_temporary_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
-			this.follow_temporary_folders_enableCB.Name = "follow_temporary_folders_enableCB";
-			this.follow_temporary_folders_enableCB.Size = new System.Drawing.Size(247, 23);
-			this.follow_temporary_folders_enableCB.TabIndex = 411;
-			this.follow_temporary_folders_enableCB.Text = "follow_temporary_folders_enable";
-			this.follow_temporary_folders_enableCB.UseVisualStyleBackColor = true;
-			// 
-			// follow_system_folders_enableCB
-			// 
-			this.follow_system_folders_enableCB.AutoSize = true;
-			this.follow_system_folders_enableCB.Location = new System.Drawing.Point(4, 625);
-			this.follow_system_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
-			this.follow_system_folders_enableCB.Name = "follow_system_folders_enableCB";
-			this.follow_system_folders_enableCB.Size = new System.Drawing.Size(227, 23);
-			this.follow_system_folders_enableCB.TabIndex = 411;
-			this.follow_system_folders_enableCB.Text = "follow_system_folders_enable";
-			this.follow_system_folders_enableCB.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 

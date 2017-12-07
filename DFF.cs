@@ -231,6 +231,7 @@ namespace DeepFileFind
 		public void ExecuteSearch() {
 			finished = false;
 			options.DumpToDebug();
+			string err = null;
 			if (options.modified_endbefore_date_enable) {
 				if (!options.modified_endbefore_time_enable) {
 					options.modified_endbefore_datetime_utc = DateTime.FromFileTimeUtc((new DateTime(options.modified_endbefore_datetime_utc.Year, options.modified_endbefore_datetime_utc.Month, options.modified_endbefore_datetime_utc.Day, 0,0,0)).ToFileTimeUtc());
@@ -250,12 +251,18 @@ namespace DeepFileFind
 				if (!enable) break;
                 //NOTE: user-entered Locations are considered depth 0;
                 Console.Error.WriteLine("    - "+major_di.FullName);
-                ExecuteSearchRecursively(major_di, 0);
+                string this_err = ExecuteSearchRecursively(major_di, 0);
+                if (this_err!=null) {
+                	if (err==null) err = "";
+                	else err+="; ";
+                	err += this_err;
+                }
 			}
 			finished = true;
 			if (options.statusTextBox!=null) {
 				if (enable) {
 					options.statusTextBox.Text="Finished {";
+					if (err!=null) options.statusTextBox.Text+=" error:"+err+";";
 					if (options.modified_start_date_enable) options.statusTextBox.Text+=" ModStarting:"+options.modified_start_datetime_utc.ToString(DFF.datetime_sortable_format_string)+";";
 					if (options.modified_endbefore_date_enable) options.statusTextBox.Text+=" ModBefore:"+options.modified_endbefore_datetime_utc.ToString(DFF.datetime_sortable_format_string)+";";
 					options.statusTextBox.Text+="}";
@@ -264,7 +271,8 @@ namespace DeepFileFind
 			}
 		}
 
-		private void ExecuteSearchRecursively(DirectoryInfo major_di, int depth) {
+		private string ExecuteSearchRecursively(DirectoryInfo major_di, int depth) {
+			string err = null;
             if (major_di!=null) {
 				if (get_is_folder_searchable(major_di, true)) {
 	                Console.WriteLine ("(depth=" + depth.ToString () + ") Searching in " + major_di.Name);
@@ -349,17 +357,26 @@ namespace DeepFileFind
 	                                    }
 	                                }
 	                            } catch (Exception exn) {
+	                            	if (depth==0) err = exn.ToString();
 	                                Console.Error.WriteLine ("Could not finish accessing subdirectory '" + this_di.FullName + "': " + exn.ToString ());
 	                            }
 	                        }
 	                    }
 	                } catch (Exception exn) {
+	                	if (depth==0) err = exn.ToString();
 	                    Console.Error.WriteLine ("Could not finish accessing folder '" + major_di.FullName + "': " + exn.ToString ());
 	                }
 				}
-			 	else Console.Error.WriteLine("get_is_folder_searchable is false for " + major_di.FullName);
+				else {
+					if (depth==0) err = "not a normal folder";
+					Console.Error.WriteLine("get_is_folder_searchable is false for " + major_di.FullName);
+				}
             }//end if get_is_folder_searchable
-            else Console.Error.WriteLine("Null for " + major_di.FullName);
+			else {
+				if (depth==0) err = "null path";
+				Console.Error.WriteLine("Null for " + major_di.FullName);
+			}
+			return err;
 		}//end ExecuteSearchRecursively
 		
 

@@ -22,6 +22,7 @@ The goal of this project is to create the most satisfying search program in the 
 
 ## Changes
 (! = important)
+* (2017-12-07) (!) show error(s) if can't search (only for directly-specified folders)
 * (2017-12-07) (move settings to DFFSearchOptions and) add interface to change the following settings (as of 2017-10-09 no longer searches for content in them, by design)
 	* dff.search_inside_hidden_files_enable
 	* dff.follow_system_folders_enable

@@ -732,11 +732,17 @@ namespace DeepFileFind
 				for (int i=this.resultsListView.Items.Count-1; i>=0; i--) {
 					ListViewItem item = resultsListView.Items[i];
 					try {
-						File.Delete(item.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
-						resultsListView.Items.RemoveAt(i);
+						if (File.Exists(item.SubItems[RESULT_PATH_COLUMN_INDEX].Text)) {
+							File.Delete(item.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
+							resultsListView.Items.RemoveAt(i);
+						}
+						else {
+							if (Directory.Exists(item.SubItems[RESULT_PATH_COLUMN_INDEX].Text)) Console.Error.WriteLine("      purposely skipping delete since is a directory: "+item.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
+							else Console.Error.WriteLine("      purposely skipping delete since doesn't exist: "+item.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
+						}
 					}
 					catch (Exception exn) {
-						Console.Error.WriteLine("Could not finish deleting file '"+item.SubItems[RESULT_PATH_COLUMN_INDEX].Text+"':"+exn.ToString());
+						Console.Error.WriteLine("      Could not finish deleting file '"+item.SubItems[RESULT_PATH_COLUMN_INDEX].Text+"':"+exn.ToString());
 					}
 				}
 			}
@@ -746,6 +752,8 @@ namespace DeepFileFind
 		{
 			DialogResult dr = saveFileDialog.ShowDialog();
 			if (dr == DialogResult.OK) {
+				if (saveFileDialog.FilterIndex==0&&!saveFileDialog.FileName.ToLower().EndsWith(".txt"))
+					saveFileDialog.FileName += ".txt";
 				StreamWriter outs = new StreamWriter(saveFileDialog.FileName);
 				for (int i=this.resultsListView.Items.Count-1; i>=0; i--) {
 					outs.WriteLine(this.resultsListView.Items[i].SubItems[RESULT_PATH_COLUMN_INDEX].Text);
