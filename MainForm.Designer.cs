@@ -146,13 +146,13 @@ namespace DeepFileFind
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel6, 0, 2);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel7, 0, 14);
 			this.tableLayoutPanel1.Controls.Add(this.minSizeLabel, 0, 13);
-			this.tableLayoutPanel1.Controls.Add(this.maxSizeLabel, 0, 21);
 			this.tableLayoutPanel1.Controls.Add(this.follow_folder_symlinks_enableCB, 0, 15);
-			this.tableLayoutPanel1.Controls.Add(this.search_inside_hidden_files_enableCB, 0, 16);
-			this.tableLayoutPanel1.Controls.Add(this.follow_dot_folders_enableCB, 0, 17);
-			this.tableLayoutPanel1.Controls.Add(this.follow_hidden_folders_enableCB, 0, 18);
 			this.tableLayoutPanel1.Controls.Add(this.follow_temporary_folders_enableCB, 0, 20);
 			this.tableLayoutPanel1.Controls.Add(this.follow_system_folders_enableCB, 0, 19);
+			this.tableLayoutPanel1.Controls.Add(this.search_inside_hidden_files_enableCB, 0, 17);
+			this.tableLayoutPanel1.Controls.Add(this.follow_hidden_folders_enableCB, 0, 16);
+			this.tableLayoutPanel1.Controls.Add(this.maxSizeLabel, 0, 21);
+			this.tableLayoutPanel1.Controls.Add(this.follow_dot_folders_enableCB, 0, 18);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -565,29 +565,29 @@ namespace DeepFileFind
 			// search_inside_hidden_files_enableCB
 			// 
 			this.search_inside_hidden_files_enableCB.AutoSize = true;
-			this.search_inside_hidden_files_enableCB.Location = new System.Drawing.Point(4, 532);
+			this.search_inside_hidden_files_enableCB.Location = new System.Drawing.Point(4, 563);
 			this.search_inside_hidden_files_enableCB.Margin = new System.Windows.Forms.Padding(4);
 			this.search_inside_hidden_files_enableCB.Name = "search_inside_hidden_files_enableCB";
-			this.search_inside_hidden_files_enableCB.Size = new System.Drawing.Size(238, 23);
+			this.search_inside_hidden_files_enableCB.Size = new System.Drawing.Size(150, 23);
 			this.search_inside_hidden_files_enableCB.TabIndex = 411;
-			this.search_inside_hidden_files_enableCB.Text = "Search hidden directories && files";
+			this.search_inside_hidden_files_enableCB.Text = "Search hidden files";
 			this.search_inside_hidden_files_enableCB.UseVisualStyleBackColor = true;
 			// 
 			// follow_dot_folders_enableCB
 			// 
 			this.follow_dot_folders_enableCB.AutoSize = true;
-			this.follow_dot_folders_enableCB.Location = new System.Drawing.Point(4, 563);
+			this.follow_dot_folders_enableCB.Location = new System.Drawing.Point(4, 594);
 			this.follow_dot_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
 			this.follow_dot_folders_enableCB.Name = "follow_dot_folders_enableCB";
-			this.follow_dot_folders_enableCB.Size = new System.Drawing.Size(288, 23);
+			this.follow_dot_folders_enableCB.Size = new System.Drawing.Size(304, 23);
 			this.follow_dot_folders_enableCB.TabIndex = 411;
-			this.follow_dot_folders_enableCB.Text = "Search \".*\" folders (cross-platform hide)";
+			this.follow_dot_folders_enableCB.Text = "Search \".*\" folders (cross-platform hidden)";
 			this.follow_dot_folders_enableCB.UseVisualStyleBackColor = true;
 			// 
 			// follow_hidden_folders_enableCB
 			// 
 			this.follow_hidden_folders_enableCB.AutoSize = true;
-			this.follow_hidden_folders_enableCB.Location = new System.Drawing.Point(4, 594);
+			this.follow_hidden_folders_enableCB.Location = new System.Drawing.Point(4, 532);
 			this.follow_hidden_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
 			this.follow_hidden_folders_enableCB.Name = "follow_hidden_folders_enableCB";
 			this.follow_hidden_folders_enableCB.Size = new System.Drawing.Size(168, 23);

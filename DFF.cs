@@ -85,7 +85,6 @@ namespace DeepFileFind
 		
 		public static bool get_file_contains(FileInfo this_info, string content_string) {
 			bool result=false;
-			
 			StreamReader ins = null;
 			string content_string_Substring=null;
 			if (!string.IsNullOrEmpty(content_string)) {
@@ -135,7 +134,7 @@ namespace DeepFileFind
                                 if (!options.modified_start_date_enable || (this_info.LastWriteTime.ToUniversalTime () >= options.modified_start_datetime_utc.ToUniversalTime ())) {
                                     if (!options.min_size_enable || (this_info.Length >= options.min_size)) {
                                         if (!options.max_size_enable || (this_info.Length <= options.max_size)) {
-                                            if (string.IsNullOrEmpty (options.content_string) || get_file_contains (this_info, options.content_string)) {
+                            				if (string.IsNullOrEmpty(options.content_string) || (get_is_content_searchable(this_info.FullName)&&get_file_contains(this_info, options.content_string))) {
                                                 result = true;
                                             }
                                         }

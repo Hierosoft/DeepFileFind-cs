@@ -3,7 +3,7 @@ The goal of this project is to create the most satisfying search program in the 
 
 * Has features you need
 * Isn't annoying
-* Is GPL (free as in freedom, forever--redistribute modify according to the terms as you wish)
+* Is GPL (free as in freedom, forever--redistribute modify according to the terms as you wish). Full source code of original project is at <https://github.com/expertmm/DeepFileFind/releases>.
 
 --in other words, it's a program like nothing before it.
 
@@ -32,7 +32,8 @@ The goal of this project is to create the most satisfying search program in the 
 * (2017-12-07) (move settings to DFFSearchOptions and) add interface to change the following settings (as of 2017-10-09 booleans exist, but due to their starting values, the behavior of the program is the same as before in these ways):
 	* dff.follow_dot_folders_enable //on by default (folders starting with '.')
 	* dff.follow_hidden_folders_enable //on by default
-* (2017-12-07) (!) (get_is_content_searchable) allow searching content in files with the following attributes: System; Compressed (OS-level compression); Temporary (wasn't blocking search through caches anyway); Archive (just OS-level marker for files changed since backup)
+* (2017-12-07) (!) (check correct attributes resulting in all possible results and skipping the correctly identified unusable files & directories : ( & get_is_content_searchable) allow searching content in files with the following attributes: System; Compressed (OS-level compression); Temporary (wasn't blocking search through caches anyway); Archive (just OS-level marker for files changed since backup))
+	* (2017-12-07) (!) (actually use get_is_content_searchable before calling get_file_contains) content search stability
 * (2017-12-07) (!) (recursion prevention should ignore Device and System check if location is specified in search box) allow searching drive roots (such as / or C:)
 	* find folders if "Include folders..." is checked but criteria is "*" or "*.*" (or empty).
 * (2017-12-01) (!) (treat blank search filename as "*") fix silent failure (no results) on blank filename, such as when doing search by only criteria other than name
