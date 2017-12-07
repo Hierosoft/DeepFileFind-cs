@@ -22,6 +22,18 @@ The goal of this project is to create the most satisfying search program in the 
 
 ## Changes
 (! = important)
+* (2017-12-07) (move settings to DFFSearchOptions and) add interface to change the following settings (as of 2017-10-09 no longer searches for content in them, by design)
+	* dff.search_inside_hidden_files_enable
+	* dff.follow_system_folders_enable
+* (2017-12-07) (move settings to DFFSearchOptions and) add interface to change the following settings (as of 2017-10-09 no longer recurses, by design)
+	* dff.follow_folder_symlinks_enable
+	* dff.follow_temporary_folders_enable
+* (2017-12-07) (move settings to DFFSearchOptions and) add interface to change the following settings (as of 2017-10-09 booleans exist, but due to their starting values, the behavior of the program is the same as before in these ways):
+	* dff.follow_dot_folders_enable //on by default (folders starting with '.')
+	* dff.follow_hidden_folders_enable //on by default
+* (2017-12-07) (!) (get_is_content_searchable) allow searching content in files with the following attributes: System; Compressed (OS-level compression); Temporary (wasn't blocking search through caches anyway); Archive (just OS-level marker for files changed since backup)
+* (2017-12-07) (!) (recursion prevention should ignore Device and System check if location is specified in search box) allow searching drive roots (such as / or C:)
+	* find folders if "Include folders..." is checked but criteria is "*" or "*.*" (or empty).
 * (2017-12-01) (!) (treat blank search filename as "*") fix silent failure (no results) on blank filename, such as when doing search by only criteria other than name
 * (2017-12-01) remove (wrong) version number from about box
 * (2017-10-09) (!) removed use of HasAttrib for FileAttributes objects in order to compile on .NET 3.5 for Windows
@@ -69,19 +81,8 @@ used by your application.
 * (2017-04-15) save location at top of recent list; use most recent location on startup; only set a generated value for location on startup if no locations were found
 * (2017-04-15) Save content string and name to settings
 
-## Known Issues
-* add interface to change the following settings (as of 2017-10-09 no longer searches for content in them, by design)
-	* dff.search_inside_hidden_files_enable
-	* dff.follow_system_folders_enable
-* add interface to change the following settings (as of 2017-10-09 no longer recurses, by design)
-	* dff.follow_folder_symlinks_enable
-	* dff.follow_temporary_folders_enable
-* add interface to change the following settings (as of 2017-10-09 booleans exist, but due to their starting values, the behavior of the program is the same as before in these ways):
-	* dff.follow_dot_folders_enable //on by default (folders starting with '.')
-	* dff.follow_hidden_folders_enable //on by default
-	
+## Known Issues	
 * UI is nonresponsive during search except between files
-* Finds no folders if "Include folders..." is checked but criteria is "*" or "*.*" (or empty).
 * Make all savable variables always use dictionary, otherwise MainFormFormClosing and MainFormLoad must have the same list of variables, otherwise the mismatched settings aren't saved & loaded correctly
 * Sort again at end of search
 * Fix flicker on list when each file is found

@@ -13,6 +13,7 @@ using System.Collections;
 using System.Threading;
 using System.Security.AccessControl; //for FileSystemAccessRule in mscorlib as per http://docs.go-mono.com/index.aspx?link=T%3ASystem.Security.AccessControl.FileSystemAccessRule
 //using Mono.Unix;
+//using System.Diagnostics; //System.Diagnostics.Debug.WriteLine etc
 
 namespace DeepFileFind
 {
@@ -40,35 +41,28 @@ namespace DeepFileFind
 		public bool enable = true;
 		public bool finished = false;
 
-        public bool follow_folder_symlinks_enable = false;
-		public bool search_inside_hidden_files_enable = false;
-		public bool follow_dot_folders_enable = true;
-        public bool follow_hidden_folders_enable = true;
-		public bool follow_system_folders_enable = false;
-		public bool follow_temporary_folders_enable = false;
-
 		public static bool newline_detected_as_space_enable=false;
 		public static readonly string datetime_sortable_format_string = "yyyy-MM-dd HH:mm";
 		#region cache
 		private string options_name_string_tolower = null;
 		#endregion cache
-		public bool get_is_content_searchable (string path)
+		public bool get_is_content_searchable(string path)
 		{
 			//see also etc/deprecated_cs.md for other ideas 
 			bool result = true;
             try {
                 //for another way (ioctl from libc, see also etc/FileProvider.cs
                 FileAttributes attributes = File.GetAttributes(path);
-                if ((attributes & FileAttributes.Archive)==FileAttributes.Archive) result = false;
-                else if ((attributes & FileAttributes.Compressed) == FileAttributes.Compressed) result = false;
-				else if ((attributes & FileAttributes.Device) == FileAttributes.Device) result = false;
+                if ((attributes & FileAttributes.Device) == FileAttributes.Device) result = false;
+                //else if ((attributes & FileAttributes.Archive)==FileAttributes.Archive) result = false;
+                //else if ((attributes & FileAttributes.Compressed) == FileAttributes.Compressed) result = false; //just OS-level compression so its ok
 				else if ((attributes & FileAttributes.Directory) == FileAttributes.Directory) result = false;
 				//else if ((attributes & FileAttributes.Encrypted) == FileAttributes.Encrypted) result = false; //ok since I can probably try
 				//else if ((attributes & FileAttributes.IntegrityStream) == FileAttributes.IntegrityStream) result = false;
-				else if ((attributes & FileAttributes.System) == FileAttributes.System) result = false;
-                else if ((attributes & FileAttributes.Temporary) == FileAttributes.Temporary) result = false;
+				//else if ((attributes & FileAttributes.System) == FileAttributes.System) result = false;
+                //else if ((attributes & FileAttributes.Temporary) == FileAttributes.Temporary) result = false;
 				else if ((attributes & FileAttributes.Offline) == FileAttributes.Offline) result = false;
-				if (!search_inside_hidden_files_enable && ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden)) result = false;
+				if (!options.search_inside_hidden_files_enable && ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden)) result = false;
 			} catch { 
                 result = false;
             }
@@ -175,7 +169,7 @@ namespace DeepFileFind
             } else Console.Error.WriteLine ("get_is_match(DirectoryInfo):null");
 			return result;
 		}
-		private bool get_is_folder_searchable (DirectoryInfo this_di)
+		private bool get_is_folder_searchable(DirectoryInfo this_di, bool device_allow_enable)
 		{
 			bool result = false;
 			FileAttributes attributes = FileAttributes.Normal;
@@ -191,28 +185,39 @@ namespace DeepFileFind
                         //							|| !follow_system_folders_enable
                         //							|| !follow_hidden_folders_enable
                         //							|| !follow_temporary_folders_enable
-                        //						   ) 
-                        attributes = File.GetAttributes (this_di.FullName);
+                        //						   )
+                        attributes = File.GetAttributes(this_di.FullName);
                         if (options.recursive_enable
-                            && (follow_folder_symlinks_enable || !((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint))
-                            && (follow_system_folders_enable || !((attributes & FileAttributes.System) == FileAttributes.System))
-                            && (follow_hidden_folders_enable || !((attributes & FileAttributes.Hidden) == FileAttributes.Hidden))
-                            && (follow_temporary_folders_enable || !((attributes & FileAttributes.Temporary) == FileAttributes.Temporary))
-                            && (follow_dot_folders_enable || !this_di.Name.StartsWith ("."))
+                            && (options.follow_folder_symlinks_enable || !((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint))
+                            && ((options.follow_system_folders_enable || device_allow_enable) || !((attributes & FileAttributes.System) == FileAttributes.System))
+                            && (options.follow_hidden_folders_enable || !((attributes & FileAttributes.Hidden) == FileAttributes.Hidden))
+                            && (options.follow_temporary_folders_enable || !((attributes & FileAttributes.Temporary) == FileAttributes.Temporary))
+                            && (device_allow_enable || !((attributes & FileAttributes.Device) == FileAttributes.Device))
+                            && (options.follow_dot_folders_enable || !this_di.Name.StartsWith ("."))
                             && !((attributes & FileAttributes.Offline) == FileAttributes.Offline)
-                            && !((attributes & FileAttributes.Device) == FileAttributes.Device)
                            ) {
-
                             result = true;
                         }
-                    } else {
-                        Console.Error.WriteLine ("Skipped non-folderlike name: " + this_di.Name);
+                        else {
+                        	if ((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint) Console.Error.WriteLine("    not searchable since ReparsePoint: "+this_di.FullName);
+                        	else if ((attributes & FileAttributes.System) == FileAttributes.System) Console.Error.WriteLine("    not searchable since System: "+this_di.FullName);
+                        	else if ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden) Console.Error.WriteLine("    not searchable since Hidden: "+this_di.FullName);
+                        	else if ((attributes & FileAttributes.Temporary) == FileAttributes.Temporary) Console.Error.WriteLine("    not searchable since Temporary: "+this_di.FullName);
+                        	else if ((attributes & FileAttributes.Offline) == FileAttributes.Offline) Console.Error.WriteLine("    not searchable since Offline: "+this_di.FullName);
+                        	else if ((attributes & FileAttributes.Device) == FileAttributes.Device) Console.Error.WriteLine("    not searchable since Device: "+this_di.FullName);
+                        	else Console.Error.WriteLine("    not searchable for unknown reason (this should never happen)");
+                        }
                     }
-				} catch {
-					Console.Error.WriteLine ("Could not finish get_is_folder_searchable " + this_di.FullName);
+					else {
+                        Console.Error.WriteLine("Skipped non-folderlike name: " + this_di.Name);
+                    }
+				}
+				catch {
+					Console.Error.WriteLine("Could not finish get_is_folder_searchable " + this_di.FullName);
 					//ignore since probably a privelege issue or non-folder specified
 				}
-			} else Console.Error.WriteLine ("get_is_folder_searchable:null");
+			}
+			else Console.Error.WriteLine("get_is_folder_searchable:null");
 			return result;
 		}
 		/// <summary>
@@ -225,7 +230,7 @@ namespace DeepFileFind
 		/// <returns>If resultsListView is present, returns null. Otherwise, returns ArrayList containing strings (directory and file paths)</returns>
 		public void ExecuteSearch() {
 			finished = false;
-			options.DumpToConsole();
+			options.DumpToDebug();
 			if (options.modified_endbefore_date_enable) {
 				if (!options.modified_endbefore_time_enable) {
 					options.modified_endbefore_datetime_utc = DateTime.FromFileTimeUtc((new DateTime(options.modified_endbefore_datetime_utc.Year, options.modified_endbefore_datetime_utc.Month, options.modified_endbefore_datetime_utc.Day, 0,0,0)).ToFileTimeUtc());
@@ -240,10 +245,12 @@ namespace DeepFileFind
 			if (resultsListView!=null) resultsListView.Items.Clear();
 			else results = new ArrayList();
 			options_name_string_tolower = (options.name_string!=null) ? options.name_string.ToLower() : null;
+			Console.Error.WriteLine("  Searching in "+options.start_directoryinfos.Count+" DirectoryInfo(s)");
 			foreach (DirectoryInfo major_di in options.start_directoryinfos) {
 				if (!enable) break;
                 //NOTE: user-entered Locations are considered depth 0;
-                ExecuteSearchRecursively (major_di, 0);
+                Console.Error.WriteLine("    - "+major_di.FullName);
+                ExecuteSearchRecursively(major_di, 0);
 			}
 			finished = true;
 			if (options.statusTextBox!=null) {
@@ -258,98 +265,101 @@ namespace DeepFileFind
 		}
 
 		private void ExecuteSearchRecursively(DirectoryInfo major_di, int depth) {
-            if (major_di!=null && get_is_folder_searchable (major_di)) {
-                Console.WriteLine ("(depth=" + depth.ToString () + ") Searching in " + major_di.Name);
-                //crashes if on different thread:
-                if (options.statusTextBox != null) options.statusTextBox.Text = major_di.FullName;
-                Application.DoEvents ();
-                //Console.Error.WriteLine(major_di.FullName);
-                if (resultsListView != null) {
-                    if (COLUMN_PATH < 0 && COLUMN_PATH != COLUMNFLAG_IGNORE) {
-                        COLUMN_PATH = resultsListView.Columns.IndexOfKey ("Path");
-                        if (COLUMN_PATH < 0) COLUMN_PATH = COLUMNFLAG_IGNORE;
-                    }
-                    if (COLUMN_NAME < 0 && COLUMN_NAME != COLUMNFLAG_IGNORE) {
-                        COLUMN_NAME = resultsListView.Columns.IndexOfKey ("Name");
-                        if (COLUMN_NAME < 0) COLUMN_NAME = COLUMNFLAG_IGNORE;
-                    }
-                    if (COLUMN_MODIFIED < 0 && COLUMN_MODIFIED != COLUMNFLAG_IGNORE) {
-                        COLUMN_MODIFIED = resultsListView.Columns.IndexOfKey ("Modified");
-                        if (COLUMN_MODIFIED < 0) COLUMN_MODIFIED = COLUMNFLAG_IGNORE;
-                    }
-                    if (COLUMN_CREATED < 0 && COLUMN_CREATED != COLUMNFLAG_IGNORE) {
-                        COLUMN_CREATED = resultsListView.Columns.IndexOfKey ("Created");
-                        if (COLUMN_CREATED < 0) COLUMN_CREATED = COLUMNFLAG_IGNORE;
-                    }
-                    if (COLUMN_EXTENSION < 0 && COLUMN_EXTENSION != COLUMNFLAG_IGNORE) {
-                        COLUMN_EXTENSION = resultsListView.Columns.IndexOfKey ("Extension");
-                        if (COLUMN_EXTENSION < 0) COLUMN_EXTENSION = COLUMNFLAG_IGNORE;
-                    }
-                }
-
-                try {
-                    if (string.IsNullOrEmpty(this.options.name_string)) this.options.name_string = "*"; //prevents ContainsAny crash on next line
-                    bool filenames_prefiltered_enable = ContainsAny (this.options.name_string, wildcards);
-                    FileInfo [] major_di_files = filenames_prefiltered_enable ? major_di.GetFiles (this.options.name_string) : major_di.GetFiles ();
-                    //if (major_di_files!=null) {
-                    //	if (major_di_files.Length<=1) Console.Error.WriteLine(major_di_files.Length.ToString()+" file(s) in "+major_di.FullName);
-                    //}
-                    //else Console.Error.WriteLine("Could not list files in "+major_di.FullName);
-                    foreach (FileInfo this_fi in major_di_files) {
-                        if (!enable) break;
-                        try {
-                            if (get_is_match(this_fi, filenames_prefiltered_enable)) {
-                                if (resultsListView != null) {
-                                    string [] fields = new String [resultsListView.Columns.Count];
-                                    if (COLUMN_PATH >= 0) fields [COLUMN_PATH] = this_fi.FullName;
-                                    if (COLUMN_NAME >= 0) fields [COLUMN_NAME] = this_fi.Name;
-                                    if (COLUMN_MODIFIED >= 0) fields [COLUMN_MODIFIED] = this_fi.LastWriteTime.ToString (DFF.datetime_sortable_format_string);
-                                    if (COLUMN_CREATED >= 0) fields [COLUMN_CREATED] = this_fi.CreationTime.ToString (DFF.datetime_sortable_format_string);
-                                    if (COLUMN_EXTENSION >= 0) fields [COLUMN_EXTENSION] = this_fi.Extension;
-                                    resultsListView.Items.Add (new ListViewItem (fields));
-                                    Application.DoEvents ();
-                                }
-                                if (results != null) results.Add (this_fi.FullName);
-                            }
-                            //else Console.Error.WriteLine(this_fi.FullName+" does not match");
-                        } catch (Exception exn) {
-                            Console.Error.WriteLine ("Could not finish accessing file '" + this_fi.FullName + "': " + exn.ToString ());
-                        }
-                    }
-                    if (enable) {
-                        foreach (DirectoryInfo this_di in major_di.GetDirectories ()) {
-                            if (!enable) break;
-                            try {
-                                if (options.include_folders_as_results_enable) {
-                                    if (get_is_match (this_di)) {
-                                        if (resultsListView != null) {
-                                            string [] fields = new String [resultsListView.Columns.Count];
-                                            if (COLUMN_PATH >= 0) fields [COLUMN_PATH] = this_di.FullName;
-                                            if (COLUMN_NAME >= 0) fields [COLUMN_NAME] = this_di.Name;
-                                            if (COLUMN_MODIFIED >= 0) fields [COLUMN_MODIFIED] = this_di.LastWriteTime.ToString (DFF.datetime_sortable_format_string);
-                                            if (COLUMN_CREATED >= 0) fields [COLUMN_CREATED] = this_di.CreationTime.ToString (DFF.datetime_sortable_format_string);
-                                            if (COLUMN_EXTENSION >= 0) fields [COLUMN_EXTENSION] = "<Folder>";
-                                            resultsListView.Items.Add (new ListViewItem (fields));
-                                            Application.DoEvents ();
-                                        }
-                                        if (results != null) results.Add (this_di.FullName);
-                                    }
-                                }
-                                if (this.non_directory_paths == null || Array.IndexOf (this.non_directory_paths, this_di.FullName) <= -1) {
-                                    if (get_is_folder_searchable(this_di)) {
-                                        ExecuteSearchRecursively(this_di, depth+1);
-                                    }
-                                }
-                            } catch (Exception exn) {
-                                Console.Error.WriteLine ("Could not finish accessing subdirectory '" + this_di.FullName + "': " + exn.ToString ());
-                            }
-                        }
-                    }
-                } catch (Exception exn) {
-                    Console.Error.WriteLine ("Could not finish accessing folder '" + major_di.FullName + "': " + exn.ToString ());
-                }
+            if (major_di!=null) {
+				if (get_is_folder_searchable(major_di, true)) {
+	                Console.WriteLine ("(depth=" + depth.ToString () + ") Searching in " + major_di.Name);
+	                //crashes if on different thread:
+	                if (options.statusTextBox != null) options.statusTextBox.Text = major_di.FullName;
+	                Application.DoEvents ();
+	                //Console.Error.WriteLine(major_di.FullName);
+	                if (resultsListView != null) {
+	                    if (COLUMN_PATH < 0 && COLUMN_PATH != COLUMNFLAG_IGNORE) {
+	                        COLUMN_PATH = resultsListView.Columns.IndexOfKey ("Path");
+	                        if (COLUMN_PATH < 0) COLUMN_PATH = COLUMNFLAG_IGNORE;
+	                    }
+	                    if (COLUMN_NAME < 0 && COLUMN_NAME != COLUMNFLAG_IGNORE) {
+	                        COLUMN_NAME = resultsListView.Columns.IndexOfKey ("Name");
+	                        if (COLUMN_NAME < 0) COLUMN_NAME = COLUMNFLAG_IGNORE;
+	                    }
+	                    if (COLUMN_MODIFIED < 0 && COLUMN_MODIFIED != COLUMNFLAG_IGNORE) {
+	                        COLUMN_MODIFIED = resultsListView.Columns.IndexOfKey ("Modified");
+	                        if (COLUMN_MODIFIED < 0) COLUMN_MODIFIED = COLUMNFLAG_IGNORE;
+	                    }
+	                    if (COLUMN_CREATED < 0 && COLUMN_CREATED != COLUMNFLAG_IGNORE) {
+	                        COLUMN_CREATED = resultsListView.Columns.IndexOfKey ("Created");
+	                        if (COLUMN_CREATED < 0) COLUMN_CREATED = COLUMNFLAG_IGNORE;
+	                    }
+	                    if (COLUMN_EXTENSION < 0 && COLUMN_EXTENSION != COLUMNFLAG_IGNORE) {
+	                        COLUMN_EXTENSION = resultsListView.Columns.IndexOfKey ("Extension");
+	                        if (COLUMN_EXTENSION < 0) COLUMN_EXTENSION = COLUMNFLAG_IGNORE;
+	                    }
+	                }
+	
+	                try {
+	                    if (string.IsNullOrEmpty(this.options.name_string)) this.options.name_string = "*"; //prevents ContainsAny crash on next line
+	                    bool filenames_prefiltered_enable = ContainsAny (this.options.name_string, wildcards);
+	                    FileInfo [] major_di_files = filenames_prefiltered_enable ? major_di.GetFiles (this.options.name_string) : major_di.GetFiles ();
+	                    //if (major_di_files!=null) {
+	                    //	if (major_di_files.Length<=1) Console.Error.WriteLine(major_di_files.Length.ToString()+" file(s) in "+major_di.FullName);
+	                    //}
+	                    //else Console.Error.WriteLine("Could not list files in "+major_di.FullName);
+	                    foreach (FileInfo this_fi in major_di_files) {
+	                        if (!enable) break;
+	                        try {
+	                            if (get_is_match(this_fi, filenames_prefiltered_enable)) {
+	                                if (resultsListView != null) {
+	                                    string [] fields = new String [resultsListView.Columns.Count];
+	                                    if (COLUMN_PATH >= 0) fields [COLUMN_PATH] = this_fi.FullName;
+	                                    if (COLUMN_NAME >= 0) fields [COLUMN_NAME] = this_fi.Name;
+	                                    if (COLUMN_MODIFIED >= 0) fields [COLUMN_MODIFIED] = this_fi.LastWriteTime.ToString (DFF.datetime_sortable_format_string);
+	                                    if (COLUMN_CREATED >= 0) fields [COLUMN_CREATED] = this_fi.CreationTime.ToString (DFF.datetime_sortable_format_string);
+	                                    if (COLUMN_EXTENSION >= 0) fields [COLUMN_EXTENSION] = this_fi.Extension;
+	                                    resultsListView.Items.Add (new ListViewItem (fields));
+	                                    Application.DoEvents ();
+	                                }
+	                                if (results != null) results.Add (this_fi.FullName);
+	                            }
+	                            //else Console.Error.WriteLine(this_fi.FullName+" does not match");
+	                        } catch (Exception exn) {
+	                            Console.Error.WriteLine ("Could not finish accessing file '" + this_fi.FullName + "': " + exn.ToString ());
+	                        }
+	                    }
+	                    if (enable) {
+	                        foreach (DirectoryInfo this_di in major_di.GetDirectories ()) {
+	                            if (!enable) break;
+	                            try {
+	                                if (options.include_folders_as_results_enable) {
+	                                    if (get_is_match (this_di)) {
+	                                        if (resultsListView != null) {
+	                                            string [] fields = new String [resultsListView.Columns.Count];
+	                                            if (COLUMN_PATH >= 0) fields [COLUMN_PATH] = this_di.FullName;
+	                                            if (COLUMN_NAME >= 0) fields [COLUMN_NAME] = this_di.Name;
+	                                            if (COLUMN_MODIFIED >= 0) fields [COLUMN_MODIFIED] = this_di.LastWriteTime.ToString (DFF.datetime_sortable_format_string);
+	                                            if (COLUMN_CREATED >= 0) fields [COLUMN_CREATED] = this_di.CreationTime.ToString (DFF.datetime_sortable_format_string);
+	                                            if (COLUMN_EXTENSION >= 0) fields [COLUMN_EXTENSION] = "<Folder>";
+	                                            resultsListView.Items.Add (new ListViewItem (fields));
+	                                            Application.DoEvents ();
+	                                        }
+	                                        if (results != null) results.Add (this_di.FullName);
+	                                    }
+	                                }
+	                                if (this.non_directory_paths == null || Array.IndexOf (this.non_directory_paths, this_di.FullName) <= -1) {
+	                                    if (get_is_folder_searchable(this_di,false)) {
+	                                        ExecuteSearchRecursively(this_di, depth+1);
+	                                    }
+	                                }
+	                            } catch (Exception exn) {
+	                                Console.Error.WriteLine ("Could not finish accessing subdirectory '" + this_di.FullName + "': " + exn.ToString ());
+	                            }
+	                        }
+	                    }
+	                } catch (Exception exn) {
+	                    Console.Error.WriteLine ("Could not finish accessing folder '" + major_di.FullName + "': " + exn.ToString ());
+	                }
+				}
+			 	else Console.Error.WriteLine("get_is_folder_searchable is false for " + major_di.FullName);
             }//end if get_is_folder_searchable
-            else Console.Error.WriteLine ("No permission for " + major_di.FullName);
+            else Console.Error.WriteLine("Null for " + major_di.FullName);
 		}//end ExecuteSearchRecursively
 		
 

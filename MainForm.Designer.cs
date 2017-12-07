@@ -70,8 +70,14 @@ namespace DeepFileFind
 			this.minSizeLabel = new System.Windows.Forms.Label();
 			this.maxSizeLabel = new System.Windows.Forms.Label();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.deleteResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.resultsListView = new System.Windows.Forms.ListView();
 			this.resultContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,8 +85,13 @@ namespace DeepFileFind
 			this.copyFilePathTSMI = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusTextBox = new System.Windows.Forms.TextBox();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
-			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+			this.follow_folder_symlinks_enableCB = new System.Windows.Forms.CheckBox();
+			this.search_inside_hidden_files_enableCB = new System.Windows.Forms.CheckBox();
+			this.follow_dot_folders_enableCB = new System.Windows.Forms.CheckBox();
+			this.follow_hidden_folders_enableCB = new System.Windows.Forms.CheckBox();
+			this.follow_temporary_folders_enableCB = new System.Windows.Forms.CheckBox();
+			this.follow_system_folders_enableCB = new System.Windows.Forms.CheckBox();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -111,7 +122,7 @@ namespace DeepFileFind
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.resultsListView);
-			this.splitContainer1.Size = new System.Drawing.Size(979, 663);
+			this.splitContainer1.Size = new System.Drawing.Size(979, 732);
 			this.splitContainer1.SplitterDistance = 354;
 			this.splitContainer1.SplitterWidth = 5;
 			this.splitContainer1.TabIndex = 0;
@@ -135,11 +146,22 @@ namespace DeepFileFind
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel6, 0, 2);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel7, 0, 14);
 			this.tableLayoutPanel1.Controls.Add(this.minSizeLabel, 0, 13);
-			this.tableLayoutPanel1.Controls.Add(this.maxSizeLabel, 0, 15);
+			this.tableLayoutPanel1.Controls.Add(this.maxSizeLabel, 0, 21);
+			this.tableLayoutPanel1.Controls.Add(this.follow_folder_symlinks_enableCB, 0, 15);
+			this.tableLayoutPanel1.Controls.Add(this.search_inside_hidden_files_enableCB, 0, 16);
+			this.tableLayoutPanel1.Controls.Add(this.follow_dot_folders_enableCB, 0, 17);
+			this.tableLayoutPanel1.Controls.Add(this.follow_hidden_folders_enableCB, 0, 18);
+			this.tableLayoutPanel1.Controls.Add(this.follow_temporary_folders_enableCB, 0, 20);
+			this.tableLayoutPanel1.Controls.Add(this.follow_system_folders_enableCB, 0, 19);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 17;
+			this.tableLayoutPanel1.RowCount = 22;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -157,7 +179,7 @@ namespace DeepFileFind
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(354, 638);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(354, 707);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// tableLayoutPanel8
@@ -524,7 +546,7 @@ namespace DeepFileFind
 			// 
 			this.maxSizeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.maxSizeLabel.AutoSize = true;
-			this.maxSizeLabel.Location = new System.Drawing.Point(351, 497);
+			this.maxSizeLabel.Location = new System.Drawing.Point(351, 683);
 			this.maxSizeLabel.Name = "maxSizeLabel";
 			this.maxSizeLabel.Size = new System.Drawing.Size(0, 19);
 			this.maxSizeLabel.TabIndex = 20;
@@ -532,6 +554,7 @@ namespace DeepFileFind
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.fileToolStripMenuItem,
 									this.editToolStripMenuItem,
 									this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -540,6 +563,39 @@ namespace DeepFileFind
 			this.menuStrip1.Size = new System.Drawing.Size(354, 25);
 			this.menuStrip1.TabIndex = 101;
 			this.menuStrip1.Text = "menuStrip1";
+			// 
+			// fileToolStripMenuItem
+			// 
+			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.deleteResultsToolStripMenuItem,
+									this.saveResultsToolStripMenuItem,
+									this.exitToolStripMenuItem});
+			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 19);
+			this.fileToolStripMenuItem.Text = "File";
+			// 
+			// deleteResultsToolStripMenuItem
+			// 
+			this.deleteResultsToolStripMenuItem.Name = "deleteResultsToolStripMenuItem";
+			this.deleteResultsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
+			this.deleteResultsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+			this.deleteResultsToolStripMenuItem.Text = "Delete Results";
+			this.deleteResultsToolStripMenuItem.Click += new System.EventHandler(this.DeleteResultsToolStripMenuItemClick);
+			// 
+			// saveResultsToolStripMenuItem
+			// 
+			this.saveResultsToolStripMenuItem.Name = "saveResultsToolStripMenuItem";
+			this.saveResultsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.saveResultsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+			this.saveResultsToolStripMenuItem.Text = "&Save Results";
+			this.saveResultsToolStripMenuItem.Click += new System.EventHandler(this.SaveResultsToolStripMenuItemClick);
+			// 
+			// exitToolStripMenuItem
+			// 
+			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+			this.exitToolStripMenuItem.Text = "E&xit";
+			this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItemClick);
 			// 
 			// editToolStripMenuItem
 			// 
@@ -557,6 +613,21 @@ namespace DeepFileFind
 			this.findToolStripMenuItem.Text = "Find";
 			this.findToolStripMenuItem.Click += new System.EventHandler(this.FindToolStripMenuItemClick);
 			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.aboutToolStripMenuItem});
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 19);
+			this.helpToolStripMenuItem.Text = "Help";
+			// 
+			// aboutToolStripMenuItem
+			// 
+			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.aboutToolStripMenuItem.Text = "About";
+			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItemClick);
+			// 
 			// resultsListView
 			// 
 			this.resultsListView.ContextMenuStrip = this.resultContextMenuStrip;
@@ -566,7 +637,7 @@ namespace DeepFileFind
 			this.resultsListView.Margin = new System.Windows.Forms.Padding(4);
 			this.resultsListView.MultiSelect = false;
 			this.resultsListView.Name = "resultsListView";
-			this.resultsListView.Size = new System.Drawing.Size(620, 663);
+			this.resultsListView.Size = new System.Drawing.Size(620, 732);
 			this.resultsListView.TabIndex = 100;
 			this.resultsListView.UseCompatibleStateImageBehavior = false;
 			this.resultsListView.View = System.Windows.Forms.View.Details;
@@ -608,7 +679,7 @@ namespace DeepFileFind
 			// statusTextBox
 			// 
 			this.statusTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.statusTextBox.Location = new System.Drawing.Point(0, 663);
+			this.statusTextBox.Location = new System.Drawing.Point(0, 732);
 			this.statusTextBox.Name = "statusTextBox";
 			this.statusTextBox.ReadOnly = true;
 			this.statusTextBox.Size = new System.Drawing.Size(979, 27);
@@ -619,26 +690,81 @@ namespace DeepFileFind
 			// 
 			this.timer1.Tick += new System.EventHandler(this.Timer1Tick);
 			// 
-			// helpToolStripMenuItem
+			// saveFileDialog
 			// 
-			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.aboutToolStripMenuItem});
-			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 19);
-			this.helpToolStripMenuItem.Text = "Help";
+			this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveFileDialogFileOk);
 			// 
-			// aboutToolStripMenuItem
+			// follow_folder_symlinks_enableCB
 			// 
-			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.aboutToolStripMenuItem.Text = "About";
-			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItemClick);
+			this.follow_folder_symlinks_enableCB.AutoSize = true;
+			this.follow_folder_symlinks_enableCB.Location = new System.Drawing.Point(4, 501);
+			this.follow_folder_symlinks_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_folder_symlinks_enableCB.Name = "follow_folder_symlinks_enableCB";
+			this.follow_folder_symlinks_enableCB.Size = new System.Drawing.Size(230, 23);
+			this.follow_folder_symlinks_enableCB.TabIndex = 411;
+			this.follow_folder_symlinks_enableCB.Text = "follow_folder_symlinks_enable";
+			this.follow_folder_symlinks_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// search_inside_hidden_files_enableCB
+			// 
+			this.search_inside_hidden_files_enableCB.AutoSize = true;
+			this.search_inside_hidden_files_enableCB.Location = new System.Drawing.Point(4, 532);
+			this.search_inside_hidden_files_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.search_inside_hidden_files_enableCB.Name = "search_inside_hidden_files_enableCB";
+			this.search_inside_hidden_files_enableCB.Size = new System.Drawing.Size(257, 23);
+			this.search_inside_hidden_files_enableCB.TabIndex = 411;
+			this.search_inside_hidden_files_enableCB.Text = "search_inside_hidden_files_enable";
+			this.search_inside_hidden_files_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// follow_dot_folders_enableCB
+			// 
+			this.follow_dot_folders_enableCB.AutoSize = true;
+			this.follow_dot_folders_enableCB.Location = new System.Drawing.Point(4, 563);
+			this.follow_dot_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_dot_folders_enableCB.Name = "follow_dot_folders_enableCB";
+			this.follow_dot_folders_enableCB.Size = new System.Drawing.Size(202, 23);
+			this.follow_dot_folders_enableCB.TabIndex = 411;
+			this.follow_dot_folders_enableCB.Text = "follow_dot_folders_enable";
+			this.follow_dot_folders_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// follow_hidden_folders_enableCB
+			// 
+			this.follow_hidden_folders_enableCB.AutoSize = true;
+			this.follow_hidden_folders_enableCB.Location = new System.Drawing.Point(4, 594);
+			this.follow_hidden_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_hidden_folders_enableCB.Name = "follow_hidden_folders_enableCB";
+			this.follow_hidden_folders_enableCB.Size = new System.Drawing.Size(225, 23);
+			this.follow_hidden_folders_enableCB.TabIndex = 411;
+			this.follow_hidden_folders_enableCB.Text = "follow_hidden_folders_enable";
+			this.follow_hidden_folders_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// follow_temporary_folders_enableCB
+			// 
+			this.follow_temporary_folders_enableCB.AutoSize = true;
+			this.follow_temporary_folders_enableCB.Location = new System.Drawing.Point(4, 656);
+			this.follow_temporary_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_temporary_folders_enableCB.Name = "follow_temporary_folders_enableCB";
+			this.follow_temporary_folders_enableCB.Size = new System.Drawing.Size(247, 23);
+			this.follow_temporary_folders_enableCB.TabIndex = 411;
+			this.follow_temporary_folders_enableCB.Text = "follow_temporary_folders_enable";
+			this.follow_temporary_folders_enableCB.UseVisualStyleBackColor = true;
+			// 
+			// follow_system_folders_enableCB
+			// 
+			this.follow_system_folders_enableCB.AutoSize = true;
+			this.follow_system_folders_enableCB.Location = new System.Drawing.Point(4, 625);
+			this.follow_system_folders_enableCB.Margin = new System.Windows.Forms.Padding(4);
+			this.follow_system_folders_enableCB.Name = "follow_system_folders_enableCB";
+			this.follow_system_folders_enableCB.Size = new System.Drawing.Size(227, 23);
+			this.follow_system_folders_enableCB.TabIndex = 411;
+			this.follow_system_folders_enableCB.Text = "follow_system_folders_enable";
+			this.follow_system_folders_enableCB.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(979, 690);
+			this.ClientSize = new System.Drawing.Size(979, 759);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.statusTextBox);
 			this.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -675,6 +801,17 @@ namespace DeepFileFind
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.CheckBox follow_system_folders_enableCB;
+		private System.Windows.Forms.CheckBox follow_temporary_folders_enableCB;
+		private System.Windows.Forms.CheckBox follow_hidden_folders_enableCB;
+		private System.Windows.Forms.CheckBox follow_dot_folders_enableCB;
+		private System.Windows.Forms.CheckBox search_inside_hidden_files_enableCB;
+		private System.Windows.Forms.CheckBox follow_folder_symlinks_enableCB;
+		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+		private System.Windows.Forms.SaveFileDialog saveFileDialog;
+		private System.Windows.Forms.ToolStripMenuItem saveResultsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem deleteResultsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem copyFilePathTSMI;

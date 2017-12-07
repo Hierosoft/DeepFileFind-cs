@@ -10,6 +10,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Windows.Forms;
+//using System.Diagnostics; //System.Diagnostics.Debug.WriteLine etc
 
 namespace DeepFileFind
 {
@@ -43,17 +44,25 @@ namespace DeepFileFind
 		public long max_size = long.MaxValue;
 		public System.Windows.Forms.TextBox statusTextBox = null;
 		
+        public bool follow_folder_symlinks_enable = false;
+		public bool search_inside_hidden_files_enable = false;
+		public bool follow_dot_folders_enable = true;
+        public bool follow_hidden_folders_enable = true;
+		public bool follow_system_folders_enable = false;
+		public bool follow_temporary_folders_enable = false;
+		
 		public DFFSearchOptions()
 		{
 			start_directoryinfos = new ArrayList();
 		}
 		
-		public void DumpToConsole() {
+		public void DumpToDebug() {
 			Console.Error.WriteLine("Dumping options:");
+			
 			foreach (string s in Dump()) {
 				Console.Error.WriteLine(s);
 			}
-			Console.Error.WriteLine();
+			Console.Error.WriteLine("");
 		}
 		public ArrayList Dump() {
 			ArrayList results = new ArrayList();

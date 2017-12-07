@@ -14,7 +14,8 @@ using System.IO;
 using System.Collections;
 using System.Threading;
 using System.Globalization;
-
+//using System.Diagnostics; //System.Diagnostics.Debug.WriteLine etc
+	
 namespace DeepFileFind
 {
 	/// <summary>
@@ -76,6 +77,13 @@ namespace DeepFileFind
 			maxSizeCheckBox.Enabled=enable;
 			minSizeTextBox.Enabled=enable;
 			maxSizeTextBox.Enabled=enable;
+			search_inside_hidden_files_enableCB.Enabled=enable;
+			follow_system_folders_enableCB.Enabled=enable;
+			follow_folder_symlinks_enableCB.Enabled=enable;
+			follow_temporary_folders_enableCB.Enabled=enable;
+			follow_dot_folders_enableCB.Enabled=enable;
+			follow_hidden_folders_enableCB.Enabled=enable;
+			
 		}
 
 		
@@ -222,6 +230,16 @@ namespace DeepFileFind
 			if (settings.ContainsKey("max_size_enable")) maxSizeCheckBox.Checked = (settings["max_size_enable"]=="true"?true:false);
 			if (settings.ContainsKey("min_size")) minSizeTextBox.Text = settings["min_size"];
 			if (settings.ContainsKey("max_size")) maxSizeTextBox.Text = settings["max_size"];
+			
+			if (!settings.ContainsKey("follow_dot_folders_enable")) settings["follow_dot_folders_enable"] = "true"; //true by default
+			if (!settings.ContainsKey("follow_hidden_folders_enable")) settings["follow_hidden_folders_enable"] = "true"; //true by default
+
+			if (settings.ContainsKey("follow_folder_symlinks_enable")) follow_folder_symlinks_enableCB.Checked = (settings["follow_folder_symlinks_enable"]=="true"?true:false);
+			if (settings.ContainsKey("search_inside_hidden_files_enable")) search_inside_hidden_files_enableCB.Checked = (settings["search_inside_hidden_files_enable"]=="true"?true:false);
+			if (settings.ContainsKey("follow_dot_folders_enable")) follow_dot_folders_enableCB.Checked = (settings["follow_dot_folders_enable"]=="true"?true:false);
+			if (settings.ContainsKey("follow_hidden_folders_enable")) follow_hidden_folders_enableCB.Checked = (settings["follow_hidden_folders_enable"]=="true"?true:false);
+			if (settings.ContainsKey("follow_system_folders_enable")) follow_system_folders_enableCB.Checked = (settings["follow_system_folders_enable"]=="true"?true:false);
+			if (settings.ContainsKey("follow_temporary_folders_enable")) follow_temporary_folders_enableCB.Checked = (settings["follow_temporary_folders_enable"]=="true"?true:false);
 			
 			
 			contentTextBox.Enabled = contentCheckBox.Checked;
@@ -375,12 +393,14 @@ namespace DeepFileFind
 					bool folders_all_ok_enable = true;
 					ArrayList bad_paths = new ArrayList();
 					foreach (string location_string in location_strings) {
+						Console.Error.WriteLine("Searching in location_string:"+location_string);
 						DirectoryInfo this_di = new DirectoryInfo(location_string);
 						if (this_di.Exists) {
 							dff.options.start_directoryinfos.Add(this_di);
 						}
 						else {
 							folders_all_ok_enable=false;
+							Console.Error.WriteLine("  does not exist so adding as bad path.");
 							bad_paths.Add(location_string);
 						}
 					}
@@ -390,6 +410,13 @@ namespace DeepFileFind
 						dff.options.modified_start_time_enable=modifiedStartTimeCheckBox.Checked;
 						dff.options.min_size_enable=minSizeCheckBox.Checked;
 						dff.options.max_size_enable=maxSizeCheckBox.Checked;
+						
+						dff.options.follow_folder_symlinks_enable=follow_folder_symlinks_enableCB.Checked;
+						dff.options.search_inside_hidden_files_enable=search_inside_hidden_files_enableCB.Checked;
+						dff.options.follow_dot_folders_enable=follow_dot_folders_enableCB.Checked;
+						dff.options.follow_hidden_folders_enable=follow_hidden_folders_enableCB.Checked;
+						dff.options.follow_system_folders_enable=follow_system_folders_enableCB.Checked;
+						dff.options.follow_temporary_folders_enable=follow_temporary_folders_enableCB.Checked;
 						long i;
 						string min_size_byte_count_string = get_byte_count_string(minSizeTextBox.Text.Trim());
 						minSizeLabel.Text="bytes: "+min_size_byte_count_string;
@@ -426,12 +453,14 @@ namespace DeepFileFind
 								this_thread = new Thread(dff.ExecuteSearch);
 								this_thread.Start();
 								statusTextBox.Text="Searching (1 thread)...";
+								Console.Error.WriteLine(statusTextBox.Text);
 								Application.DoEvents();
 								timer1.Enabled=true;
 								timer1.Start();
 							}
 							else {
 								statusTextBox.Text="Searching...";
+								Console.Error.WriteLine(statusTextBox.Text);
 								dff.ExecuteSearch();
 								//findButton.Visible=true;
 								//findButton.Enabled=true;
@@ -502,6 +531,12 @@ namespace DeepFileFind
 			settings["max_size_enable"] = maxSizeCheckBox.Checked?"true":"false";
 			settings["min_size"] = minSizeTextBox.Text;
 			settings["max_size"] = maxSizeTextBox.Text;
+			settings["follow_folder_symlinks_enable"] = follow_folder_symlinks_enableCB.Checked?"true":"false";
+			settings["search_inside_hidden_files_enable"] = search_inside_hidden_files_enableCB.Checked?"true":"false";
+			settings["follow_dot_folders_enable"] = follow_dot_folders_enableCB.Checked?"true":"false";
+			settings["follow_hidden_folders_enable"] = follow_hidden_folders_enableCB.Checked?"true":"false";
+			settings["follow_system_folders_enable"] = follow_system_folders_enableCB.Checked?"true":"false";
+			settings["follow_temporary_folders_enable"] = follow_temporary_folders_enableCB.Checked?"true":"false";
 			foreach(KeyValuePair<string, string> entry in settings) {
 				outs.WriteLine(entry.Key+":"+entry.Value);
 			}
@@ -686,7 +721,48 @@ namespace DeepFileFind
 		
 		void AboutToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			MessageBox.Show("This program is released under the terms of the GNU General Public Licence version 3.0. \n\nsource code available at: http://www.github.com/expertmm/DeepFileFind",thisprogram_name_and_version);
+			MessageBox.Show("This program is released under the terms of the GNU General Public Licence version 3.0. \n\nAll source code for the original project is available at: http://www.github.com/expertmm/DeepFileFind",thisprogram_name_and_version);
+		}
+		
+		void DeleteResultsToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			DialogResult dr = DialogResult.Yes;
+			dr = MessageBox.Show("This will really delete the files, not just in this program. Everywhere! Are you REALLY sure?","DeepFileFind", MessageBoxButtons.YesNo);
+			if (dr == DialogResult.Yes) {
+				for (int i=this.resultsListView.Items.Count-1; i>=0; i--) {
+					ListViewItem item = resultsListView.Items[i];
+					try {
+						File.Delete(item.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
+						resultsListView.Items.RemoveAt(i);
+					}
+					catch (Exception exn) {
+						Console.Error.WriteLine("Could not finish deleting file '"+item.SubItems[RESULT_PATH_COLUMN_INDEX].Text+"':"+exn.ToString());
+					}
+				}
+			}
+		}
+		
+		void SaveResultsToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			DialogResult dr = saveFileDialog.ShowDialog();
+			if (dr == DialogResult.OK) {
+				StreamWriter outs = new StreamWriter(saveFileDialog.FileName);
+				for (int i=this.resultsListView.Items.Count-1; i>=0; i--) {
+					outs.WriteLine(this.resultsListView.Items[i].SubItems[RESULT_PATH_COLUMN_INDEX].Text);
+				}
+				outs.Close();
+			}
+			else statusTextBox.Text = "You cancelled saving.";
+		}
+		
+		void SaveFileDialogFileOk(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			
+		}
+		
+		void ExitToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			Application.Exit();
 		}
 	}
 }
