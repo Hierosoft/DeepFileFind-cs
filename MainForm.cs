@@ -392,10 +392,13 @@ namespace DeepFileFind
 					
 					bool folders_all_ok_enable = true;
 					ArrayList bad_paths = new ArrayList();
-					foreach (string location_string in location_strings) {
+					foreach (string original_location_string in location_strings) {
+						string location_string = original_location_string;
 						Console.Error.WriteLine("Searching in location_string:"+location_string);
+						if (Path.DirectorySeparatorChar=='\\'&&location_string.EndsWith(":")) location_string+="\\"; //otherwise directory info will be current working directory instead!
 						DirectoryInfo this_di = new DirectoryInfo(location_string);
 						if (this_di.Exists) {
+							Console.Error.WriteLine("  adding as "+this_di.FullName);
 							dff.options.start_directoryinfos.Add(this_di);
 						}
 						else {

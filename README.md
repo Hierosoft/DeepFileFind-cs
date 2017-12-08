@@ -22,6 +22,8 @@ The goal of this project is to create the most satisfying search program in the 
 
 ## Changes
 (! = important)
+* (2017-12-07) Released 3.0.2
+* (2017-12-07) Work around evil Windows issue where if drive was ending in colon instead of backslash, current working directory would be used instead (DirectoryInfo constructor bug in .NET itself)
 * (2017-12-07) Released 3.0.1
 * (2017-12-07) moved bottom size label to correct place, and made both size labels show usage tip before search
 * (2017-12-07) Released 3.0.0
