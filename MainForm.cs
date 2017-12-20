@@ -388,7 +388,17 @@ namespace DeepFileFind
 				dff.options = new DFFSearchOptions();
 				locationComboBox.Text = locationComboBox.Text.Trim();
 				if (locationComboBox.Text.Length>0) {
-					string[] location_strings = locationComboBox.Text.Split(Path.PathSeparator);
+                    string[] location_strings = null;
+                    try {
+                        if (Directory.Exists(locationComboBox.Text)) {
+                            //in case is one path but includes path separator (such as ":" in gvfs paths on GNU OS)
+                            location_strings = new string[] {locationComboBox.Text};
+                        }
+                    }
+                    catch (Exception exn) {
+                        MessageBox.Show("ERROR: could not finish checking gvfs path due to " + exn.ToString(), "DeepFileFind");
+                    }
+                    if (location_strings==null) location_strings = locationComboBox.Text.Split(Path.PathSeparator);
 					
 					bool folders_all_ok_enable = true;
 					ArrayList bad_paths = new ArrayList();
@@ -407,7 +417,7 @@ namespace DeepFileFind
 							bad_paths.Add(location_string);
 						}
 					}
-					
+
 					if (folders_all_ok_enable) {
 						dff.options.modified_start_date_enable=modifiedStartDateCheckBox.Checked;
 						dff.options.modified_start_time_enable=modifiedStartTimeCheckBox.Checked;
