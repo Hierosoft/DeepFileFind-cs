@@ -274,7 +274,7 @@ namespace DeepFileFind
 		private string ExecuteSearchRecursively(DirectoryInfo major_di, int depth) {
 			string err = null;
             if (major_di!=null) {
-				if (get_is_folder_searchable(major_di, true)) {
+                if (depth == 0 || get_is_folder_searchable(major_di, true)) {
 	                Console.WriteLine ("(depth=" + depth.ToString () + ") Searching in " + major_di.Name);
 	                //crashes if on different thread:
 	                if (options.statusTextBox != null) options.statusTextBox.Text = major_di.FullName;
@@ -387,7 +387,7 @@ namespace DeepFileFind
 	                }
 				}
 				else {
-					if (depth==0) err = "not a normal folder";
+                    //if (depth==0) err = "not a normal folder: '" + major_di.FullName + "'";
 					Console.Error.WriteLine("get_is_folder_searchable is false for " + major_di.FullName);
 				}
             }//end if get_is_folder_searchable

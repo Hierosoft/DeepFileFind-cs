@@ -22,6 +22,10 @@ The goal of this project is to create the most satisfying search program in the 
 
 ## Changes
 (! = important)
+* (2017-12-19) Released 3.1.1
+* (2017-12-19) do not check for searchability (`get_is_folder_searchable`) if folder is specified by user (`depth == 0`)
+* (2017-12-19) improved install script (check for ./bin/Release in case binary there instead of just in ./bin)
+* (2017-12-19) Released 3.1.0
 * (2017-12-07) Released 3.0.2
 * (2017-12-07) Work around evil Windows issue where if drive was ending in colon instead of backslash, current working directory would be used instead (DirectoryInfo constructor bug in .NET itself)
 * (2017-12-07) Released 3.0.1
