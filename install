@@ -28,6 +28,10 @@ icon_dest_path=$icons_root/$icon_name
 cd $(dirname "$0")
 src_assembly_dir=./bin
 src_assembly_path=$src_assembly_dir/$assembly_name
+if [ -d ./bin/Release/$assembly_name ]; then
+  src_assembly_dir=./bin/Release
+  src_assembly_path=$src_assembly_dir/$assembly_name
+fi
 src_bin_path=etc/$project_unix_name
 dest_bin_path=$bin_root/$project_unix_name
 echo
