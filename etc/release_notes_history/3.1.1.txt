@@ -1,0 +1,5 @@
+## bugfix release
+3.1.1
+
+* Do not check for searchability (`get_is_folder_searchable`) if folder is specified by user (`depth == 0`).
+* Add release.py (must have a line in README.md with ` Release ` followed by a version number then space or newline

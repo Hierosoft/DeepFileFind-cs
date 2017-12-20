@@ -7,6 +7,17 @@ The goal of this project is to create the most satisfying search program in the 
 
 --in other words, it's a program like nothing before it.
 
+## Install
+
+### Extract or Compile
+* if using a git version, `git clone https://github.com/expertmm/DeepFileFind.git` then open sln file using SharpDevelop, or if using GNU OS install monodevelop then open DeepFileFind_monodevelop in MonoDevelop; then set Build configuration to Release, then click Build, then Build (Solution or All depending on your integrated development environment)
+* OR if using a release, unzip release zip to its own folder
+
+### Install GNU OS
+* open terminal
+* cd to folder where unzipped
+* then: `sudo ./install`
+
 ## Key features
 * Search partial name (without requiring any type of wildcard notation)
 * Modification Date Range (time is optional for each)
