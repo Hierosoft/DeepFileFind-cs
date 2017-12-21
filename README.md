@@ -33,6 +33,7 @@ The goal of this project is to create the most satisfying search program in the 
 
 ## Changes
 (! = important)
+* (2017-12-21) By default (see never_use_names, which can be null, in DFFSearchOptions) never recurse into folders called Trash or .cache
 * (2017-12-19) Released 3.1.1
 * (2017-12-19) do not check for searchability (`get_is_folder_searchable`) if folder is specified by user (`depth == 0`)
 * (2017-12-19) improved install script (check for ./bin/Release in case binary there instead of just in ./bin)

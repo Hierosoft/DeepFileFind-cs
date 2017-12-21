@@ -32,6 +32,7 @@ namespace DeepFileFind
 		public bool modified_start_time_enable = false;
 		public bool modified_endbefore_time_enable = false;
 		public ArrayList start_directoryinfos = null;
+        public ArrayList never_use_names = null;
 		public string name_string = null;
 		public string content_string = null;
 		public bool recursive_enable = true;
@@ -54,6 +55,9 @@ namespace DeepFileFind
 		public DFFSearchOptions()
 		{
 			start_directoryinfos = new ArrayList();
+            never_use_names = new ArrayList();
+            never_use_names.Add(".cache");
+            never_use_names.Add("Trash");
 		}
 		
 		public void DumpToDebug() {

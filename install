@@ -166,7 +166,7 @@ fi
 #else
 chmod +x "$dest_bin_path"
 echo "$install_description finished successfully."
-echo "Run using command below (or make shortcut in your window manager to):"
+echo "Run using shortcut or command below (made shortcut in $applications_root):"
 echo "  $project_unix_name"
 #fi
 echo

@@ -169,55 +169,70 @@ namespace DeepFileFind
             } else Console.Error.WriteLine ("get_is_match(DirectoryInfo):null");
 			return result;
 		}
+        public static bool ContainsI(ArrayList haystack, string needle) {
+            bool result = false;
+            if (haystack!=null) {
+                needle = needle.ToLower();
+                foreach (string s in haystack) {
+                    if (s.ToLower()==needle) {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
 		private bool get_is_folder_searchable(DirectoryInfo this_di, bool device_allow_enable)
 		{
 			bool result = false;
-			FileAttributes attributes = FileAttributes.Normal;
-			if (this_di != null) {
-				try {
-                    if (
-                        !this_di.Name.EndsWith (":")
-                        &&!this_di.Name.StartsWith("Singleton")
-						&& !this_di.Name.EndsWith ("Socket")
-					   ) {
-                        Console.WriteLine ("get_is_folder_searchable:" + this_di.Name);
-                        //if (!follow_folder_symlinks_enable
-                        //							|| !follow_system_folders_enable
-                        //							|| !follow_hidden_folders_enable
-                        //							|| !follow_temporary_folders_enable
-                        //						   )
-                        attributes = File.GetAttributes(this_di.FullName);
-                        if (options.recursive_enable
-                            && (options.follow_folder_symlinks_enable || !((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint))
-                            && ((options.follow_system_folders_enable || device_allow_enable) || !((attributes & FileAttributes.System) == FileAttributes.System))
-                            && (options.follow_hidden_folders_enable || !((attributes & FileAttributes.Hidden) == FileAttributes.Hidden))
-                            && (options.follow_temporary_folders_enable || !((attributes & FileAttributes.Temporary) == FileAttributes.Temporary))
-                            && (device_allow_enable || !((attributes & FileAttributes.Device) == FileAttributes.Device))
-                            && (options.follow_dot_folders_enable || !this_di.Name.StartsWith ("."))
-                            && !((attributes & FileAttributes.Offline) == FileAttributes.Offline)
-                           ) {
-                            result = true;
+            if (options.never_use_names==null || !ContainsI(options.never_use_names, this_di.Name)) {
+    			FileAttributes attributes = FileAttributes.Normal;
+    			if (this_di != null) {
+    				try {
+                        if (
+                            !this_di.Name.EndsWith (":")
+                            &&!this_di.Name.StartsWith("Singleton")
+    						&& !this_di.Name.EndsWith ("Socket")
+    					   ) {
+                            Console.WriteLine ("get_is_folder_searchable:" + this_di.Name);
+                            //if (!follow_folder_symlinks_enable
+                            //							|| !follow_system_folders_enable
+                            //							|| !follow_hidden_folders_enable
+                            //							|| !follow_temporary_folders_enable
+                            //						   )
+                            attributes = File.GetAttributes(this_di.FullName);
+                            if (options.recursive_enable
+                                && (options.follow_folder_symlinks_enable || !((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint))
+                                && ((options.follow_system_folders_enable || device_allow_enable) || !((attributes & FileAttributes.System) == FileAttributes.System))
+                                && (options.follow_hidden_folders_enable || !((attributes & FileAttributes.Hidden) == FileAttributes.Hidden))
+                                && (options.follow_temporary_folders_enable || !((attributes & FileAttributes.Temporary) == FileAttributes.Temporary))
+                                && (device_allow_enable || !((attributes & FileAttributes.Device) == FileAttributes.Device))
+                                && (options.follow_dot_folders_enable || !this_di.Name.StartsWith ("."))
+                                && !((attributes & FileAttributes.Offline) == FileAttributes.Offline)
+                               ) {
+                                result = true;
+                            }
+                            else {
+                            	if ((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint) Console.Error.WriteLine("    not searchable since ReparsePoint: "+this_di.FullName);
+                            	else if ((attributes & FileAttributes.System) == FileAttributes.System) Console.Error.WriteLine("    not searchable since System: "+this_di.FullName);
+                            	else if ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden) Console.Error.WriteLine("    not searchable since Hidden: "+this_di.FullName);
+                            	else if ((attributes & FileAttributes.Temporary) == FileAttributes.Temporary) Console.Error.WriteLine("    not searchable since Temporary: "+this_di.FullName);
+                            	else if ((attributes & FileAttributes.Offline) == FileAttributes.Offline) Console.Error.WriteLine("    not searchable since Offline: "+this_di.FullName);
+                            	else if ((attributes & FileAttributes.Device) == FileAttributes.Device) Console.Error.WriteLine("    not searchable since Device: "+this_di.FullName);
+                            	else Console.Error.WriteLine("    not searchable for unknown reason (this should never happen)");
+                            }
                         }
-                        else {
-                        	if ((attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint) Console.Error.WriteLine("    not searchable since ReparsePoint: "+this_di.FullName);
-                        	else if ((attributes & FileAttributes.System) == FileAttributes.System) Console.Error.WriteLine("    not searchable since System: "+this_di.FullName);
-                        	else if ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden) Console.Error.WriteLine("    not searchable since Hidden: "+this_di.FullName);
-                        	else if ((attributes & FileAttributes.Temporary) == FileAttributes.Temporary) Console.Error.WriteLine("    not searchable since Temporary: "+this_di.FullName);
-                        	else if ((attributes & FileAttributes.Offline) == FileAttributes.Offline) Console.Error.WriteLine("    not searchable since Offline: "+this_di.FullName);
-                        	else if ((attributes & FileAttributes.Device) == FileAttributes.Device) Console.Error.WriteLine("    not searchable since Device: "+this_di.FullName);
-                        	else Console.Error.WriteLine("    not searchable for unknown reason (this should never happen)");
+    					else {
+                            Console.Error.WriteLine("Skipped non-folderlike name: " + this_di.Name);
                         }
-                    }
-					else {
-                        Console.Error.WriteLine("Skipped non-folderlike name: " + this_di.Name);
-                    }
-				}
-				catch {
-					Console.Error.WriteLine("Could not finish get_is_folder_searchable " + this_di.FullName);
-					//ignore since probably a privelege issue or non-folder specified
-				}
-			}
-			else Console.Error.WriteLine("get_is_folder_searchable:null");
+    				}
+    				catch {
+    					Console.Error.WriteLine("Could not finish get_is_folder_searchable " + this_di.FullName);
+    					//ignore since probably a privelege issue or non-folder specified
+    				}
+    			}
+    			else Console.Error.WriteLine("get_is_folder_searchable:null");
+            }
 			return result;
 		}
 		/// <summary>
