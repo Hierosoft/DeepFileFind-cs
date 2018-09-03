@@ -230,7 +230,7 @@ namespace DeepFileFind
 			if (settings.ContainsKey("max_size_enable")) maxSizeCheckBox.Checked = (settings["max_size_enable"]=="true"?true:false);
 			if (settings.ContainsKey("min_size")) minSizeTextBox.Text = settings["min_size"];
 			if (settings.ContainsKey("max_size")) maxSizeTextBox.Text = settings["max_size"];
-			
+			if (settings.ContainsKey("exclude_names")) excludeTextBox.Text = settings["exclude_names"];
 			if (!settings.ContainsKey("follow_dot_folders_enable")) settings["follow_dot_folders_enable"] = "true"; //true by default
 			if (!settings.ContainsKey("follow_hidden_folders_enable")) settings["follow_hidden_folders_enable"] = "true"; //true by default
 
@@ -423,6 +423,21 @@ namespace DeepFileFind
 						dff.options.modified_start_time_enable=modifiedStartTimeCheckBox.Checked;
 						dff.options.min_size_enable=minSizeCheckBox.Checked;
 						dff.options.max_size_enable=maxSizeCheckBox.Checked;
+						string[] sarr = excludeTextBox.Text.Trim().Split(',');
+						dff.options.never_use_names.Clear();
+						for (int nun_i=0; nun_i<sarr.Length; nun_i++) {
+							string nun = sarr[nun_i].Trim();
+							if (nun.Length>1 && nun[0]=='"' && nun[nun.Length-1]=='"') {
+								nun = nun.Substring(1, nun.Length-2);
+							}
+							else if (nun.Length>1 && nun[0]=='\'' && nun[nun.Length-1]=='\'') {
+								nun = nun.Substring(1, nun.Length-2);
+							}
+							if (nun.Length>0) {
+								dff.options.never_use_names.Add(nun);
+								Console.Error.WriteLine("Excluding '" + nun + "'");
+							}
+						}
 						
 						dff.options.follow_folder_symlinks_enable=follow_folder_symlinks_enableCB.Checked;
 						dff.options.search_inside_hidden_files_enable=search_inside_hidden_files_enableCB.Checked;
@@ -434,7 +449,6 @@ namespace DeepFileFind
 						string min_size_byte_count_string = get_byte_count_string(minSizeTextBox.Text.Trim());
 						minSizeLabel.Text="bytes: "+min_size_byte_count_string;
 						string max_size_byte_count_string = get_byte_count_string(maxSizeTextBox.Text.Trim());
-						maxSizeLabel.Text="bytes: "+max_size_byte_count_string;
 						if (long.TryParse(min_size_byte_count_string, out i)) dff.options.min_size=i;
 						if (long.TryParse(max_size_byte_count_string, out i)) dff.options.max_size=i;
 						if (modifiedStartDateCheckBox.Checked) {
@@ -539,6 +553,7 @@ namespace DeepFileFind
 			settings["content_enable"] = contentCheckBox.Checked?"true":"false";
 			settings["recursive_enable"] = recursiveCheckBox.Checked?"true":"false";
 			settings["content_string"] = contentTextBox.Text;
+			settings["exclude_names"] = excludeTextBox.Text;
 			settings["name"] = nameTextBox.Text;
 			settings["min_size_enable"] = minSizeCheckBox.Checked?"true":"false";
 			settings["max_size_enable"] = maxSizeCheckBox.Checked?"true":"false";

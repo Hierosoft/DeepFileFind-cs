@@ -55,9 +55,9 @@ namespace DeepFileFind
 		public DFFSearchOptions()
 		{
 			start_directoryinfos = new ArrayList();
-            never_use_names = new ArrayList();
-            never_use_names.Add(".cache");
-            never_use_names.Add("Trash");
+            never_use_names = new ArrayList();  // ignore list (see also exclude_names; set by application while initializing each search)
+            //never_use_names.Add(".cache");
+            //never_use_names.Add("Trash");
 		}
 		
 		public void DumpToDebug() {
