@@ -43,9 +43,14 @@ namespace DeepFileFind
 
 		public static bool newline_detected_as_space_enable=false;
 		public static readonly string datetime_sortable_format_string = "yyyy-MM-dd HH:mm";
+		public long refreshTick = 0;
+		public long refreshDelay = 10000;
 		#region cache
 		private string options_name_string_tolower = null;
 		#endregion cache
+		public static long NowMS() {
+			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+		}
 		public bool get_is_content_searchable(string path)
 		{
 			//see also etc/deprecated_cs.md for other ideas 
@@ -157,8 +162,10 @@ namespace DeepFileFind
 		public bool get_is_match(DirectoryInfo this_info) {
 			bool result = false;
             if (this_info != null) {
-                Console.Error.WriteLine("get_is_match(DirectoryInfo) '" + this_info.Name + "'...");
-                if (string.IsNullOrEmpty (options.name_string) || (options.case_sensitive_enable ? this_info.Name.Contains(options.name_string) : this_info.Name.ToLower().Contains(options_name_string_tolower))) {
+                //Console.Error.WriteLine("get_is_match(DirectoryInfo) '" + this_info.Name + "'...");
+                //Console.Error.WriteLine("  options.name_string:" + options.name_string);
+                //Console.Error.WriteLine("  options_name_string_tolower: " + options_name_string_tolower);
+                if (string.IsNullOrEmpty(options.name_string) || (options.name_string=="*") || (options.case_sensitive_enable ? this_info.Name.Contains(options.name_string) : this_info.Name.ToLower().Contains(options_name_string_tolower))) {
                     //below is ok since time was manipulated if !options.endbefore_time_enable
                     if (!options.modified_endbefore_date_enable || (this_info.LastWriteTime.ToFileTimeUtc () < options.modified_endbefore_datetime_utc.ToFileTimeUtc ())) {
                         if (!options.modified_start_date_enable || (this_info.LastWriteTime.ToFileTimeUtc () >= options.modified_start_datetime_utc.ToFileTimeUtc ())) {
@@ -244,6 +251,7 @@ namespace DeepFileFind
 		/// <param name="resultsListView"></param>
 		/// <returns>If resultsListView is present, returns null. Otherwise, returns ArrayList containing strings (directory and file paths)</returns>
 		public void ExecuteSearch() {
+			this.refreshTick = 0;
 			finished = false;
 			options.DumpToDebug();
 			string err = null;
@@ -293,7 +301,10 @@ namespace DeepFileFind
 	                Console.WriteLine ("(depth=" + depth.ToString () + ") Searching in " + major_di.Name);
 	                //crashes if on different thread:
 	                if (options.statusTextBox != null) options.statusTextBox.Text = major_di.FullName;
-	                Application.DoEvents ();
+	                if (DFF.NowMS() - refreshTick > refreshDelay) {
+	                	Application.DoEvents();
+	                	refreshTick = DFF.NowMS();
+	                }
 	                //Console.Error.WriteLine(major_di.FullName);
 	                if (resultsListView != null) {
 	                    if (COLUMN_PATH < 0 && COLUMN_PATH != COLUMNFLAG_IGNORE) {
@@ -342,17 +353,20 @@ namespace DeepFileFind
 	                                    if (COLUMN_CREATED >= 0) fields [COLUMN_CREATED] = this_fi.CreationTime.ToString (DFF.datetime_sortable_format_string);
 	                                    if (COLUMN_EXTENSION >= 0) fields [COLUMN_EXTENSION] = this_fi.Extension;
 	                                    participle="adding fields for "+((fields!=null)?("'"+this_fi.Name+"'"):("null"));
-	                                    resultsListView.Items.Add (new ListViewItem (fields));
-	                                    Application.DoEvents();
+	                                    resultsListView.Items.Add(new ListViewItem(fields));
+						                if (DFF.NowMS() - refreshTick > refreshDelay) {
+						                	Application.DoEvents();
+						                	refreshTick = DFF.NowMS();
+						                }
 	                                }
 	                        		if (results != null) {
 	                        			participle="adding results";
-	                        			results.Add (this_fi.FullName);
+	                        			results.Add(this_fi.FullName);
 	                        		}
 	                            }
 	                            //else Console.Error.WriteLine(this_fi.FullName+" does not match");
 	                        } catch (Exception exn) {
-	                            Console.Error.WriteLine ("Could not finish accessing file while "+participle+" in ExecuteSearchRecursively '" + this_fi.FullName + "': " + exn.ToString ());
+	                            Console.Error.WriteLine("Could not finish accessing file while "+participle+" in ExecuteSearchRecursively '" + this_fi.FullName + "': " + exn.ToString ());
 	                        }
 	                    }
 	                    if (enable) {
@@ -370,13 +384,16 @@ namespace DeepFileFind
 	                                            if (COLUMN_PATH >= 0) fields [COLUMN_PATH] = this_di.FullName;
 	                                            if (COLUMN_NAME >= 0) fields [COLUMN_NAME] = this_di.Name;
 	                                            participle = "converting modified date to string";
-	                                            if (COLUMN_MODIFIED >= 0) fields [COLUMN_MODIFIED] = this_di.LastWriteTime.ToString (DFF.datetime_sortable_format_string);
+	                                            if (COLUMN_MODIFIED >= 0) fields [COLUMN_MODIFIED] = this_di.LastWriteTime.ToString(DFF.datetime_sortable_format_string);
 	                                            participle = "converting created date to string";
-	                                            if (COLUMN_CREATED >= 0) fields [COLUMN_CREATED] = this_di.CreationTime.ToString (DFF.datetime_sortable_format_string);
+	                                            if (COLUMN_CREATED >= 0) fields [COLUMN_CREATED] = this_di.CreationTime.ToString(DFF.datetime_sortable_format_string);
 	                                            if (COLUMN_EXTENSION >= 0) fields [COLUMN_EXTENSION] = "<Folder>";
 	                                            participle = "creating ListViewItem";
-	                                            resultsListView.Items.Add (new ListViewItem (fields));
-	                                            Application.DoEvents ();
+	                                            resultsListView.Items.Add(new ListViewItem(fields));
+								                if (DFF.NowMS() - refreshTick > refreshDelay) {
+								                	Application.DoEvents();
+								                	refreshTick = DFF.NowMS();
+								                }
 	                                        }
 	                            			if (results != null) {
 	                            				participle = "adding result";
