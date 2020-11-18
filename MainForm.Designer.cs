@@ -220,7 +220,7 @@ namespace DeepFileFind
 			this.excludeTextBox.Name = "excludeTextBox";
 			this.excludeTextBox.Size = new System.Drawing.Size(211, 23);
 			this.excludeTextBox.TabIndex = 1;
-			this.excludeTextBox.Text = ".cache, Trash";
+			this.excludeTextBox.Text = ".cache, Trash, .git";
 			// 
 			// tableLayoutPanel8
 			// 
@@ -666,9 +666,9 @@ namespace DeepFileFind
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.fileToolStripMenuItem,
-			this.editToolStripMenuItem,
-			this.helpToolStripMenuItem});
+									this.fileToolStripMenuItem,
+									this.editToolStripMenuItem,
+									this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
@@ -679,9 +679,9 @@ namespace DeepFileFind
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.deleteResultsToolStripMenuItem,
-			this.saveResultsToolStripMenuItem,
-			this.exitToolStripMenuItem});
+									this.deleteResultsToolStripMenuItem,
+									this.saveResultsToolStripMenuItem,
+									this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
@@ -713,7 +713,7 @@ namespace DeepFileFind
 			// editToolStripMenuItem
 			// 
 			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.findToolStripMenuItem});
+									this.findToolStripMenuItem});
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
 			this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
 			this.editToolStripMenuItem.Text = "Edit";
@@ -729,7 +729,7 @@ namespace DeepFileFind
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.aboutToolStripMenuItem});
+									this.aboutToolStripMenuItem});
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
 			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.helpToolStripMenuItem.Text = "Help";
@@ -761,9 +761,9 @@ namespace DeepFileFind
 			// resultContextMenuStrip
 			// 
 			this.resultContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.openToolStripMenuItem,
-			this.openContainingFolderTSMI,
-			this.copyFilePathTSMI});
+									this.openToolStripMenuItem,
+									this.openContainingFolderTSMI,
+									this.copyFilePathTSMI});
 			this.resultContextMenuStrip.Name = "contextMenuStrip1";
 			this.resultContextMenuStrip.Size = new System.Drawing.Size(202, 70);
 			this.resultContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ResultContextMenuStripOpening);
@@ -852,7 +852,6 @@ namespace DeepFileFind
 			this.resultContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
-
 		}
 		private System.Windows.Forms.CheckBox follow_system_folders_enableCB;
 		private System.Windows.Forms.CheckBox follow_temporary_folders_enableCB;
