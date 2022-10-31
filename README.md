@@ -33,6 +33,7 @@ The goal of this project is to create the most satisfying search program in the 
 
 ## Changes
 (! = important)
+* (2022-10-31) Released 3.1.4 Fix wildcard so the filter doesn't affect recursion! Implement is_like.
 * (2017-12-19) Released 3.1.2
 * (2017-12-21) By default (see never_use_names, which can be null, in DFFSearchOptions) never recurse into folders called Trash or .cache
 * (2017-12-19) Released 3.1.1
