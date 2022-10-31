@@ -49,14 +49,7 @@ The goal of this project is to create the most satisfying search program in the 
 
 
 ## Known Issues	
-* Can't see "bytes" labels in form editor
-* UI is nonresponsive during search except between files
-* Make all savable variables always use dictionary, otherwise MainFormFormClosing and MainFormLoad must have the same list of variables, otherwise the mismatched settings aren't saved & loaded correctly
-* Sort again at end of search
-* Fix flicker on list when each file is found
-* Warn&confirm if results would be every file in folder
-* Search within zip files optionally
-* Search content of zipped XML files (*.*x office files, and iWork(R) files)
+See [Issues](https://github.com/poikilos/DeepFileFind-cs/issues).
 
 
 ## Changes

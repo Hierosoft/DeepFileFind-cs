@@ -56,12 +56,12 @@ namespace DeepFileFind
 		public bool recursive_enable = true;
 		public bool include_folders_as_results_enable = true;
 		public bool case_sensitive_enable = false;
-		public bool threading_enable = false;
+		public bool threading_enable = true;
 		public bool min_size_enable = false;
 		public bool max_size_enable = false;
 		public long min_size = 0;
 		public long max_size = long.MaxValue;
-		public System.Windows.Forms.TextBox statusTextBox = null;
+		private System.Windows.Forms.TextBox statusTextBox = null; // private to be thread-safe. See SetStatus.
 		
         public bool follow_folder_symlinks_enable = false;
 		public bool search_inside_hidden_files_enable = false;
@@ -112,6 +112,32 @@ namespace DeepFileFind
 			
 			return results;
 		}
+
+		private static void SetTextBoxText(TextBox box, string text) {
+			// - tried <https://www.codeproject.com/questions/1073539/control-richtextbox-accessed-from-a-thread-other-t>
+			
+		    if (box.InvokeRequired)
+	        {
+		    	// System.Windows.Forms.MethodInvoker
+	            box.Invoke((MethodInvoker)(() => box.Text = text));
+	        }
+	        else
+	        {
+	            box.Text = text;
+	        }
+		}
+		public void SetStatus(string text) {
+			if (this.statusTextBox != null) {
+				SetTextBoxText(this.statusTextBox, text);
+			}
+			else {
+				Console.Error.WriteLine(text);
+			}
+		}
+		public void SetStatusTextBox(System.Windows.Forms.TextBox textbox) {
+			this.statusTextBox = textbox;
+		}
+		
 	}
 	
 }

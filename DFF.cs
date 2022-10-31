@@ -37,7 +37,8 @@ namespace DeepFileFind
 		public int COLUMN_EXTENSION = -1;
 		public ArrayList results = null;
 		public DFFSearchOptions options = null;
-		public ListView resultsListView = null;
+		private ListView resultsListView = null;
+		private int ColumnCount = -1;
 		public static readonly int COLUMNFLAG_IGNORE = -2;
 		public bool enable = true;
 		public bool finished = false;
@@ -49,6 +50,76 @@ namespace DeepFileFind
 		#region cache
 		private string options_name_string_tolower = null;
 		#endregion cache
+
+		/// <summary>
+		/// Set the list view if any. This must be called on the same thread
+		/// as the ListView and the column names must already be set.
+		/// </summary>
+		/// <param name="box"></param>
+		public void SetListView(ListView box) {
+			resultsListView = box;
+			ColumnCount = resultsListView.Columns.Count;
+            if (COLUMN_PATH < 0 && COLUMN_PATH != COLUMNFLAG_IGNORE) {
+                COLUMN_PATH = resultsListView.Columns.IndexOfKey ("Path");
+                if (COLUMN_PATH < 0) COLUMN_PATH = COLUMNFLAG_IGNORE;
+            }
+            if (COLUMN_NAME < 0 && COLUMN_NAME != COLUMNFLAG_IGNORE) {
+                COLUMN_NAME = resultsListView.Columns.IndexOfKey ("Name");
+                if (COLUMN_NAME < 0) COLUMN_NAME = COLUMNFLAG_IGNORE;
+            }
+            if (COLUMN_MODIFIED < 0 && COLUMN_MODIFIED != COLUMNFLAG_IGNORE) {
+                COLUMN_MODIFIED = resultsListView.Columns.IndexOfKey ("Modified");
+                if (COLUMN_MODIFIED < 0) COLUMN_MODIFIED = COLUMNFLAG_IGNORE;
+            }
+            if (COLUMN_CREATED < 0 && COLUMN_CREATED != COLUMNFLAG_IGNORE) {
+                COLUMN_CREATED = resultsListView.Columns.IndexOfKey ("Created");
+                if (COLUMN_CREATED < 0) COLUMN_CREATED = COLUMNFLAG_IGNORE;
+            }
+            if (COLUMN_EXTENSION < 0 && COLUMN_EXTENSION != COLUMNFLAG_IGNORE) {
+                COLUMN_EXTENSION = resultsListView.Columns.IndexOfKey ("Extension");
+                if (COLUMN_EXTENSION < 0) COLUMN_EXTENSION = COLUMNFLAG_IGNORE;
+            }
+		}
+
+		private static void ClearListView(ListView box) {
+			// - tried <https://www.codeproject.com/questions/1073539/control-richtextbox-accessed-from-a-thread-other-t>
+			
+		    if (box.InvokeRequired)
+	        {
+		    	// System.Windows.Forms.MethodInvoker
+		    	box.Invoke((MethodInvoker)(() => box.Items.Clear()));
+	        }
+	        else
+	        {
+	        	box.Items.Clear();
+	        }
+		}
+		private void ClearList() {
+			if (this.resultsListView != null) {
+				ClearListView(this.resultsListView);
+			}
+		}
+		private static void AddListViewItem(ListView box, ListViewItem item) {
+			// - tried <https://www.codeproject.com/questions/1073539/control-richtextbox-accessed-from-a-thread-other-t>
+			
+		    if (box.InvokeRequired)
+	        {
+		    	// System.Windows.Forms.MethodInvoker
+		    	box.Invoke((MethodInvoker)(() => box.Items.Add(item)));
+	        }
+	        else
+	        {
+	        	box.Items.Add(item);
+	        }
+		}
+		public void AddItem(ListViewItem item) {
+			if (this.resultsListView != null) {
+				AddListViewItem(this.resultsListView, item);
+			}
+			else {
+				// Console.Error.WriteLine();
+			}
+		}
 		public static long NowMS() {
 			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 		}
@@ -349,7 +420,7 @@ namespace DeepFileFind
 				}
 			}
 			
-			if (resultsListView!=null) resultsListView.Items.Clear();
+			if (resultsListView!=null) this.ClearList();
 			else results = new ArrayList();
 			options_name_string_tolower = (options.name_string!=null) ? options.name_string.ToLower() : null;
 			Console.Error.WriteLine("  Searching in "+options.start_directoryinfos.Count+" DirectoryInfo(s)");
@@ -365,17 +436,17 @@ namespace DeepFileFind
                 }
 			}
 			finished = true;
-			if (options.statusTextBox!=null) {
-				if (enable) {
-					options.statusTextBox.Text="Finished {";
-					if (err!=null) options.statusTextBox.Text+=" error:"+err+";";
-					if (options.modified_start_date_enable) options.statusTextBox.Text+=" ModStarting:"+options.modified_start_datetime_utc.ToString(DFF.datetime_sortable_format_string)+";";
-					if (options.modified_endbefore_date_enable) options.statusTextBox.Text+=" ModBefore:"+options.modified_endbefore_datetime_utc.ToString(DFF.datetime_sortable_format_string)+";";
-					options.statusTextBox.Text+="}";
-				}
-				else options.statusTextBox.Text="Cancelled";
+			if (enable) {
+				string msg = "Finished {";
+				if (err!=null) msg += " error:"+err+";";
+				if (options.modified_start_date_enable) msg += " ModStarting:"+options.modified_start_datetime_utc.ToString(DFF.datetime_sortable_format_string)+";";
+				if (options.modified_endbefore_date_enable) msg +=" ModBefore:"+options.modified_endbefore_datetime_utc.ToString(DFF.datetime_sortable_format_string)+";";
+				msg += "}";
+				options.SetStatus(msg);
 			}
+			else options.SetStatus("Cancelled");
 		}
+		
 
 		private string ExecuteSearchRecursively(DirectoryInfo major_di, int depth) {
 			string err = null;
@@ -383,34 +454,12 @@ namespace DeepFileFind
                 if (depth == 0 || get_is_folder_searchable(major_di, true)) {
 	                Console.WriteLine ("(depth=" + depth.ToString () + ") Searching in " + major_di.Name);
 	                //crashes if on different thread:
-	                if (options.statusTextBox != null) options.statusTextBox.Text = major_di.FullName;
+	                options.SetStatus(major_di.FullName);
 	                if (DFF.NowMS() - refreshTick > refreshDelay) {
 	                	Application.DoEvents();
 	                	refreshTick = DFF.NowMS();
 	                }
 	                //Console.Error.WriteLine(major_di.FullName);
-	                if (resultsListView != null) {
-	                    if (COLUMN_PATH < 0 && COLUMN_PATH != COLUMNFLAG_IGNORE) {
-	                        COLUMN_PATH = resultsListView.Columns.IndexOfKey ("Path");
-	                        if (COLUMN_PATH < 0) COLUMN_PATH = COLUMNFLAG_IGNORE;
-	                    }
-	                    if (COLUMN_NAME < 0 && COLUMN_NAME != COLUMNFLAG_IGNORE) {
-	                        COLUMN_NAME = resultsListView.Columns.IndexOfKey ("Name");
-	                        if (COLUMN_NAME < 0) COLUMN_NAME = COLUMNFLAG_IGNORE;
-	                    }
-	                    if (COLUMN_MODIFIED < 0 && COLUMN_MODIFIED != COLUMNFLAG_IGNORE) {
-	                        COLUMN_MODIFIED = resultsListView.Columns.IndexOfKey ("Modified");
-	                        if (COLUMN_MODIFIED < 0) COLUMN_MODIFIED = COLUMNFLAG_IGNORE;
-	                    }
-	                    if (COLUMN_CREATED < 0 && COLUMN_CREATED != COLUMNFLAG_IGNORE) {
-	                        COLUMN_CREATED = resultsListView.Columns.IndexOfKey ("Created");
-	                        if (COLUMN_CREATED < 0) COLUMN_CREATED = COLUMNFLAG_IGNORE;
-	                    }
-	                    if (COLUMN_EXTENSION < 0 && COLUMN_EXTENSION != COLUMNFLAG_IGNORE) {
-	                        COLUMN_EXTENSION = resultsListView.Columns.IndexOfKey ("Extension");
-	                        if (COLUMN_EXTENSION < 0) COLUMN_EXTENSION = COLUMNFLAG_IGNORE;
-	                    }
-	                }
 					string participle="preparing to check for matches in '"+major_di.FullName+"'";
                     if (string.IsNullOrEmpty(this.options.name_string)) this.options.name_string = "*"; //prevents ContainsAny crash on next line
                     bool filenames_prefiltered_enable = ContainsAny(this.options.name_string, wildcards);
@@ -434,7 +483,7 @@ namespace DeepFileFind
                             if (get_is_match(this_fi, filenames_prefiltered_enable)) {
                                 if (resultsListView != null) {
                         			//participle="creating fields array '"+this_fi.FullName+"'";
-                                    string [] fields = new String [resultsListView.Columns.Count];
+                                    string [] fields = new String [this.ColumnCount];
                                     //participle="setting path '"+this_fi.FullName+"'";
                                     if (COLUMN_PATH >= 0) fields [COLUMN_PATH] = this_fi.FullName;
                                     if (COLUMN_NAME >= 0) fields [COLUMN_NAME] = this_fi.Name;
@@ -442,7 +491,7 @@ namespace DeepFileFind
                                     if (COLUMN_CREATED >= 0) fields [COLUMN_CREATED] = this_fi.CreationTime.ToString (DFF.datetime_sortable_format_string);
                                     if (COLUMN_EXTENSION >= 0) fields [COLUMN_EXTENSION] = this_fi.Extension;
                                     participle="adding fields for "+((fields!=null)?("'"+this_fi.Name+"'"):("null"));
-                                    resultsListView.Items.Add(new ListViewItem(fields));
+                                    this.AddItem(new ListViewItem(fields));
 					                if (DFF.NowMS() - refreshTick > refreshDelay) {
 					                	Application.DoEvents();
 					                	refreshTick = DFF.NowMS();
@@ -470,7 +519,7 @@ namespace DeepFileFind
                                     if (get_is_match(this_di)) {
                                         if (resultsListView != null) {
                             				participle = "creating fields array";
-                                            string [] fields = new String [resultsListView.Columns.Count];
+                                            string [] fields = new String [this.ColumnCount];
                                             if (COLUMN_PATH >= 0) fields [COLUMN_PATH] = this_di.FullName;
                                             if (COLUMN_NAME >= 0) fields [COLUMN_NAME] = this_di.Name;
                                             participle = "converting modified date to string";
@@ -479,7 +528,7 @@ namespace DeepFileFind
                                             if (COLUMN_CREATED >= 0) fields [COLUMN_CREATED] = this_di.CreationTime.ToString(DFF.datetime_sortable_format_string);
                                             if (COLUMN_EXTENSION >= 0) fields [COLUMN_EXTENSION] = "<Folder>";
                                             participle = "creating ListViewItem";
-                                            resultsListView.Items.Add(new ListViewItem(fields));
+                                            this.AddItem(new ListViewItem(fields));
 							                if (DFF.NowMS() - refreshTick > refreshDelay) {
 							                	Application.DoEvents();
 							                	refreshTick = DFF.NowMS();

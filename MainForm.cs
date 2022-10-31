@@ -480,8 +480,8 @@ namespace DeepFileFind
 			//else already null since new object, so do nothing
 			dff.options.include_folders_as_results_enable=foldersCheckBox.Checked;
 			dff.options.recursive_enable=recursiveCheckBox.Checked;
-			dff.resultsListView = this.resultsListView;
-			dff.options.statusTextBox = this.statusTextBox;
+			dff.SetListView(this.resultsListView);
+			dff.options.SetStatusTextBox(this.statusTextBox);
 			if (dff.options.min_size_enable && dff.options.max_size_enable && dff.options.max_size<dff.options.min_size) {
 				statusTextBox.Text="WARNING: max is less than min (nothing to find)";
 			}
@@ -796,6 +796,16 @@ namespace DeepFileFind
 		void ExitToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			Application.Exit();
+		}
+		
+		void ContentTextBoxTextChanged(object sender, EventArgs e)
+		{
+			if (contentTextBox.Text.Length > 0) {
+				contentCheckBox.Checked = true;
+			}
+			else {
+				contentCheckBox.Checked = false;
+			}
 		}
 	}
 }

@@ -334,6 +334,7 @@ namespace DeepFileFind
 			this.contentTextBox.Name = "contentTextBox";
 			this.contentTextBox.Size = new System.Drawing.Size(333, 23);
 			this.contentTextBox.TabIndex = 60;
+			this.contentTextBox.TextChanged += new System.EventHandler(this.ContentTextBoxTextChanged);
 			this.contentTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ContentTextBoxKeyDown);
 			// 
 			// contentCheckBox
