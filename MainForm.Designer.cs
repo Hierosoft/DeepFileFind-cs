@@ -54,6 +54,7 @@ namespace DeepFileFind
 			this.contentTextBox = new System.Windows.Forms.TextBox();
 			this.contentCheckBox = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.foldersCheckBox = new System.Windows.Forms.CheckBox();
 			this.findButton = new System.Windows.Forms.Button();
 			this.nameTextBox = new System.Windows.Forms.TextBox();
 			this.cancelButton = new System.Windows.Forms.Button();
@@ -66,7 +67,6 @@ namespace DeepFileFind
 			this.modifiedStartTimeCheckBox = new System.Windows.Forms.CheckBox();
 			this.modifiedStartDateCheckBox = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-			this.foldersCheckBox = new System.Windows.Forms.CheckBox();
 			this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
 			this.maxSizeTextBox = new System.Windows.Forms.TextBox();
 			this.maxSizeCheckBox = new System.Windows.Forms.CheckBox();
@@ -371,6 +371,20 @@ namespace DeepFileFind
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(335, 35);
 			this.tableLayoutPanel2.TabIndex = 10;
 			// 
+			// foldersCheckBox
+			// 
+			this.foldersCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.foldersCheckBox.AutoSize = true;
+			this.foldersCheckBox.Checked = true;
+			this.foldersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.foldersCheckBox.Location = new System.Drawing.Point(104, 8);
+			this.foldersCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+			this.foldersCheckBox.Name = "foldersCheckBox";
+			this.foldersCheckBox.Size = new System.Drawing.Size(101, 19);
+			this.foldersCheckBox.TabIndex = 3;
+			this.foldersCheckBox.Text = "Folder Names";
+			this.foldersCheckBox.UseVisualStyleBackColor = true;
+			// 
 			// findButton
 			// 
 			this.findButton.AutoSize = true;
@@ -535,20 +549,6 @@ namespace DeepFileFind
 			this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel6.Size = new System.Drawing.Size(335, 1);
 			this.tableLayoutPanel6.TabIndex = 20;
-			// 
-			// foldersCheckBox
-			// 
-			this.foldersCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.foldersCheckBox.AutoSize = true;
-			this.foldersCheckBox.Checked = true;
-			this.foldersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.foldersCheckBox.Location = new System.Drawing.Point(104, 8);
-			this.foldersCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-			this.foldersCheckBox.Name = "foldersCheckBox";
-			this.foldersCheckBox.Size = new System.Drawing.Size(101, 19);
-			this.foldersCheckBox.TabIndex = 3;
-			this.foldersCheckBox.Text = "Folder Names";
-			this.foldersCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// tableLayoutPanel7
 			// 
@@ -823,7 +823,7 @@ namespace DeepFileFind
 			this.MainMenuStrip = this.menuStrip1;
 			this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.Name = "MainForm";
-			this.Text = "DeepFileFind";
+			this.Text = "DeepFileFind 3.1.4";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormFormClosing);
 			this.Load += new System.EventHandler(this.MainFormLoad);
 			this.splitContainer1.Panel1.ResumeLayout(false);
