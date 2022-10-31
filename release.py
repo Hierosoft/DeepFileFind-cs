@@ -65,19 +65,27 @@ self_path = os.path.dirname(os.path.abspath(__file__))
 projects_path = os.path.dirname(self_path)
 
 version_string = "prerelease"
-release_notes_path = "README.md"
+# release_notes_path = "README.md"
+
+release_marker = "## ["
+release_ender = "]"
+release_notes_path = "changelog.md"
+print('Looking for release number in "{}" ("{}" to "{}")'
+      ''.format(release_notes_path, release_marker, release_ender))
+
 ins = open(release_notes_path, 'r')
 line = True
 line_number = 1
 while line:
     line = ins.readline()
     if line:
-        release_marker = " Released "
+        # release_marker = " Released "
         release_marker_i = line.find(release_marker)
         if release_marker_i > -1:
             release_i = release_marker_i + len(release_marker)
             release_part = line[release_i:]
-            chunks = release_part.split(" ")
+            # chunks = release_part.split(" ")
+            chunks = release_part.split(release_ender)
             version_string = chunks[0].strip()
             print(release_notes_path+" ("+str(line_number)+","+str(release_i+1)+"): Found ' Release ' and version_string " + version_string)
             break
@@ -125,5 +133,5 @@ if os.path.isfile(release_zip_path):
     print("removed temporary folder '" + release_path + "'")
 else:
     print("ERROR: shutil failed to create '" + release_zip_path + "'")
-
-
+print()
+print("Make sure the title bar matches. Otherwise, set the version in the title bar to {} or change {} then re-run this release script.".format(version_string, release_notes_path))
