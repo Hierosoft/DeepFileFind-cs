@@ -11,6 +11,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Collections;
 using System.Threading;
+using System.Diagnostics;
 using System.Security.AccessControl; //for FileSystemAccessRule in mscorlib as per http://docs.go-mono.com/index.aspx?link=T%3ASystem.Security.AccessControl.FileSystemAccessRule
 //using Mono.Unix;
 //using System.Diagnostics; //System.Diagnostics.Debug.WriteLine etc
@@ -50,6 +51,14 @@ namespace DeepFileFind
 		#endregion cache
 		public static long NowMS() {
 			return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+		}
+		public static string get_indent(int depth, string tab) {
+			string result = "";
+			if (depth < 1) return "";
+			for (int i=0; i<depth; i++) {
+				result += tab;
+			}
+			return result;
 		}
 		public bool get_is_content_searchable(string path)
 		{
@@ -120,43 +129,100 @@ namespace DeepFileFind
 			return result;
 		}
 		
+		public bool is_like(string haystack, string filter) {
+			bool result = false;
+			if (string.IsNullOrEmpty(filter)) {
+				if (filter == null)
+					Debug.WriteLine("  true any is_like(\""+haystack+"\", null)");
+				else
+					Debug.WriteLine("  true any is_like(\""+haystack+"\", \""+filter+"\")");
+				return true;
+			}
+			if (filter == "*") {
+				Debug.WriteLine("  true any is_like(\""+haystack+"\", \""+filter+"\")");
+				return true;
+			}
+			if (!options.case_sensitive_enable) {
+				haystack = haystack.ToLower();
+				filter = filter.ToLower();
+			}
+			if (filter.StartsWith("*") && filter.EndsWith("*")) {
+				Debug.WriteLine("  true is_like *filter* (\""+haystack+"\", \""+filter+"\")");
+				return haystack.Contains(filter.Substring(1, filter.Length-2));
+			}
+			else if (filter.EndsWith("*")) {
+				Debug.WriteLine("  true startswith is_like(\""+haystack+"\", \""+filter+"\")");
+				return haystack.StartsWith(filter.Substring(0, filter.Length-1));
+			}
+			else if (filter.StartsWith("*")) {
+				Debug.WriteLine("  true endswith is_like(\""+haystack+"\", \""+filter+"\")");
+				return haystack.EndsWith(filter.Substring(1));
+			}
+			//else if (!filter.StartsWith("*") && !filter.EndsWith("*")) {
+			Debug.WriteLine("  "+(haystack.Contains(filter)?"true":"false")+" Contains is_like(\""+haystack+"\", \""+filter+"\")");
+			return haystack.Contains(filter);
+			//}
+		}
+		
 		public bool get_is_match(FileInfo this_info, bool filenames_prefiltered_enable) {
 			bool result = false;
-            if (this_info != null) {
-                try {
-                    if (
-						!this_info.Name.EndsWith (":")
-						&& !this_info.Name.StartsWith ("Singleton")
-                        && !this_info.Name.EndsWith ("Socket")
-                       ) {
-                        Console.WriteLine ("get_is_match(FileInfo,bool) '" + this_info.Name + "'...");
-                        if (options_name_string_tolower==null&&options.name_string!=null) options_name_string_tolower=options.name_string.ToLower();//;throw new ApplicationException("options_name_string_tolower was null but options.name_string was not (this should never happen)");
-                        if (filenames_prefiltered_enable || string.IsNullOrEmpty(options.name_string) || (options.case_sensitive_enable ? this_info.Name.Contains(options.name_string) : this_info.Name.ToLower().Contains(options_name_string_tolower))) {
-                            //below is ok since time was manipulated if !options.endbefore_time_enable
-                            //Console.WriteLine("file: "+this_info.LastWriteTime.ToUniversalTime().ToString(DFF.datetime_sortable_format_string));
-                            //Console.WriteLine("endbefore: "+options.modified_endbefore_datetime_utc.ToUniversalTime().ToString(DFF.datetime_sortable_format_string));
-                            //Console.WriteLine();
-                            if (!options.modified_endbefore_date_enable || (this_info.LastWriteTime.ToUniversalTime () < options.modified_endbefore_datetime_utc.ToUniversalTime ())) {
-                                if (!options.modified_start_date_enable || (this_info.LastWriteTime.ToUniversalTime () >= options.modified_start_datetime_utc.ToUniversalTime ())) {
-                                    if (!options.min_size_enable || (this_info.Length >= options.min_size)) {
-                                        if (!options.max_size_enable || (this_info.Length <= options.max_size)) {
-                            				if (string.IsNullOrEmpty(options.content_string) || (get_is_content_searchable(this_info.FullName)&&get_file_contains(this_info, options.content_string))) {
-                                                result = true;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        Console.WriteLine ("...done get_is_match(FileInfo,bool)");
-                    } else Console.Error.WriteLine ("get_is_match(FileInfo,bool): non-file-like name skipped");
-                } catch (IOException ioEx) {
-                    //ignore since probably a permission issue
-				} catch (Exception exn) {
-                    //Console.Error.WriteLine ("Could not finish get_is_match: " + exn.ToString ());
-                    Console.Error.WriteLine ("Could not finish get_is_match(FileInfo,bool):"+exn.ToString());
+            if (this_info == null) {
+				string msg = "get_is_match(FileInfo,bool):null";
+				Console.Error.WriteLine(msg);
+				Debug.WriteLine(msg);
+				return false;
+			}
+            if (
+				this_info.Name.EndsWith(":")
+				|| this_info.Name.StartsWith("Singleton")
+                || this_info.Name.EndsWith("Socket")
+               ) {
+                Debug.WriteLine("get_is_match(FileInfo,bool): non-file-like name skipped");
+                return false;
+			}
+			
+            try {
+				Debug.WriteLine("get_is_match(FileInfo,"+(filenames_prefiltered_enable?"true":"false")+") '" + this_info.Name + "'...");
+                if (options_name_string_tolower==null&&options.name_string!=null) {
+                	options_name_string_tolower=options.name_string.ToLower();
+                    //;throw new ApplicationException("options_name_string_tolower was null but options.name_string was not (this should never happen)");
+				}
+                
+				if (!filenames_prefiltered_enable) {
+					if (!is_like(this_info.Name, options.name_string))
+                		return false;
+					else {
+						if (options.name_string != null)
+							Debug.WriteLine("  name matches \""+options.name_string+"\"");
+						else
+							Debug.WriteLine("  name matches null");
+					}
+				}
+                // Comparisons below are ok since time was manipulated if !options.endbefore_time_enable
+                if (options.modified_endbefore_date_enable && (this_info.LastWriteTime.ToUniversalTime () >= options.modified_endbefore_datetime_utc.ToUniversalTime()))
+                    return false;
+                if (options.modified_start_date_enable && (this_info.LastWriteTime.ToUniversalTime () < options.modified_start_datetime_utc.ToUniversalTime ()))
+                    return false;
+                if (options.min_size_enable && (this_info.Length < options.min_size))
+                	return false;
+                if (options.max_size_enable && (this_info.Length > options.max_size))
+                	return false;
+				if (string.IsNullOrEmpty(options.content_string) || (get_is_content_searchable(this_info.FullName)&&get_file_contains(this_info, options.content_string))) {
+                	// It has to be a searchable file if content_string is used, and content_string must be found inside.
+                	if (!string.IsNullOrEmpty(options.content_string))
+                		Debug.WriteLine("  content matches \""+options.content_string+"\"");
+                    result = true;
                 }
-            } else Console.Error.WriteLine ("get_is_match(FileInfo,bool):null");
+
+            } catch (IOException ioEx) {
+                //ignore since probably a permission issue
+                Debug.WriteLine("  Error: get_is_match failed with IOException on "+this_info.Name+":"+ioEx.ToString());
+			} catch (Exception exn) {
+                //Console.Error.WriteLine ("Could not finish get_is_match: " + exn.ToString ());
+                Console.Error.WriteLine ("Could not finish get_is_match(FileInfo,bool):"+exn.ToString());
+                Debug.WriteLine("  Error: get_is_match failed with Exception on "+this_info.Name+":"+exn.ToString());
+            }
+			Debug.WriteLine("  "+(result?"true":"false")+"...done get_is_match(FileInfo,bool)");
 			return result;
 		}
 		public bool get_is_match(DirectoryInfo this_info) {
@@ -165,15 +231,28 @@ namespace DeepFileFind
                 //Console.Error.WriteLine("get_is_match(DirectoryInfo) '" + this_info.Name + "'...");
                 //Console.Error.WriteLine("  options.name_string:" + options.name_string);
                 //Console.Error.WriteLine("  options_name_string_tolower: " + options_name_string_tolower);
-                if (string.IsNullOrEmpty(options.name_string) || (options.name_string=="*") || (options.case_sensitive_enable ? this_info.Name.Contains(options.name_string) : this_info.Name.ToLower().Contains(options_name_string_tolower))) {
+                if (is_like(this_info.Name, options.name_string)) {
                     //below is ok since time was manipulated if !options.endbefore_time_enable
                     if (!options.modified_endbefore_date_enable || (this_info.LastWriteTime.ToFileTimeUtc () < options.modified_endbefore_datetime_utc.ToFileTimeUtc ())) {
                         if (!options.modified_start_date_enable || (this_info.LastWriteTime.ToFileTimeUtc () >= options.modified_start_datetime_utc.ToFileTimeUtc ())) {
                             result = true;
                         }
+                    	else {
+                    		Debug.WriteLine("not after start date:");
+                    	}
+                    }
+                    else {
+                    	Debug.WriteLine("not before end date:");
                     }
                 }
-            } else Console.Error.WriteLine ("get_is_match(DirectoryInfo):null");
+                else {
+                    Debug.WriteLine("not like "+options.name_string+":");
+                }
+            }
+			else {
+				Console.Error.WriteLine ("get_is_match(DirectoryInfo):null");
+				Debug.WriteLine("null:");
+			}
 			return result;
 		}
         public static bool ContainsI(ArrayList haystack, string needle) {
@@ -373,6 +452,7 @@ namespace DeepFileFind
 	                    	participle = "getting directory list for '"+major_di.FullName+"'";
 	                        foreach (DirectoryInfo this_di in major_di.GetDirectories ()) {
 	                    		participle = "preparing to check (under major directory) in directory '"+this_di.FullName+"'";
+	                    		// Debug.WriteLine(participle);
 	                            if (!enable) break;
 	                            try {
 	                                if (options.include_folders_as_results_enable) {
@@ -403,24 +483,68 @@ namespace DeepFileFind
 	                                    }
 	                                }
 	                                if (this.non_directory_paths == null || Array.IndexOf (this.non_directory_paths, this_di.FullName) <= -1) {
-	                                    if (get_is_folder_searchable(this_di,false)) {
-	                                        ExecuteSearchRecursively(this_di, depth+1);
+	                                    if (get_is_folder_searchable(this_di, false)) {
+	                            			/*
+	                            			if (get_is_match(this_di)) {
+	                            				Debug.WriteLine(get_indent(depth, "  ")+"++ "+this_di.Name);
+	                            				// Add folders, not just directories, if not matching content.
+	                            				participle = "adding a folder result";
+	                            				if (this_di==null)
+	                            					Debug.WriteLine("ERROR: this_di is null");
+	                            				if (results != null) {
+	                            					results.Add(this_di.FullName);
+	                            				}
+	                            			}
+	                            			else {
+	                            				Debug.WriteLine(get_indent(depth, "  ")+"+ "+this_di.Name);
+	                            			}
+	                            			*/
+	                            			// ^ already done in the previous case if include_folders_as_results_enable
+	                                        string subResult = ExecuteSearchRecursively(this_di, depth+1);
+	                                        if (subResult != null) {
+	                                        	if (err == null) err = subResult;
+	                                        	else err += ". " + subResult;
+	                                        }
+	                                        
+	                                        // Debug.WriteLine shows in the SharpDevelop "Output" panel.
+	                                        // - but only in Debug configuration!
 	                                    }
+	                            		else {
+	                                        Debug.WriteLine(get_indent(depth, "  ")+"- (not searchable)"+this_di.Name);
+	                            		}
 	                                }
+                            		else {
+                                        Debug.WriteLine(get_indent(depth, "  ")+"- (non-directory)"+this_di.Name);
+                            		}
 	                            } catch (Exception exn) {
 	                            	if (depth==0) err = exn.ToString();
-	                                Console.Error.WriteLine ("Could not finish accessing subdirectory while "+participle+" in ExecuteSearchRecursively '" + this_di.FullName + "': " + exn.ToString ());
+	                            	string msg = "Could not finish accessing subdirectory while "+participle+" in ExecuteSearchRecursively '" + this_di.FullName + "': " + exn.ToString ();
+                                    Debug.WriteLine(get_indent(depth, "  ")+"- ("+exn.ToString()+")"+this_di.Name);
+	                            	if (err == null) err = msg;
+	                            	else err += ". " + msg;
+	                                Console.Error.WriteLine(msg);
 	                            }
 	                        }
 	                    }
+	                    else {
+	                    	Debug.WriteLine("- (enable==false) " + major_di.FullName);
+	                    }
 	                } catch (Exception exn) {
+						Debug.WriteLine("- ("+exn.ToString()+") " + major_di.FullName);
 	                	if (depth==0) err = exn.ToString();
-	                    Console.Error.WriteLine ("Could not finish accessing folder '" + major_di.FullName + "': " + exn.ToString ());
+	                	string msg = "Could not finish accessing folder '" + major_di.FullName + "': " + exn.ToString ();
+                    	if (err == null) err = msg;
+                    	else err += ". " + msg;
+	                    Console.Error.WriteLine(msg);
 	                }
 				}
 				else {
+					string msg = "get_is_folder_searchable is false for " + major_di.FullName;
+					Debug.WriteLine(msg);
                     //if (depth==0) err = "not a normal folder: '" + major_di.FullName + "'";
-					Console.Error.WriteLine("get_is_folder_searchable is false for " + major_di.FullName);
+                	if (err == null) err = msg;
+                	else err += ". " + msg;
+					Console.Error.WriteLine(msg);
 				}
             }//end if get_is_folder_searchable
 			else {

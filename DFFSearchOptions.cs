@@ -11,6 +11,8 @@ using System.Collections;
 using System.IO;
 using System.Windows.Forms;
 //using System.Diagnostics; //System.Diagnostics.Debug.WriteLine etc
+using System.Reflection;  // provides MethodBase
+using System.Diagnostics;  // provides Tracing
 
 namespace DeepFileFind
 {
@@ -33,7 +35,23 @@ namespace DeepFileFind
 		public bool modified_endbefore_time_enable = false;
 		public ArrayList start_directoryinfos = null;
         public ArrayList never_use_names = null;
-		public string name_string = null;
+        private string _name_string = null;
+        public string name_string {
+        	get {
+        		return _name_string;
+        	}
+        	set {
+        		var stackTrace = new StackTrace();
+        		MethodBase method = stackTrace.GetFrame(1).GetMethod();
+				string methodName = method.Name;
+				string className = method.ReflectedType.Name;
+				if (value != null)
+	        		Debug.WriteLine("name_string=\""+value+"\" as set by "+className+"."+methodName);
+				else
+	        		Debug.WriteLine("name_string=null as set by "+className+"."+methodName);
+        		_name_string = value;
+        	}
+        }
 		public string content_string = null;
 		public bool recursive_enable = true;
 		public bool include_folders_as_results_enable = true;
