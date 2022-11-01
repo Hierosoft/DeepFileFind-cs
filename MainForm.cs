@@ -59,6 +59,7 @@ namespace DeepFileFind
 			//loaded on MainFormLoad
 			this.lvwColumnSorter = new ListViewColumnSorter();
 			this.resultsListView.ListViewItemSorter = this.lvwColumnSorter;
+			// ^ It still flickers without this.
 		}
 		
 		public void setSearchAvailability(bool enable) {
