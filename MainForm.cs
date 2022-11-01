@@ -43,6 +43,7 @@ namespace DeepFileFind
 		public int RESULT_EXTENSION_COLUMN_INDEX = -1;
 		public Dictionary<string, string> settings = new Dictionary<string, string>();
 		public ListViewColumnSorter lvwColumnSorter;
+		public bool version_then_exit = false;
 		
 		public MainForm()
 		{
@@ -115,6 +116,19 @@ namespace DeepFileFind
 		
 		void MainFormLoad(object sender, EventArgs e)
 		{
+			if (version_then_exit) {
+				string[] parts = this.Text.Split();
+				if (parts.Length > 1) {
+					Console.WriteLine(parts[1]);
+					Application.Exit();
+				}
+				else {
+					MessageBox.Show("--version couldn't be shown because"
+					                + " there is no version in the MainForm title"
+					                + " (this.Text=\""+this.Text+"\".", "Error");
+				}
+			}
+
 			updateDatePickers();
 			if (File.Exists(recent_folders_list_path)) {
 				StreamReader ins = new StreamReader(recent_folders_list_path);

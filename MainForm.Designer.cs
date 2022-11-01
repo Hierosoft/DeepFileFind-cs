@@ -824,7 +824,7 @@ namespace DeepFileFind
 			this.MainMenuStrip = this.menuStrip1;
 			this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.Name = "MainForm";
-			this.Text = "DeepFileFind 3.1.4";
+			this.Text = "DeepFileFind 3.1.5";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormFormClosing);
 			this.Load += new System.EventHandler(this.MainFormLoad);
 			this.splitContainer1.Panel1.ResumeLayout(false);

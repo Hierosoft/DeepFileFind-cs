@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
+from __future__ import print_function
 import sys
 import os
 import shutil
+from subprocess import (
+    PIPE,
+    Popen,
+)
 #import zipfile
+
+if sys.version_info.major < 3:
+    input = raw_input
 
 #copied from KivyGlops (etc/kivyglopsdelta.py)
 class SyncOptions:
@@ -97,20 +105,63 @@ ins.close()
 options = SyncOptions()
 project_name = os.path.basename(self_path)
 print("Project '"+project_name+"': Syncing self from '" + self_path + "'")
-#bin_path = os.path.join(self_path, "bin")
-#if not os.path.isdir(bin_path):
-#    os.makedirs(bin_path)
+# bin_path = os.path.join(self_path, "bin")
+# if not os.path.isdir(bin_path):
+#     os.makedirs(bin_path)
 release_dir_name = project_name + "-" + version_string + "-release"
 release_path = os.path.join(projects_path, release_dir_name)
 if not os.path.isdir(release_path):
     os.makedirs(release_path)
-sync_recursively(self_path,release_path,options)
+sync_recursively(self_path, release_path, options)
+
+
+self_exe = os.path.join(self_path, "bin", "WindowsRelease", "DeepFileFind.exe")
+release_exe = os.path.join(release_path, "bin", "WindowsRelease", "DeepFileFind.exe")
+
+if not os.path.isfile(self_exe):
+    print('Error: "{}" is missing.'.format(self_exe))
+    sys.exit(1)
+
+self_time = os.path.getmtime(self_exe)
+release_time = os.path.getmtime(release_exe)
 
 print("sync_recursively ("+options.mode+") result:")
 print("  copied: "+str(options.copied_count))
 print("  removed: "+str(options.removed_count))
 
-#NOTE: .git is not copied by sync_recursively above as per default options
+def get_version(cmd_parts):
+    print("* Using Python {}.{}"
+          "".format(sys.version_info.major, sys.version_info.minor))
+    print('* Running "'+' '.join(cmd_parts)+'"')
+    # See
+    # <https://stackoverflow.com/questions/16768290/understanding-popen-communicate>.
+    result = None
+    p = Popen(cmd_parts, stdin=PIPE, stdout=PIPE, bufsize=1)
+    result = p.stdout.readline()
+    # See also os.device_encoding(file_descriptor)
+    for i in range(10):
+        pass
+        # print >>p.stdin, i # write input
+        # p.stdin.flush() # not necessary in this case
+        # print p.stdout.readline(), # read output
+
+    if sys.version_info.major >= 3:
+        out, err = p.communicate("n\n".encode(sys.stdout.encoding))
+    else:
+        out, err = p.communicate("n\n")
+    # ^ Signal the child to exit, read the rest of the output,
+    #   wait for the child to exit.
+    if result is None:
+        return None
+    # Always strip it, because it usually ends with "\n":
+    elif sys.version_info.major < 3:
+        return result.strip()
+    return result.decode(sys.stdout.encoding).strip()
+
+got_version = get_version([os.path.join(release_path, "bin", "WindowsRelease", "DeepFileFind.exe"), "--version"])
+
+
+# NOTE: .git is not copied by sync_recursively above as per default options
 
 non_release_names = [".git"]  # "etc"
 for non_release_name in non_release_names:
@@ -133,5 +184,29 @@ if os.path.isfile(release_zip_path):
     print("removed temporary folder '" + release_path + "'")
 else:
     print("ERROR: shutil failed to create '" + release_zip_path + "'")
+    sys.exit(1)
 print()
-print("Make sure the title bar matches. Otherwise, set the version in the title bar to {} or change {} then re-run this release script.".format(version_string, release_notes_path))
+
+if self_time != release_time:
+    print("Match executable dates after sync...no")
+    print("Error: file dates don't match.")
+    print('self_time={} ("{}")'.format(self_time, self_exe))
+    print('release_time={} ("{}")'.format(release_time, release_exe))
+    sys.exit(1)
+else:
+    print("Match executable dates after sync...yes")
+
+
+if version_string != got_version:
+    print('version_string="{}"'.format(version_string))
+    print('mainform.Text version="{}"'.format(got_version))
+    print("Error: Set the version in the title bar (mainform.Text) to {} or change {} then re-run this release script.".format(version_string, release_notes_path))
+    sys.exit(1)
+else:
+    print("Match versions...yes (The program reported that its title bar is version {})"
+          "".format(got_version))
+
+
+print('"{}" is ready.'.format(release_path))
+
+input("Press enter to exit...")

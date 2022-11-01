@@ -5,12 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [unreleased] - 2022-10-31
+## [3.1.5] - 2022-10-31
+### Added
+- Add a --version option.
+  - Check the version against the changelog version in release.py.
+
 ### Changed
 - Comment out most Debug.WriteLine output for speed and more concise output.
 - Reduce nesting.
   - Clarify by reduced nesting and comments that the parent only stops if it itself is accessible, not if subs are.
     (See `return err; // Stop trying to traverse` ...).
+
+### Fixed
+- Add threading (Fix #3).
 
 
 ## [3.1.4] - 2022-10-31

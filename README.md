@@ -12,7 +12,8 @@ The goal of this project is to create the most satisfying search program in the 
 ### Windows
 - Download a DeepFileFind windows zip from [Releases](https://github.com/poikilos/DeepFileFind-cs/releases).
 - Open/Run
-- Drag DeepFileFind.exe to your Desktop
+- Open "bin", then "WindowsRelease".
+- Drag DeepFileFind.exe to your Desktop.
   - If the program is blocked by Windows, click More Info then Run Anyway and if you agree it is safe please click the steps to report the false positive to Microsoft (such as if you have reviewed the source code or reproduced it by building)
     - See the [false positive "severe threat" issue #1](https://github.com/poikilos/DeepFileFind-cs/issues/1)
 - Double-click the icon on the desktop (Magnifying glass).
@@ -54,3 +55,10 @@ See [Issues](https://github.com/poikilos/DeepFileFind-cs/issues).
 
 ## Changes
 See [changelog.md](changelog.md).
+
+
+## Development
+### Releasing
+- Build the release build to bin/WindowsRelease using SharpDevelop 4.4.
+- Run `python release.py`
+- Add a tag and upload the DeepFileFind zip with the matching version in the parent directory (such as "GitHub").
