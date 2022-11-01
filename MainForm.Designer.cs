@@ -756,6 +756,7 @@ namespace DeepFileFind
 			this.resultsListView.TabIndex = 100;
 			this.resultsListView.UseCompatibleStateImageBehavior = false;
 			this.resultsListView.View = System.Windows.Forms.View.Details;
+			this.resultsListView.VirtualListSize = 1000000000;
 			this.resultsListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ResultsListViewColumnClick);
 			this.resultsListView.DoubleClick += new System.EventHandler(this.ResultsListViewDoubleClick);
 			this.resultsListView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ResultsListViewKeyDown);

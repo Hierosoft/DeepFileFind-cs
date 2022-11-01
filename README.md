@@ -12,7 +12,7 @@ The goal of this project is to create the most satisfying search program in the 
 ### Windows
 - Download a DeepFileFind windows zip from [Releases](https://github.com/poikilos/DeepFileFind-cs/releases).
 - Open/Run
-- Open "bin", then "WindowsRelease".
+- Open "bin", then "Release-win64" 9or "WindowsRelease" for older versions).
 - Drag DeepFileFind.exe to your Desktop.
   - If the program is blocked by Windows, click More Info then Run Anyway and if you agree it is safe please click the steps to report the false positive to Microsoft (such as if you have reviewed the source code or reproduced it by building)
     - See the [false positive "severe threat" issue #1](https://github.com/poikilos/DeepFileFind-cs/issues/1)

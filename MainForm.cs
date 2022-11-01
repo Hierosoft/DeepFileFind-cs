@@ -309,7 +309,7 @@ namespace DeepFileFind
 			cancelButton.Enabled=false;
 			cancelButton.Visible=false;
 			if (dff!=null) {
-				if (this_thread!=null) {
+				if (this_thread != null) {
 					statusTextBox.Text="waiting for previous thread to stop...";
 					dff.enable = false;
 					Application.DoEvents();
@@ -319,6 +319,14 @@ namespace DeepFileFind
 					}
 					statusTextBox.Text="";
 					Application.DoEvents();
+					/*
+					if (this.this_thread != null) {
+						if (this.this_thread.IsAlive) {
+							this.this_thread.Abort();
+						}
+					}
+					*/
+					
 				}
 				else {
 					statusTextBox.Text="waiting for previous operation to stop...";
@@ -381,7 +389,54 @@ namespace DeepFileFind
 			}
 			return size_string;
 		}
+		public void SaveSettings() {
+			statusTextBox.Text="Saving settings...";
+			Application.DoEvents();
+			StreamWriter outs = new StreamWriter(recent_folders_list_path);
+			ArrayList uniqueAL = new ArrayList();
+			outs.WriteLine(locationComboBox.Text);
+			uniqueAL.Add(locationComboBox.Text);
+			foreach (string line in locationComboBox.Items) {
+				if (!uniqueAL.Contains(line)) {
+					outs.WriteLine(line);
+					uniqueAL.Add(line);
+				}
+			}
+			outs.Close();
+			
+			outs = new StreamWriter(settings_path);
+			settings["modified_start_date_enable"] = modifiedStartDateCheckBox.Checked?"true":"false";
+			settings["modified_start_time_enable"] = modifiedStartTimeCheckBox.Checked?"true":"false";
+			settings["modified_start_datetime_utc"] = modifiedStartDTPicker.Value.ToUniversalTime().ToString(datetime_format_string+" UTC");
+			settings["modified_endbefore_date_enable"] = modifiedEndBeforeDateCheckBox.Checked?"true":"false";
+			settings["modified_endbefore_time_enable"] = modifiedEndBeforeTimeCheckBox.Checked?"true":"false";
+			settings["modified_endbefore_datetime_utc"] = modifiedEndBeforeDTPicker.Value.ToUniversalTime().ToString(datetime_format_string+" UTC");
+			settings["include_folders_as_results_enable"] = foldersCheckBox.Checked?"true":"false";
+			settings["content_enable"] = contentCheckBox.Checked?"true":"false";
+			settings["recursive_enable"] = recursiveCheckBox.Checked?"true":"false";
+			settings["content_string"] = contentTextBox.Text;
+			settings["exclude_names"] = excludeTextBox.Text;
+			settings["name"] = nameTextBox.Text;
+			settings["min_size_enable"] = minSizeCheckBox.Checked?"true":"false";
+			settings["max_size_enable"] = maxSizeCheckBox.Checked?"true":"false";
+			settings["min_size"] = minSizeTextBox.Text;
+			settings["max_size"] = maxSizeTextBox.Text;
+			settings["follow_folder_symlinks_enable"] = follow_folder_symlinks_enableCB.Checked?"true":"false";
+			settings["search_inside_hidden_files_enable"] = search_inside_hidden_files_enableCB.Checked?"true":"false";
+			settings["follow_dot_folders_enable"] = follow_dot_folders_enableCB.Checked?"true":"false";
+			settings["follow_hidden_folders_enable"] = follow_hidden_folders_enableCB.Checked?"true":"false";
+			settings["follow_system_folders_enable"] = follow_system_folders_enableCB.Checked?"true":"false";
+			settings["follow_temporary_folders_enable"] = follow_temporary_folders_enableCB.Checked?"true":"false";
+			foreach(KeyValuePair<string, string> entry in settings) {
+				outs.WriteLine(entry.Key+":"+entry.Value);
+			}
+			outs.Close();
+			
+			statusTextBox.Text="";
+			
+		}
 		public void ExecuteSearch() {
+			SaveSettings();
 			//MessageBox.Show(new String (System.IO.Path.InvalidPathChars));
 			if ( nameTextBox.Text.IndexOfAny(System.IO.Path.GetInvalidPathChars()) >= 0) { //Path.InvalidPathChars is obsoleted by Microsoft //if (!nameTextBox.Text.Contains("*") && !nameTextBox.Text.Contains("?") && )
 				MessageBox.Show("Usage of these characters is not implemented. Please enter all or part of a valid filename.");
@@ -496,6 +551,7 @@ namespace DeepFileFind
 			dff.options.recursive_enable=recursiveCheckBox.Checked;
 			dff.SetListView(this.resultsListView);
 			dff.options.SetStatusTextBox(this.statusTextBox);
+			bool queued = false;
 			if (dff.options.min_size_enable && dff.options.max_size_enable && dff.options.max_size<dff.options.min_size) {
 				statusTextBox.Text="WARNING: max is less than min (nothing to find)";
 			}
@@ -511,6 +567,7 @@ namespace DeepFileFind
 					Application.DoEvents();
 					timer1.Enabled=true;
 					timer1.Start();
+					queued = true;
 				}
 				else {
 					statusTextBox.Text="Searching...";
@@ -529,7 +586,8 @@ namespace DeepFileFind
 			//	fields[RESULT_CREATED_COLUMN_INDEX] = 
 			//	resultsListView.Items.Add(new ListViewItem(fields));
 			//}
-			setSearchAvailability(true);
+			if (!queued)
+				setSearchAvailability(true);
 		}
 		
 		void ContentCheckBoxCheckedChanged(object sender, EventArgs e)
@@ -539,49 +597,8 @@ namespace DeepFileFind
 		
 		void MainFormFormClosing(object sender, FormClosingEventArgs e)
 		{
-			statusTextBox.Text="Saving settings...";
-			Application.DoEvents();
-			StreamWriter outs = new StreamWriter(recent_folders_list_path);
-			ArrayList uniqueAL = new ArrayList();
-			outs.WriteLine(locationComboBox.Text);
-			uniqueAL.Add(locationComboBox.Text);
-			foreach (string line in locationComboBox.Items) {
-				if (!uniqueAL.Contains(line)) {
-					outs.WriteLine(line);
-					uniqueAL.Add(line);
-				}
-			}
-			outs.Close();
-			
-			outs = new StreamWriter(settings_path);
-			settings["modified_start_date_enable"] = modifiedStartDateCheckBox.Checked?"true":"false";
-			settings["modified_start_time_enable"] = modifiedStartTimeCheckBox.Checked?"true":"false";
-			settings["modified_start_datetime_utc"] = modifiedStartDTPicker.Value.ToUniversalTime().ToString(datetime_format_string+" UTC");
-			settings["modified_endbefore_date_enable"] = modifiedEndBeforeDateCheckBox.Checked?"true":"false";
-			settings["modified_endbefore_time_enable"] = modifiedEndBeforeTimeCheckBox.Checked?"true":"false";
-			settings["modified_endbefore_datetime_utc"] = modifiedEndBeforeDTPicker.Value.ToUniversalTime().ToString(datetime_format_string+" UTC");
-			settings["include_folders_as_results_enable"] = foldersCheckBox.Checked?"true":"false";
-			settings["content_enable"] = contentCheckBox.Checked?"true":"false";
-			settings["recursive_enable"] = recursiveCheckBox.Checked?"true":"false";
-			settings["content_string"] = contentTextBox.Text;
-			settings["exclude_names"] = excludeTextBox.Text;
-			settings["name"] = nameTextBox.Text;
-			settings["min_size_enable"] = minSizeCheckBox.Checked?"true":"false";
-			settings["max_size_enable"] = maxSizeCheckBox.Checked?"true":"false";
-			settings["min_size"] = minSizeTextBox.Text;
-			settings["max_size"] = maxSizeTextBox.Text;
-			settings["follow_folder_symlinks_enable"] = follow_folder_symlinks_enableCB.Checked?"true":"false";
-			settings["search_inside_hidden_files_enable"] = search_inside_hidden_files_enableCB.Checked?"true":"false";
-			settings["follow_dot_folders_enable"] = follow_dot_folders_enableCB.Checked?"true":"false";
-			settings["follow_hidden_folders_enable"] = follow_hidden_folders_enableCB.Checked?"true":"false";
-			settings["follow_system_folders_enable"] = follow_system_folders_enableCB.Checked?"true":"false";
-			settings["follow_temporary_folders_enable"] = follow_temporary_folders_enableCB.Checked?"true":"false";
-			foreach(KeyValuePair<string, string> entry in settings) {
-				outs.WriteLine(entry.Key+":"+entry.Value);
-			}
-			outs.Close();
-			
-			statusTextBox.Text="";
+			CancelSearch();
+			SaveSettings();
 		}
 		
 		void CancelButtonClick(object sender, EventArgs e)
@@ -821,5 +838,27 @@ namespace DeepFileFind
 				contentCheckBox.Checked = false;
 			}
 		}
+		/*
+		/// <summary>
+		/// This handler is required when the ListView VirtualMode is true.
+		/// Set VirtualListSize = 1000000000.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void ResultsListViewRetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+		{
+			// See https://www.codeproject.com/Articles/42229/Virtual-Mode-ListView
+			ListViewItem lvi = new ListViewItem(); 	// create a listviewitem object
+			lvi.Text = nt.MakeText(e.ItemIndex); 		// assign the text to the item
+			ListViewItem.ListViewSubItem lvsi = new ListViewItem.ListViewSubItem(); // subitem
+			NumberFormatInfo nfi = new CultureInfo("de-DE").NumberFormat;
+			nfi.NumberDecimalDigits = 0;
+			lvsi.Text = e.ItemIndex.ToString("n", nfi); 	// the subitem text
+			lvi.SubItems.Add(lvsi); 			// assign subitem to item
+			
+			e.Item = lvi; 		// assign item to event argument's item-property
+		}
+		
+		*/
 	}
 }

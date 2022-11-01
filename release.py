@@ -153,8 +153,9 @@ def main():
     if not os.path.isdir(release_path):
         os.makedirs(release_path)
     sync_recursively(self_path, release_path, options)
-
-    self_exe = os.path.join(self_path, "bin", "WindowsRelease",
+    # arch_dir_name = "WindowsRelease"
+    arch_dir_name = "Release-win64"
+    self_exe = os.path.join(self_path, "bin", arch_dir_name,
                             "DeepFileFind.exe")
     release_exe = os.path.join(release_path, "bin", "WindowsRelease",
                                "DeepFileFind.exe")
