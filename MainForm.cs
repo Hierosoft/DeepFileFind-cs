@@ -14,6 +14,7 @@ using System.IO;
 using System.Collections;
 using System.Threading;
 using System.Globalization;
+using System.Diagnostics;
 //using System.Diagnostics; //System.Diagnostics.Debug.WriteLine etc
 	
 namespace DeepFileFind
@@ -622,10 +623,96 @@ namespace DeepFileFind
 			}
 		}
 		
+		/// <summary>
+		/// works with .NET versions before Core as per
+		/// <https://stackoverflow.com/a/5117005>.
+		/// To detect Windows on .NET 5+, you can do
+		/// OperatingSystem.IsWindows() as per
+		/// <https://stackoverflow.com/a/72815578>.
+		/// "The first versions of the framework (1.0 and 1.1) didn't
+		/// include any PlatformID value for Unix, so Mono used the value 128.
+		/// The newer framework 2.0 added Unix to the PlatformID enum but,
+		/// sadly, with a different value: 4 and newer versions of .NET
+		/// distinguished between Unix and macOS, introducing yet another
+		/// value 6 for macOS.
+		/// </summary>
+		public static bool IsWindows
+		{
+		    get
+		    {
+		        int p = (int)Environment.OSVersion.Platform;
+		        bool IsLinux = (p == 4) || (p == 128); // 128 for old Mono on Linux
+		        bool IsMacOS = (p == 6);
+		        return !IsLinux && !IsMacOS;
+		    }
+		}
+		
 		void ResultsListViewDoubleClick(object sender, EventArgs e)
 		{
 			foreach (ListViewItem lvi in resultsListView.SelectedItems) {
-				System.Diagnostics.Process.Start(lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
+				string path = lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text;
+				// if (IsWindows) {
+				if (false) {
+					// as per <https://stackoverflow.com/a/54275102>
+					// Process.Start("explorer", "\"" + path + "\"");
+					// ^ fails with "Application not found",
+					//   even if run using Start, Run & pasting path to py file!
+				}
+				else {
+					ProcessStartInfo psi = new ProcessStartInfo(path);
+					try {
+						// System.Diagnostics.Process.Start(path);
+						// ^ Still causes "Application not found"
+						//   so try:
+						if (Array.Exists(psi.Verbs, element => element == "open")) {
+							psi.Verb = "open";
+							// There *still* can be a condition where it causes
+							// "Application not found" :( where Windows' default
+							// program no longer exists (and, in this case,
+							// Windows 10 will not provide the "Always use"
+							// checkbox :( so it is stuck that way without
+							// registry editing.							
+						}
+						
+						// psi.Arguments = "\"" + path + "\"";
+						Process.Start(psi);
+					}
+					catch(Exception exn) {
+						string verbs = string.Join(", ", psi.Verbs);
+						MessageBox.Show("Your OS' default program for the file type"
+						                + " seems to no longer exist. Due to a bug in Windows,"
+						                + " this makes the \"Always use\" checkbox not appear"
+						                + " so you must edit the registry to fix this :("
+						                + " or right-click the file in Explorer,"
+						                + " then \"Open With\""
+						                + " then \"Choose another app\", and make sure."
+						                + " \"Always use this app to open...\" is checked before continuing."
+						                + "\n\nVerbs="+verbs+"\n"+"Verb="+psi.Verb+"\n"+exn.ToString(), "error", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+						/*
+						if (Array.Exists(psi.Verbs, element => element == "editwithidle")) {
+							psi.Verb = "editwithidle";
+							// There *still* can be a condition where it causes
+							// "Application not found" :( where Windows' default
+							// program no longer exists (and, in this case,
+							// Windows 10 will not provide the "Always use"
+							// checkbox :( so it is stuck that way without
+							// registry editing.
+							Process.Start(psi);
+							// ^ causes "System.ComponentModel.Win32Exception: No application is associated with the specified file for this operation"
+						} else if (Array.Exists(psi.Verbs, element => element == "Edit with IDLE")) {
+							psi.Verb = "Edit with IDLE";
+							// There *still* can be a condition where it causes
+							// "Application not found" :( where Windows' default
+							// program no longer exists (and, in this case,
+							// Windows 10 will not provide the "Always use"
+							// checkbox :( so it is stuck that way without
+							// registry editing.
+							Process.Start(psi);
+							// ^ causes "System.ComponentModel.Win32Exception: No application is associated with the specified file for this operation"
+						}
+						*/
+					}
+				}
 			}
 		}
 		
