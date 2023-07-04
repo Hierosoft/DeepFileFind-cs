@@ -6,6 +6,10 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+using System.Reflection;
+using System.Diagnostics;  // such as FileVersionInfo
+// using System.IO;
+
 namespace DeepFileFind
 {
 	partial class MainForm
@@ -825,7 +829,17 @@ namespace DeepFileFind
 			this.MainMenuStrip = this.menuStrip1;
 			this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.Name = "MainForm";
-			this.Text = "DeepFileFind 3.1.5";
+			FileVersionInfo fv = FileVersionInfo.GetVersionInfo(
+				Assembly.GetExecutingAssembly().Location
+			);
+			string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			string assemblyFileVersion = fv.FileVersion.ToString();
+			if (assemblyVersion != assemblyFileVersion) {
+				this.Text = "DeepFileFind " + assemblyVersion + " (" + assemblyFileVersion + ")";
+			}
+			else {
+				this.Text = "DeepFileFind " + assemblyVersion;
+			}
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormFormClosing);
 			this.Load += new System.EventHandler(this.MainFormLoad);
 			this.splitContainer1.Panel1.ResumeLayout(false);
