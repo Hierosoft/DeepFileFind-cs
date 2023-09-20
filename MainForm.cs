@@ -806,14 +806,17 @@ namespace DeepFileFind
 				if (resultsListView.SelectedItems.Count>0) {
 					//string[] files = new String[this.resultsListView.SelectedItems.Count];
 					//int index=0;
+					string paths = "";
 					foreach (ListViewItem thisLVI in this.resultsListView.SelectedItems) {
 						string this_path = thisLVI.SubItems[resultsListView.Columns.IndexOfKey("Path")].Text;
-						Clipboard.SetText(this_path);
-						break;
+						if (paths.Length > 0) paths += Environment.NewLine;
+						paths += this_path;
+						// Clipboard.SetText(this_path);
+						// break;
 						//files[index] = this_path;
 						//index++;
-						
 					}
+					Clipboard.SetText(paths);
 				}
 				else Clipboard.SetText("");
 			}
@@ -926,6 +929,25 @@ namespace DeepFileFind
 				contentCheckBox.Checked = false;
 			}
 		}
+		/// <summary>
+		/// Allow dragging a file to another program (Set the content).
+		/// See <https://social.msdn.microsoft.com/Forums/windows/en-US
+		/// /60f3ef88-ff7d-4846-b28f-3c97dcef7583
+		/// /c-dragdrop-to-desktopexplorer?forum=winforms>
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void ResultsListViewMouseDown(object sender, MouseEventArgs e)
+		{
+			string[] files = new string[this.resultsListView.SelectedItems.Count];
+			int index = 0;
+			foreach (ListViewItem thisLVI in this.resultsListView.SelectedItems) {
+				files[index] = thisLVI.SubItems[resultsListView.Columns.IndexOfKey("Path")].Text;
+				index++;
+			}
+			
+      		this.DoDragDrop(new DataObject(DataFormats.FileDrop, files), DragDropEffects.Copy); 
+		}
 		/*
 		/// <summary>
 		/// This handler is required when the ListView VirtualMode is true.
@@ -948,5 +970,6 @@ namespace DeepFileFind
 		}
 		
 		*/
+
 	}
 }

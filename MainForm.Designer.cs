@@ -672,9 +672,9 @@ namespace DeepFileFind
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.fileToolStripMenuItem,
-									this.editToolStripMenuItem,
-									this.helpToolStripMenuItem});
+			this.fileToolStripMenuItem,
+			this.editToolStripMenuItem,
+			this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
@@ -685,9 +685,9 @@ namespace DeepFileFind
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.deleteResultsToolStripMenuItem,
-									this.saveResultsToolStripMenuItem,
-									this.exitToolStripMenuItem});
+			this.deleteResultsToolStripMenuItem,
+			this.saveResultsToolStripMenuItem,
+			this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
@@ -719,7 +719,7 @@ namespace DeepFileFind
 			// editToolStripMenuItem
 			// 
 			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.findToolStripMenuItem});
+			this.findToolStripMenuItem});
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
 			this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
 			this.editToolStripMenuItem.Text = "Edit";
@@ -735,7 +735,7 @@ namespace DeepFileFind
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.aboutToolStripMenuItem});
+			this.aboutToolStripMenuItem});
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
 			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
 			this.helpToolStripMenuItem.Text = "Help";
@@ -754,7 +754,6 @@ namespace DeepFileFind
 			this.resultsListView.FullRowSelect = true;
 			this.resultsListView.Location = new System.Drawing.Point(0, 0);
 			this.resultsListView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-			this.resultsListView.MultiSelect = false;
 			this.resultsListView.Name = "resultsListView";
 			this.resultsListView.Size = new System.Drawing.Size(512, 606);
 			this.resultsListView.TabIndex = 100;
@@ -764,13 +763,14 @@ namespace DeepFileFind
 			this.resultsListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ResultsListViewColumnClick);
 			this.resultsListView.DoubleClick += new System.EventHandler(this.ResultsListViewDoubleClick);
 			this.resultsListView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ResultsListViewKeyDown);
+			this.resultsListView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ResultsListViewMouseDown);
 			// 
 			// resultContextMenuStrip
 			// 
 			this.resultContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.openToolStripMenuItem,
-									this.openContainingFolderTSMI,
-									this.copyFilePathTSMI});
+			this.openToolStripMenuItem,
+			this.openContainingFolderTSMI,
+			this.copyFilePathTSMI});
 			this.resultContextMenuStrip.Name = "contextMenuStrip1";
 			this.resultContextMenuStrip.Size = new System.Drawing.Size(202, 70);
 			this.resultContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ResultContextMenuStripOpening);
@@ -829,17 +829,6 @@ namespace DeepFileFind
 			this.MainMenuStrip = this.menuStrip1;
 			this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.Name = "MainForm";
-			FileVersionInfo fv = FileVersionInfo.GetVersionInfo(
-				Assembly.GetExecutingAssembly().Location
-			);
-			string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-			string assemblyFileVersion = fv.FileVersion.ToString();
-			if (assemblyVersion != assemblyFileVersion) {
-				this.Text = "DeepFileFind " + assemblyVersion + " (" + assemblyFileVersion + ")";
-			}
-			else {
-				this.Text = "DeepFileFind " + assemblyVersion;
-			}
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormFormClosing);
 			this.Load += new System.EventHandler(this.MainFormLoad);
 			this.splitContainer1.Panel1.ResumeLayout(false);
@@ -867,6 +856,7 @@ namespace DeepFileFind
 			this.resultContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.CheckBox follow_system_folders_enableCB;
 		private System.Windows.Forms.CheckBox follow_temporary_folders_enableCB;
