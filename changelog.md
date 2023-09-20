@@ -5,14 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [unreleased] - 2023-09-20
+## [3.2.0] - 2023-09-20
 ### Added
 - Select multiple entries (issue #14). Required by:
   - Copy multiple entries (issue #14)
   - Drag (multiple) files to other programs (issue #13)
 
 
-## [unreleased] - 2022-10-31
+## [3.2.0] - 2022-10-31
 ### Fixed
 - Tell the thread to stop on form closing or on click Cancel.
 - Do not re-enable the buttons until the search is over if in threaded mode (wait for Timer1Tick to do it. See `queued`).
