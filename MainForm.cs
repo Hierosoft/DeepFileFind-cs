@@ -61,7 +61,22 @@ namespace DeepFileFind
 			this.lvwColumnSorter = new ListViewColumnSorter();
 			this.resultsListView.ListViewItemSorter = this.lvwColumnSorter;
 			// ^ It still flickers without this.
+			SetDoubleBuffered(this.resultsListView, true);
 		}
+
+	    /// <summary>
+	    /// Sets the double buffered property of a list view to the specified value
+	    /// (Based on <https://stackoverflow.com/a/42389596/4541104>).
+	    /// </summary>
+	    /// <param name="listView">The List view</param>
+	    /// <param name="doubleBuffered">Double Buffered or not</param>
+	    public static void SetDoubleBuffered(System.Windows.Forms.ListView listView, bool doubleBuffered)
+	    {
+	        listView
+	            .GetType()
+	            .GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+	            .SetValue(listView, doubleBuffered, null);
+	    }
 		
 		public void setSearchAvailability(bool enable) {
 			findButton.Enabled=enable;

@@ -105,11 +105,15 @@ namespace DeepFileFind
 		    if (box.InvokeRequired)
 	        {
 		    	// System.Windows.Forms.MethodInvoker
+		    	box.Invoke((MethodInvoker)(() => box.BeginUpdate()));
 		    	box.Invoke((MethodInvoker)(() => box.Items.Add(item)));
+		    	box.Invoke((MethodInvoker)(() => box.EndUpdate()));
 	        }
 	        else
 	        {
+	        	box.BeginUpdate();
 	        	box.Items.Add(item);
+	        	box.EndUpdate();
 	        }
 		}
 		public void AddItem(ListViewItem item) {
