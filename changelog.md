@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [unreleased ] - 2023-12-20
+### Changed
+- Play Asterisk sound and highlight message on '"endbefore" is less than or equal to start date'.
+
 ### Fixed
 - Update `AssemblyVersion` to match git tag.
 - Show name & version in the title bar.

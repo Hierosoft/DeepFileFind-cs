@@ -47,6 +47,8 @@ namespace DeepFileFind
 		public ListViewColumnSorter lvwColumnSorter;
 		public bool version_then_exit = false;
 		public bool contentCBUpdating = true;  // true until done loading settings
+		public Color highlightColor = Color.Yellow;
+		public Color defaultColor = Color.Black;  // set to *invalid (black)* until later
 		
 		public MainForm()
 		{
@@ -54,6 +56,7 @@ namespace DeepFileFind
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
+			this.defaultColor = this.statusTextBox.BackColor;
 			Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 			thisprogram_name_and_version = thisprogram_name + " " + version;
 			this.Text = thisprogram_name_and_version;
@@ -587,6 +590,10 @@ namespace DeepFileFind
 			}
 			else if (dff.options.modified_endbefore_date_enable && dff.options.modified_start_date_enable && dff.options.modified_endbefore_datetime_utc <= dff.options.modified_start_datetime_utc) {
 				statusTextBox.Text="WARNING: \"endbefore\" is less than or equal to start date (nothing to find)";
+				statusTextBox.BackColor = this.highlightColor;  // reverts to defaultColor on next change
+				// using System.Media;
+				// SystemSounds.Hand.Play();
+				System.Media.SystemSounds.Asterisk.Play();
 			}
 			else {
 				if (dff.options.threading_enable) {
@@ -977,6 +984,15 @@ namespace DeepFileFind
 			}
 			
       		this.DoDragDrop(new DataObject(DataFormats.FileDrop, files), DragDropEffects.Copy); 
+		}
+		void StatusTextBoxTextChanged(object sender, EventArgs e)
+		{
+			if (defaultColor == Color.Black) {
+				if (this.statusTextBox.BackColor != highlightColor)
+					defaultColor = this.statusTextBox.BackColor; // set the default
+			}
+			else
+				this.statusTextBox.BackColor = defaultColor;
 		}
 		/*
 		/// <summary>

@@ -806,6 +806,7 @@ namespace DeepFileFind
 			this.statusTextBox.Size = new System.Drawing.Size(857, 23);
 			this.statusTextBox.TabIndex = 200;
 			this.statusTextBox.TabStop = false;
+			this.statusTextBox.TextChanged += new System.EventHandler(this.StatusTextBoxTextChanged);
 			// 
 			// timer1
 			// 
