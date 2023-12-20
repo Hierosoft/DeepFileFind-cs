@@ -45,6 +45,7 @@ namespace DeepFileFind
 		public Dictionary<string, string> settings = new Dictionary<string, string>();
 		public ListViewColumnSorter lvwColumnSorter;
 		public bool version_then_exit = false;
+		public bool contentCBUpdating = true;  // true until done loading settings
 		
 		public MainForm()
 		{
@@ -62,6 +63,7 @@ namespace DeepFileFind
 			this.resultsListView.ListViewItemSorter = this.lvwColumnSorter;
 			// ^ It still flickers without this.
 			SetDoubleBuffered(this.resultsListView, true);
+			this.contentCBUpdating = false;  // true again when loading settings
 		}
 
 	    /// <summary>
@@ -177,7 +179,20 @@ namespace DeepFileFind
 				//if (Directory.Exists(try_path)) locationComboBox.Text=try_path;
 			//}
 			//catch {} //don't care
+			LoadSettings();
+			GenerateColumns();
+
+			if (startup_path!=null) {
+				if (startup_path.Length>=2 && startup_path.StartsWith("\"") && startup_path.EndsWith("\"")) {
+					startup_path = startup_path.Substring(1, startup_path.Length-2);
+				}
+				locationComboBox.Text = startup_path;
+			}
+			if (!hasLocation(locationComboBox.Text)) locationComboBox.Items.Add(locationComboBox.Text);
 			
+		}
+		void LoadSettings() {
+			this.contentCBUpdating = true;
 			if (File.Exists(settings_path)) {
 				StreamReader ins = new StreamReader(settings_path);
 				string line;
@@ -253,7 +268,7 @@ namespace DeepFileFind
 			else modifiedEndBeforeDateCheckBox.Checked = false;
 			if (settings.ContainsKey("recursive_enable")) recursiveCheckBox.Checked = (settings["recursive_enable"]=="true"?true:false);
 			else recursiveCheckBox.Checked = true;
-			if (settings.ContainsKey("content_enable")) contentCheckBox.Checked = (settings["content_enable"]=="true"?true:false);
+			if (settings.ContainsKey("content_enable")) contentCheckBox.Checked = (settings["content_enable"]=="true")?true:false;
 			else contentCheckBox.Checked = false;
 			if (settings.ContainsKey("name")) nameTextBox.Text = settings["name"];
 			if (settings.ContainsKey("content_string")) contentTextBox.Text = settings["content_string"];
@@ -271,11 +286,12 @@ namespace DeepFileFind
 			if (settings.ContainsKey("follow_hidden_folders_enable")) follow_hidden_folders_enableCB.Checked = (settings["follow_hidden_folders_enable"]=="true"?true:false);
 			if (settings.ContainsKey("follow_system_folders_enable")) follow_system_folders_enableCB.Checked = (settings["follow_system_folders_enable"]=="true"?true:false);
 			if (settings.ContainsKey("follow_temporary_folders_enable")) follow_temporary_folders_enableCB.Checked = (settings["follow_temporary_folders_enable"]=="true"?true:false);
-			
-			
 			contentTextBox.Enabled = contentCheckBox.Checked;
 			contentTextBox.Enabled = contentCheckBox.Checked;
-						
+			this.contentCBUpdating = false;
+		}
+		
+		void GenerateColumns() {
 			resultsListView.Columns.Add("Path", "Path", (int)((double)this.Width*.35+.5));
 			RESULT_PATH_COLUMN_INDEX = resultsListView.Columns.Count-1;
 			resultsListView.Columns.Add("Extension", "Extension", (int)((double)this.Width*.08+.5));
@@ -286,14 +302,8 @@ namespace DeepFileFind
 			RESULT_CREATED_COLUMN_INDEX = resultsListView.Columns.Count-1;
 			resultsListView.Columns.Add("Name", "Name", (int)((double)this.Width*.1+.5));
 			RESULT_NAME_COLUMN_INDEX = resultsListView.Columns.Count-1;
-			if (startup_path!=null) {
-				if (startup_path.Length>=2 && startup_path.StartsWith("\"") && startup_path.EndsWith("\"")) {
-					startup_path = startup_path.Substring(1, startup_path.Length-2);
-				}
-				locationComboBox.Text = startup_path;
-			}
-			if (!hasLocation(locationComboBox.Text)) locationComboBox.Items.Add(locationComboBox.Text);
-		}//end MainFormLoad
+		}
+		
 		void StartDateCheckBoxCheckedChanged(object sender, EventArgs e)
 		{
 			updateDatePickers();
@@ -937,11 +947,13 @@ namespace DeepFileFind
 		
 		void ContentTextBoxTextChanged(object sender, EventArgs e)
 		{
-			if (contentTextBox.Text.Length > 0) {
-				contentCheckBox.Checked = true;
-			}
-			else {
-				contentCheckBox.Checked = false;
+			if (!this.contentCBUpdating) {
+				if (contentTextBox.Text.Length > 0) {
+					contentCheckBox.Checked = true;
+				}
+				else {
+					contentCheckBox.Checked = false;
+				}
 			}
 		}
 		/// <summary>
