@@ -59,6 +59,8 @@ See [changelog.md](changelog.md).
 
 ## Development
 ### Releasing
+- Edit the version in Changelog
+- Edit the version in AssemblyInfo.cs
 - Build the release build to bin/WindowsRelease using SharpDevelop 4.4.
 - Run `python release.py`
 - Add a tag and upload the DeepFileFind zip with the matching version in the parent directory (such as "GitHub").

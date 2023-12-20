@@ -24,6 +24,7 @@ namespace DeepFileFind
 	/// </summary>
 	public partial class MainForm : Form
 	{
+		private static string thisprogram_name = "DeepFileFind";
 		private static string thisprogram_name_and_version = "DeepFileFind";
 		private static string folders_thisprogram_name = "DeepFileFind";
 		private DFF dff = null;
@@ -53,7 +54,9 @@ namespace DeepFileFind
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			//TODO: discontinue this program and make Miracle File Search in qt?
+			Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+			thisprogram_name_and_version = thisprogram_name + " " + version;
+			this.Text = thisprogram_name_and_version;
 			appdata_thisprogram_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folders_thisprogram_name);
 			if (!Directory.Exists(appdata_thisprogram_path)) Directory.CreateDirectory(appdata_thisprogram_path);
 			recent_folders_list_path = Path.Combine(appdata_thisprogram_path, recent_folders_list_name);
