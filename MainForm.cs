@@ -903,7 +903,7 @@ namespace DeepFileFind
 		
 		void AboutToolStripMenuItemClick(object sender, EventArgs e)
 		{
-			MessageBox.Show("This program is released under the terms of the GNU General Public Licence version 3.0. \n\nAll source code for the original project is available at: http://www.github.com/expertmm/DeepFileFind",thisprogram_name_and_version);
+			MessageBox.Show("This program is released under the terms of the GNU General Public Licence version 3.0. \n\nAll source code for the original project is available at: https://github.com/Poikilos/DeepFileFind",thisprogram_name_and_version);
 		}
 		
 		void DeleteResultsToolStripMenuItemClick(object sender, EventArgs e)
