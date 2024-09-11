@@ -70,6 +70,7 @@ namespace DeepFileFind
 			// ^ It still flickers without this.
 			SetDoubleBuffered(this.resultsListView, true);
 			this.contentCBUpdating = false;  // true again when loading settings
+			this.updateDatePickers();
 		}
 
 	    /// <summary>
@@ -135,8 +136,16 @@ namespace DeepFileFind
 				modifiedEndBeforeDTPicker.Enabled=false;
 				modifiedEndBeforeTimeCheckBox.Enabled=false;
 			}
-			if (contentCheckBox.Checked) contentTextBox.Enabled=true;
-			else contentTextBox.Enabled=false;
+		    if (contentCheckBox.Checked)
+		    {
+		        contentTextBox.Enabled = true;
+		        foldersCheckBox.Font = new Font(foldersCheckBox.Font, FontStyle.Strikeout); // Set font style to normal
+		    }
+		    else
+		    {
+		        contentTextBox.Enabled = false;
+		        foldersCheckBox.Font = new Font(foldersCheckBox.Font, FontStyle.Regular); // Set font style to strikethrough
+		    }
 		}
 		
 		void MainFormLoad(object sender, EventArgs e)
@@ -580,7 +589,7 @@ namespace DeepFileFind
 			//else already null since new object, so do nothing
 			if (contentCheckBox.Checked && !string.IsNullOrEmpty(contentTextBox.Text.Trim())) dff.options.content_string=contentTextBox.Text;
 			//else already null since new object, so do nothing
-			dff.options.include_folders_as_results_enable=foldersCheckBox.Checked;
+			dff.options.include_folders_as_results_enable=foldersCheckBox.Checked && !contentCheckBox.Checked;
 			dff.options.recursive_enable=recursiveCheckBox.Checked;
 			dff.SetListView(this.resultsListView);
 			dff.options.SetStatusTextBox(this.statusTextBox);
