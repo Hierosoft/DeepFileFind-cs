@@ -3,25 +3,25 @@ The goal of this project is to create the most satisfying search program in the 
 
 * Has features you need
 * Isn't annoying
-* Is GPL (free as in freedom, forever--redistribute modify according to the terms as you wish). Full source code of original project is at <https://github.com/expertmm/DeepFileFind/releases>.
+* Is GPL (free as in freedom, forever--redistribute modify according to the terms as you wish). Full source code of original project is at <https://github.com/Hierosoft/DeepFileFind/releases>.
 
 --in other words, it's a program like nothing before it.
 
 ## Install
 
 ### Windows
-- Download a DeepFileFind windows zip from [Releases](https://github.com/poikilos/DeepFileFind-cs/releases).
+- Download a DeepFileFind windows zip from [Releases](https://github.com/Hierosoft/DeepFileFind-cs/releases).
 - Open/Run
 - Open "bin", then "Release-win64" 9or "WindowsRelease" for older versions).
 - Drag DeepFileFind.exe to your Desktop.
   - If the program is blocked by Windows, click More Info then Run Anyway and if you agree it is safe please click the steps to report the false positive to Microsoft (such as if you have reviewed the source code or reproduced it by building)
-    - See the [false positive "severe threat" issue #1](https://github.com/poikilos/DeepFileFind-cs/issues/1)
+    - See the [false positive "severe threat" issue #1](https://github.com/Hierosoft/DeepFileFind-cs/issues/1)
 - Double-click the icon on the desktop (Magnifying glass).
 - Push More Info / Allow if you get a security warning.
 
 ### Extract or Compile
 * If using a git version,
-  `git clone https://github.com/expertmm/DeepFileFind.git` then open sln file using
+  `git clone https://github.com/Hierosoft/DeepFileFind.git` then open sln file using
   SharpDevelop, or if using GNU OS install monodevelop then open
   DeepFileFind_monodevelop in MonoDevelop; then set Build configuration
   to Release, then click Build, then Build (Solution or All depending
@@ -50,7 +50,7 @@ The goal of this project is to create the most satisfying search program in the 
 
 
 ## Known Issues	
-See [Issues](https://github.com/poikilos/DeepFileFind-cs/issues).
+See [Issues](https://github.com/Hierosoft/DeepFileFind-cs/issues).
 
 
 ## Changes

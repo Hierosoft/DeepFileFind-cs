@@ -2,4 +2,4 @@
 3.0.2
 
 * workaround windows bug with drive expressed as ending in colon (must append backslash or DirectoryInfo will ignore and use current working directory)
-* see [release notes for 3.0.0](https://github.com/expertmm/DeepFileFind/releases/tag/3.0.0) for more changes in 3.0.x series
+* see [release notes for 3.0.0](https://github.com/Hierosoft/DeepFileFind/releases/tag/3.0.0) for more changes in 3.0.x series

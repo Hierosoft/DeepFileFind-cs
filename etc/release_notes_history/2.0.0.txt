@@ -5,7 +5,7 @@ Windows: get DeepFileFind.exe (should not require anything on Windows 7 or above
 
 The program is a single file and saves to user's %APPDATA%/ but in $HOME/.config/] in Linux. DFF will now skip files without warning if can't be read. It should have no trouble searching your user profile, but the root of drives is not working well due to the fault-tolerance. IF you dont' mind that, and you want the new features, just use this version and right-click then Run As Administrator to avoid that problem when you want to search your whole computer.
 
-Stay informed about changes planned and implemented in source ("git") version via its README.md at [https://www.github.com/expertmm/DeepFileFind](https://www.github.com/expertmm/DeepFileFind).
+Stay informed about changes planned and implemented in source ("git") version via its README.md at [https://www.github.com/Hierosoft/DeepFileFind](https://www.github.com/Hierosoft/DeepFileFind).
 
 Compiling git version: 
 * download DeepFileFind-master.zip from link above

@@ -1,4 +1,4 @@
 ## GUI size labels improved
 3.0.1
 
-please see [release notes from 3.0.0](https://github.com/expertmm/DeepFileFind/releases/tag/3.0.0) for more info
+please see [release notes from 3.0.0](https://github.com/Hierosoft/DeepFileFind/releases/tag/3.0.0) for more info
