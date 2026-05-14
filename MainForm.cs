@@ -519,14 +519,17 @@ namespace DeepFileFind
 			
 			bool folders_all_ok_enable = true;
 			ArrayList bad_paths = new ArrayList();
+			// ArrayList good_paths = new ArrayList();
 			foreach (string original_location_string in location_strings) {
 				string location_string = original_location_string;
 				Console.Error.WriteLine("Searching in location_string:"+location_string);
 				if (Path.DirectorySeparatorChar=='\\'&&location_string.EndsWith(":")) location_string+="\\"; //otherwise directory info will be current working directory instead!
+				location_string = Environment.ExpandEnvironmentVariables(location_string);
 				DirectoryInfo this_di = new DirectoryInfo(location_string);
 				if (this_di.Exists) {
 					Console.Error.WriteLine("  adding as "+this_di.FullName);
 					dff.options.start_directoryinfos.Add(this_di);
+					// good_paths.Add(location_string)
 				}
 				else {
 					folders_all_ok_enable=false;
@@ -534,6 +537,8 @@ namespace DeepFileFind
 					bad_paths.Add(location_string);
 				}
 			}
+			location_strings = null;  // make sure one with env vars isn't accidentally used literally
+			// location_strings = good_paths.ToArray()
 
 			if (!folders_all_ok_enable) {
 				string bad_paths_string = "";
