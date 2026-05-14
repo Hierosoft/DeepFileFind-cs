@@ -776,11 +776,12 @@ namespace DeepFileFind
 		}
 		void CopyFilePathTSMIClick(object sender, EventArgs e)
 		{
+			string text = "";
 			foreach (ListViewItem lvi in resultsListView.SelectedItems) {
 				//FileInfo this_fi = new FileInfo(lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
-				Clipboard.SetText(lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text);
-				break;
+				text += lvi.SubItems[RESULT_PATH_COLUMN_INDEX].Text + "\n";
 			}
+			Clipboard.SetText(text);
 		}
 		
 		void ResultsListViewItemDrag_BROKEN_KEEPS_CURSOR_X_FOREVER(object sender, ItemDragEventArgs e)
