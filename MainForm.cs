@@ -1004,6 +1004,12 @@ namespace DeepFileFind
 			else
 				this.statusTextBox.BackColor = defaultColor;
 		}
+		void LocationComboBoxKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Enter) {
+				ExecuteSearch();
+			}
+		}
 		/*
 		/// <summary>
 		/// This handler is required when the ListView VirtualMode is true.
